@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>{$name}</title>
+	{css filename="wechat/reset.css" version='3' /}
+	{css filename="wechat/slider.css" version='3' /}
+	{css filename="wechat/slider.default.css" version='3' /}
+	<style type="text/css">
+/**
+ * slider
+ */
+.slider {
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+}
+.slider div {
+	background-size: cover;
+	background-position: center center;
+	height: 100%;
+}
+.ui-slider-item > p {
+	padding: 3px 0;
+}
+.ui-slider-dots {
+	width: 100%;
+	bottom: 0px;
+	text-align: center;
+	padding: 6px 0;
+}
+.ui-slider-dots b {
+	width: 10px;
+	height: 10px;
+	margin: 0 15px;
+	border-radius: 8px;
+	background: rgba(255,255,255,.6);
+}
+.ui-slider-dots b.ui-slider-dot-select {
+	background: #fff;
+}
+
+.wrap_box {
+	position: absolute;
+	top: 0;
+	left: 0;
+	overflow: hidden;
+	z-index: 99;
+	width: 100%;
+	text-align: center;
+}
+.wrap_box h2 {
+	font-size: 18px;
+	color: #fff;
+	margin: 60px 0 35px;
+	font-weight: normal;
+}
+/*nav box*/
+.nav_box {
+	height: 38px;
+	width: 70%;
+	margin: 0 auto 20px;
+}
+.nav_box ul {
+	overflow: hidden;
+}
+.nav_box ul li {
+	float: left;
+	text-align: center;
+}
+
+.nav_box ul li a {
+	width: 38px;
+	height: 38px;
+	text-align: center;
+	display: inline-block;
+}
+.nav_box ul li div {
+	height: 100%;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: 34px;
+}
+.nav_box ul li div.zaixiankefu {
+	background-image: url({$_config['img3_url']}wechat/index/icon_kefu_68x68.png);
+}
+.nav_box ul li div.yijianbohao {
+	background-image: url({$_config['img3_url']}wechat/index/icon_yuyuedianhua_68x68.png);
+}
+.nav_box ul li div.yijiandaohang {
+	background-image: url({$_config['img3_url']}wechat/index/icon_yijiandaohang_68x68.png);
+}
+
+.items_box {
+	height: 234px;
+	position: relative;
+}
+.items_box > a {
+	display: block;
+	width: 18px;
+	height: 58px;
+	float: left;
+	position: absolute;
+	top: 40px;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 60%;
+}
+/*menu box*/
+.swiper-container {
+	height: auto;
+	color: #fff;
+	text-align: center;
+	width: 82%;
+	opacity: 0;
+	margin-right: auto;
+	margin-left: auto;
+	overflow: hidden;
+}
+.swiper-slide {
+	width: 100%;
+}
+.menu_box {
+	width: 100%;
+}
+.menu_list {
+	width: 100%;
+	height: 90px;
+	border: 1px solid rgba(255,255,255,1);
+	margin-bottom: 10px;
+}
+.item_menu:nth-child(3n) .menu_list {
+	margin-right: 0;
+}
+.item_menu:last-child {
+	margin-right: 0;
+}
+.menu_list:nth-child(2n) {
+	margin-bottom: 0;
+}
+
+.item_menu {
+	float: left;
+	padding-right: 15px;
+}
+.menu_list a {
+	color: #fff;
+	display: block;
+	width: 100%;
+	height: 100%;
+	background-position: center 9px;
+	background-repeat: no-repeat;
+	background-size: 40px;
+	background-color: rgba(255,255,255,.2);
+}
+.menu_list a > p {
+	font-size: 12px;
+	text-align: center;
+	padding-top: 60px;
+}
+.items_box a.arrow_left {
+	top: 30%;
+	left: 7px;
+	background-image: url({$_config['img3_url']}wechat/index/icon_chongdie_zuo_18x58.png);
+}
+.items_box a.arrow_right {
+	top: 30%;
+	right: 7px;
+	background-image: url({$_config['img3_url']}wechat/index/icon_chongdie_you_18x58.png);
+}
+.menu_list a.lpdt {
+	background-image: url({$_config['img3_url']}wechat/index/icon_loupandongtai_98x98.png);
+}
+.menu_list a.hxjs {
+	background-image: url({$_config['img3_url']}wechat/index/icon_huxingjieshao_98x98.png);
+}
+.menu_list a.jsq {
+	background-image: url({$_config['img3_url']}wechat/index/icon_jisuanqi_98x98.png);
+}
+.menu_list a.ls {
+	background-image: url({$_config['img3_url']}wechat/index/icon_loushu_98x98.png);
+}
+.menu_list a.lptp {
+	background-image: url({$_config['img3_url']}wechat/index/icon_loupantupian_98x98.png);
+}
+.menu_list a.qjkf {
+	background-image: url({$_config['img3_url']}wechat/index/icon_quanjingkanfang_98x98.png);
+}
+.menu_list a.xmjs {
+	background-image: url({$_config['img3_url']}wechat/index/icon_xiangmujieshao_98x98.png);
+}
+.menu_list a.xz {
+	background-image: url({$_config['img3_url']}wechat/index/icon_xiazai_98x98.png);
+}
+.menu_list a.xlwb {
+	background-image: url({$_config['img3_url']}wechat/index/icon_xinlangweibo_98x98.png);
+}
+.menu_list a.yykf {
+	background-image: url({$_config['img3_url']}wechat/index/icon_yuyuekanfang_98x98.png);
+}
+.menu_list a.zdy {
+	background-image: url({$_config['img3_url']}wechat/index/icon_zidingyi_98x98.png);
+}
+.menu_list a.zbqj {
+	background-image: url({$_config['img3_url']}wechat/index/icon_zhoubianquanjing_98x98.png);
+}
+
+.home_body{ background-color: #FFF0F5;/*页面背景颜色*/ } 
+.wrap_box h2{ color: #ffff;/*头部字体颜色*/ } 
+/*****菜单栏*****/ 
+.menu_list{ border:#ff6eb4;/*边框颜色*/ } 
+.menu_list a{ background-color: #008880(191, 143, 143, 0.2);/*背景色*/ color: #ffff;/*字体颜色*/ }
+.gmu-media-detect{-webkit-transition: width 0.001ms; width: 0; position: relative; bottom: -999999px;}
+@media screen and (width: 320px) { #gmu-media-detect0 { width: 100px; } }
+</style>
+</head>
+<body class="home_body">
+	<section class="slider">
+		<div style="background-image:url({$_config['upload_url']}{$weixinbg});"></div>
+	</section>
+	<div class="wrap_box">
+		<h2>{$name}</h2>
+		<section class="nav_box" style="opacity: 1;">
+			<ul>
+				<li style="margin-left: 36.5px; margin-right: 36.5px;">
+					<a href="tel:{if $tel400_enable && $tel400_smallnum}{$_config['setting']['tel_number']},{$tel400_smallnum}{/if}">
+						<div class="yijianbohao"></div>
+					</a>
+				</li>
+				<li style="margin-left: 36.5px; margin-right: 36.5px;">
+					<!--<a href="{url 'mobile/xfdetail/map', "hid=$hid&type=fj"}"> -->
+					<a href="http://api.map.baidu.com/marker?location={$laticoor},{$longcoor}&title={$name}&content={$address}&output=html">
+						<div class="yijiandaohang"></div>
+					</a>
+				</li>
+			</ul>
+		</section>
+		<div class="items_box">
+			<a href="javascript:void(0);" class="arrow_left"></a>
+			<a href="javascript:void(0);" class="arrow_right"></a>
+			<div class="swiper-container" style="opacity: 1;">
+				<div class="menu_box swiper-wrapper" style="padding-left: 0px; padding-right: 0px; width: 364px; height: 380px;">
+						<div class="menu_list">
+							<a href="{url 'mobile/wx/detail',"hid=$hid"}" class="xmjs">
+								<p class="text_overflow">楼盘介绍</p>
+							</a>
+						</div>
+						<div class="menu_list">
+							<a href="{url 'mobile/wx/dynamic',"hid=$hid"}" class="lpdt">
+								<p class="text_overflow">楼盘动态</p>
+							</a>
+						</div>
+						<div class="menu_list">
+							<a href="{url 'mobile/wx/pic',"hid=$hid"}" class="lptp">
+								<p class="text_overflow">楼盘图片</p>
+							</a>
+						</div>
+						<div class="menu_list">
+							<a href="{url 'mobile/wx/hx',"hid=$hid"}" class="hxjs">
+								<p class="text_overflow">户型介绍</p>
+							</a>
+						</div>
+						<!--<div class="menu_list">
+							<a href="{url 'mobile/wx/tuan',"hid=$hid"}" class="yykf">
+								<p class="text_overflow">预约看房</p>
+							</a>
+						</div>-->
+						<div class="menu_list">
+							<a href="{url 'mobile/wx/jsq',"hid=$hid"}" class="jsq">
+								<p class="text_overflow">房贷计算器</p>
+							</a>
+						</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{js filename="wechat/zepto.js" version='3' /}
+	{js filename="wechat/touch.js" version='3' /}
+	{js filename="wechat/zepto.extend.js" version='3' /}
+	{js filename="wechat/zepto.ui.js" version='3' /}
+	{js filename="wechat/slider.js" version='3' /}
+	{js filename="wechat/swiper.min.js" version='3' /}
+	{js filename="wechat/wx.js" version='3' /}
+	<script type="text/javascript">
+			var wxSetting = {
+				//是否显示右上分享按钮
+				//hideOptionMenu : true,
+				//是否显示底部工具栏
+				hideToolbar : false,
+				//分享的结构
+				share : {
+					"send2Friend" : {
+						"content" : "【{$name}】- 售楼电话: {if $tel400_enable && $tel400_smallnum}{$_config['setting']['tel_number']}转{$tel400_smallnum}{else}暂无售楼电话{/if}",
+						"img" : "{$pic_url}",
+						"link" : "{$url}",
+						"title" : " 【{$name}】 ，一起来体验下吧！"
+					},
+					"share2Friend" : {
+						"img" : "{$pic_url}",
+						"link" : "{$url}",
+						"title" : "【{$name}】 ，一起来体验下吧！"
+					},
+					"share2QQBlog" : {
+						"content" : "我关注了【{$name}】一起来体验吧！{$pic_url}",
+						"link" : "{$url}"
+					},
+					"share2Email" : {
+						"content" : "我关注了【{$name}】一起来体验吧！{$pic_url}",
+						"link" : "{$url}",
+						"title" : " 【{$name}】 ，一起来体验下吧！"
+					}
+				}
+			};
+			function shortcut() {
+				var li = $('.nav_box ul').find('li');
+				var len = li.length;
+				var lis_w = li.width() * len;
+				var navbox_w = $('.nav_box').width();
+				li.css({
+					'margin-left' : parseFloat((navbox_w - lis_w - len) / (len * 2)),
+					'margin-right' : parseFloat((navbox_w - lis_w - len) / (len * 2))
+				});
+			}
+
+			function init_menu(num) {
+				var items = $('.menu_box').find('.menu_list');
+
+				var len = items.length;
+				for (var i = 1; i <= len; i++) {
+					if (i % num == 0) {
+						var items_list = items.slice(i - num, i);
+						var article = $('<article class="item_menu swiper-slide"></article>').append(items_list).appendTo('.menu_box');
+					}
+				}
+				if ((len % num) < num && (len % num) != 0) {
+					var other_items_list = items.slice(len - (len % num), len);
+					var article = $('<article class="item_menu swiper-slide"></article>').append(other_items_list).appendTo('.menu_box');
+				}
+				var sum_len = $('.menu_list').length;
+				if (sum_len % 2 != 0) {
+					var _html = '<div class="menu_list"><a href="javascript:void(0);"></a></div>';
+					var last_items = $('.item_menu').last();
+					$(_html).appendTo(last_items);
+				}
+			}
+
+			function menu_slide() {
+
+				var swiper_container_w = $('.swiper-container').width();
+				var menu_wrap_pr = parseFloat($('.item_menu').css('padding-right'));
+
+				var menu_wrap_len = $('.item_menu').length;
+				var menu_wrap_w = (swiper_container_w - menu_wrap_pr * 2 - menu_wrap_len) / 3;
+
+				$('.item_menu').width(menu_wrap_w);
+				var mySwiper = new Swiper('.swiper-container', {
+					slidesPerView : 'auto',
+					onSlideChangeEnd : function() {
+
+					}
+				});
+
+				$('.swiper-wrapper').width(menu_wrap_w * menu_wrap_len + menu_wrap_pr * menu_wrap_len);
+
+				$('.arrow_left').on('click', function(e) {
+					e.preventDefault();
+					mySwiper.swipePrev();
+
+				});
+				$('.arrow_right').on('click', function(e) {
+					e.preventDefault();
+					mySwiper.swipeNext();
+				});
+
+			}
+
+			$(function() {
+				shortcut();
+				init_menu(2);
+				menu_slide();
+				$('.nav_box').css('opacity', 1);
+				$('.swiper-container').css('opacity', 1);
+			})
+		</script>
+	<div class="gmu-media-detect" id="gmu-media-detect0"></div>
+</body>
+</html>

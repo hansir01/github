@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="cache-control" content="no-cache" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>{$name} - 户型简介</title>
+		{css filename="wechat/reset.css" version='3' /}
+		{css filename="wechat/animate.min.css" version='3' /}
+		
+		<style type="text/css">
+			body{background:#eaebed;}
+			.visible_content{height:100px;overflow:hidden;}
+
+			/*switch title bar*/
+						.title_bg {
+				background-color: #F87644;}
+				
+			.home_body{ background-color: #FFF0F5;/*页面背景颜色*/ } 
+.wrap_box h2{ color: #ffff;/*头部字体颜色*/ } 
+/*****菜单栏*****/ 
+.menu_list{ border:#ff6eb4;/*边框颜色*/ } 
+.menu_list a{ background-color: #008880(191, 143, 143, 0.2);/*背景色*/ color: #ffff;/*字体颜色*/ }
+		</style>
+	</head>
+
+	<body>
+		<header class="title_bg">
+			<a href="{url 'mobile/wx',"hid=$hid"}" class="back_btn"></a>
+			<h1>户型简介</h1>
+			<a href="{url 'mobile/wx',"hid=$hid"}" class="home_btn"></a>
+		</header>
+		<div class="content_box">
+				
+				{if $hx}
+					{foreach $hx $val}
+						<section class="house_introduction">
+				<h2>{if $val['room']}{$val['room']}室{else}{$name}户型图{/if}</h2>
+				<div class="housetype_listbox visible_content">
+										<div class="housetype_box">
+						<a href="javascript:void(0);" onclick="showAlumb(this,'{$val['pid']}');return false;" data-images="{$val['pic_all']}" data-title="{if $val['room']}{$val['room']}室{else}{$name}户型图{/if}"> <div class="housetype_img" style="background-image:url({$val['pic']});"></div>
+						<div class="housetype_explain">
+							<h3>{$val['title']}</h3>
+							<p>
+								建筑面积：{if $val['area']}{$val['area']}㎡{else}待定{/if}
+							</p>
+							<p class="text_overflow">
+								{if $val['room']}{$val['room']}室{/if}
+								{if $val['room']}{$val['room']}厅{/if}
+								{if $val['toilet']}{$val['toilet']}卫{/if}				
+							</p>
+						</div> <div class="housetype_arrow"></div> </a>
+					</div>
+									</div>
+				<div class="view_alltypes">
+					查看全部户型<span class="more_downbtn"></span>
+				</div>
+			</section>
+				{/foreach}
+			{/if}
+					</div>
+		<!--copyright-->
+		<div></div>
+		<!--bottom float menu-->
+		{js filename="wechat/zepto.js" version='3' /}
+		{js filename="wechat/wx.js" version='3' /}
+		<div class="bottom_phone">
+			<a href="tel:{if $tel400_enable && $tel400_smallnum}{$_config['setting']['tel_number']}转{$tel400_smallnum}{/if}">{if $tel400_enable && $tel400_smallnum}{$_config['setting']['tel_number']}转{$tel400_smallnum}{/if}</a>
+		</div>
+		{template 'footer', 'wx'}
+		<script type="text/javascript">
+			var wxSetting = {
+				//是否显示右上分享按钮
+				//hideOptionMenu : true,
+				//是否显示底部工具栏
+				hideToolbar : true,
+				//分享的结构
+				share : {
+					"send2Friend" : {
+						"content" : "【{$name}】- 售楼电话: {if $tel400_enable && $tel400_smallnum}{$_config['setting']['tel_number']}转{$tel400_smallnum}{else}暂无售楼电话{/if}",
+						"img" : "{$pic_url}",
+						"link" : "{$url}",
+						"title" : " 【{$name}】-户型介绍 ，一起来体验下吧！"
+					},
+					"share2Friend" : {
+						"img" : "{$pic_url}",
+						"link" : "{$url}",
+						"title" : "【{$name}】-户型介绍 ，一起来体验下吧！"
+					},
+					"share2QQBlog" : {
+						"content" : "我关注了【{$name}】一起来体验吧！{$pic_url}",
+						"link" : "{$url}"
+					},
+					"share2Email" : {
+						"content" : "我关注了【{$name}】一起来体验吧！{$pic_url}",
+						"link" : "{$url}",
+						"title" : " 【恒大绿洲】-户型介绍 ，一起来体验下吧！"
+					}
+				}
+			};
+			function showAlumb(obj, id) {
+				var images = $(obj).data('images').split(',');
+				var current = images[0];
+				if (window.WeixinJSBridge) {
+					var params = {
+						'urls' : images,
+						'current' : current
+					};
+					WeixinJSBridge.invoke("imagePreview", params, function(e) {
+					});
+				} else {
+					window.location.href = "{url 'mobile/wx/hx',"hid=$hid&pid="}" + id;
+				}
+				if (_paq) {
+					_paq.push(['trackPageView', '{$name}-户型查看:' + $(obj).data('title')]);
+				}
+			}
+
+			//float menu
+			$(function() {
+				$('.btn_menu').click(function() {
+					if ($(this).attr('ul-status') == 'hide') {
+						$(this).addClass('selected').attr('ul-status', 'show');
+						$('.floatmenu').show();
+					} else {
+						$(this).removeClass('selected').attr('ul-status', 'hide');
+						$('.floatmenu').hide();
+					}
+				});
+				$('.view_alltypes').click(function() {
+					var box = $(this).parent().find(".housetype_listbox");
+					if (box.hasClass('visible_content')) {
+						box.removeClass('visible_content');
+						$(this).html('收起<span class="more_upbtn"></span>');
+					} else {
+						box.addClass('visible_content');
+						$(this).html('查看全部户型<span class="more_downbtn"></span>');
+					}
+				});
+			});
+		</script>
+</body>
+</html>

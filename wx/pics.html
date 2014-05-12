@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="cache-control" content="no-cache" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>{$name} {if $single['title']}- {$single['title']}{/if}</title>
+		{css filename="wechat/reset.css" version='3' /}
+		{css filename="wechat/animate.min.css" version='3' /}
+		{css filename="wechat/slider.css" version='3' /}
+		{css filename="wechat/slider.default.css" version='3' /}
+		<style type="text/css">
+			body{background-color:#222 !important;}
+			.btn_close{position:fixed;z-index:300;right:0;top:0;display:block;width:45px;height:45px;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC0AAAAtCAYAAAA6GuKaAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNy8zMC8xMxzIw8UAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAFaklEQVRYhdWYbUxTVxjH/5f2lhdFaHuZAbZgkZAlMxlJk33RZCZgIEQkSGRBIcFB6OgkRQHBFDcmH0x1BlTmAGcydZEENc4x40x0I+qSZY5oYgyTikB5GdBbQAQKLcI+cNuU9rS9t1Yrvy/AOc8598fpc59zTim5XBwD4BesIoJY1joM4L9AiwghiPvZEUgJodik2wNqIZAgAGBZazdWUYoEOfzeESgJoThKr5oUsUtzKdLtr4lVqlKms1P/UXJy6lq+Y/LzC2Usa1VqNAejPMUFOf3d6pOhE1lZn0Xs318dExe3IUSrrYtNSlKGehuzbVt6eGVlTQwAlJRoorOzcyMpiiLGUktLSysaGIbuAMB7dRwRiUTUrl17Io4dO6UIC1tjX5De3h6zWl3Q9+DBX7OkcenpmesaGpo3yGRy2tY2N2derKzc13f58qXJhYWFFZIk6WIAxb5IJyUpQ69cuZkYGSkVO/f19vbMqdUFvc7inLBCJpO7jDEaRy2ZmSnd3d3/zju2O6cHsJwi075IUxQFdx+pQrEx5MyZHxVK5Sf2VElLywg/ebKFKAwAU1NTr+bmzIvO7S7SLGt9CeCSL9IPH/5jPn68bshisSyR+hWKjSFNTRcUmzZ9HLJly9Y1DQ1NCqlURhSemBhfqK2tHjQY+q3OfS7pAQAMQ4djuQQKzm2KolBZeXh9WVlVrEQiIS57T4/eHBYWFhQdHRtM6jeZjNbDhw8a2tp+miQ+gyTNie8GcECotA2N5mBUVdVX70skwaQUdIvROGqpqNjXf+PGz1PuYtxKAwDD0O0AooU81BGVqpTRaus+cKwknhgZGbaUlX3Rd/v2zZee4rxNVstXkERz82lWqy3vHx4enPcW+/jxoxm1eu9zb8KAF2mWtXYC+FWApwsXL54bb2+/Nu4pxmKZX2ptPW+8e/f3GT5z8vnYTsDHEggs7447d+bIPcXQtIQqKvpy/ebNn67hM6dXaa4E1vJTXEle3l5pff33iqio9RJPcRRFIT4+IbSp6Xx8Skqa14rF6wVhWWsHBJ5L8vM/lx492rBh7dpwEd8x0dGxksbGc/GpqdvDPcUJKUct4HkKLCpSy3W604rQ0DDi/F1dT2YGBw3El5Nh3qMbG8/F79iRvc7d/LyluTSpgIf8FolEVGFhibyu7ts4dxtLV9eTWZUqr6+8XN1nMhlddjsAkEpl4vr6JkV6eiZR3GOdJsEwtBJAM6kvISEx+NatPz+MiIgkbs09PXqzSpXf++hRpxkAsrJyInS6U3GOpztHjMZRa2ZmylM+ByaPcGXwG1Lf9PT0q6Ehck1+9qzbrFYX2IUB4Nq1theHDu03TEyML5DGuDuACZbmxNuxnOMrGBkZXtBqDwwMDQ2sEH/+/Jm5tLSwr7Pzb7PzmKtXWyerq8v6JycnVojPz88t6nRHBvX6py6L4JM0J94CwsZz794fM9XVZYaBgf55ANDrn5o1muJ+dxcAm3hNTYXBZGKtADA7O7Oo0x0ZvHDhh4nFRZeTqfCcdoZh6FoA253b09IywpOTU9ddv35l8v79Dl47XU5OXmROzh75nTu/vTh79juT843Fb9KAe3GxWEy5ezAJsVhMxcTEisfGxoiHfxt+kQZe75omFL9JAwDD0BkAvvbbhG7wqzRgr+Mn4OONng8+Vw93cHV8N/z4xY8zfl9pG9w9sxhArr/nfmPSNhiG3orlo63f0uWNSwP2VS8HoSz6wluRtsG9pLV4jcsy8JalbXBfTxTDx5QJiDRgT5lcLFcaQfIBk7bhi3zApR3hdtRcAIme4t4paRsMQycCyACwFYSX9p2UdoT0D7zz0o4wDB0DQLmqpG38DwlJH5OIstW0AAAAAElFTkSuQmCC);-webkit-background-size:45px auto;}
+			.swiper-title{color:#fff;text-align:center;width:100%;border-bottom:1px #333 solid;line-height:35px;z-index:200;position:relative;background-color:#000;}
+			.swiper-slide img{-webkit-transition:-webkit-transform 0.5s;}
+			.scale{-webkit-transform:scale(2);}
+			.ui.slider{height:100%;}
+			.ui-slider-item{background:#222 !important;}
+			.img-fix{position:absolute;top:50%;left:50%;}
+			.pageinfo{float:right;margin-right:5px;}
+			/*switch title bar*/
+						.title_bg {
+				background-color: #F87644;}
+				{ % else %
+			}
+			.title_bg {
+				background-color: #2785e6;
+			}
+			
+			.home_body{ background-color: #FFF0F5;/*页面背景颜色*/ } 
+.wrap_box h2{ color: #ffff;/*头部字体颜色*/ } 
+/*****菜单栏*****/ 
+.menu_list{ border:#ff6eb4;/*边框颜色*/ } 
+.menu_list a{ background-color: #008880(191, 143, 143, 0.2);/*背景色*/ color: #ffff;/*字体颜色*/ }
+		</style>
+	</head>
+
+	<body>
+		<div id="Gallery_wrap">
+			{if $pic}
+				{foreach $pic $key $val}
+						<div>
+				<img lazyload="{$val['pic_url']}" data-url="{$val['pic_url']}" />
+				<p>
+					{if $val['unitnum']}{$val['unitnum']}{elseif $val['title']}{$val['title']}{/if}<span class="pageinfo">1/{$pic_count}</span>
+				</p>
+			</div>
+				{/foreach}
+			{/if}
+					</div>
+		<div class="btn_close"></div>
+		{js filename="wechat/zepto.js" version='3' /}
+		{js filename="wechat/touch.js" version='3' /}
+		{js filename="wechat/zepto.extend.js" version='3' /}
+		{js filename="wechat/zepto.ui.js" version='3' /}
+		{js filename="wechat/zepto.iscroll.js" version='3' /}
+		{js filename="wechat/slider.js" version='3' /}
+		{js filename="wechat/sliderzoom.js" version='3' /}
+		{js filename="wechat/wx.js" version='3' /}
+		{template 'footer', 'wx'}
+		<script type="text/javascript">
+			var wxSetting = {
+				//是否显示右上分享按钮
+				//hideOptionMenu : true,
+				//是否显示底部工具栏
+				hideToolbar : true,
+				//分享的结构
+				share : {
+					"send2Friend" : {
+						"content" : "【{$name}】- 售楼电话: {if $tel400_enable && $tel400_smallnum}{$_config['setting']['tel_number']}转{$tel400_smallnum}{else}暂无售楼电话{/if}",
+						"img" : "{$single['pic_url']}",
+						"link" : "{$url}",
+						"title" : " 【{$name}】{if $single['title']}-{$single['title']}{/if} ，一起来体验下吧！"
+					},
+					"share2Friend" : {
+						"img" : "{$single['pic_url']}",
+						"link" : "{$url}",
+						"title" : "【{$name}】{if $single['title']}-{$single['title']}{/if} ，一起来体验下吧！"
+					},
+					"share2QQBlog" : {
+						"content" : "我关注了【{$name}】一起来体验吧！{$single['pic_url']}",
+						"link" : "{$url}"
+					},
+					"share2Email" : {
+						"content" : "我关注了【{$name}】一起来体验吧！{$single['pic_url']}",
+						"link" : "{$url}",
+						"title" : " 【{$name}】{if $single['title']}-{$single['title']}{/if} ，一起来体验下吧！"
+					}
+				}
+			};
+
+			$(document).ready(function() {
+				var docHeight = $(window).height() + 1;
+				$('#Gallery_wrap').sliderzoom({
+					autoPlay : false,
+					showDot : false,
+					autoPlayTime : 3000,
+					stopPropagation : true,
+					slideend : function(e, page) {
+						$('.pageinfo').html((page + 1) + "/" + ($('.pageinfo').length));
+					}
+				});
+				$('.ui-slider').height(docHeight);
+
+				$('#Gallery_wrap img').each(function() {
+					AutoResizeImage($(window).width(), $(window).height(), $(this));
+				});
+
+				$('.btn_close').click(function() {
+					window.location = '{url 'mobile/wx/pic',"hid=$hid"}';
+				});
+			});
+
+			function AutoResizeImage(maxWidth, maxHeight, objImg) {
+				var img = new Image();
+				img.onload = function() {
+					var hRatio;
+					var wRatio;
+					var Ratio = 1;
+					var w = this.width;
+					var h = this.height;
+					wRatio = maxWidth / w;
+					hRatio = maxHeight / h;
+					if (maxWidth == 0 && maxHeight == 0) {
+						Ratio = 1;
+					} else if (maxWidth == 0) {//
+						if (hRatio < 1)
+							Ratio = hRatio;
+					} else if (maxHeight == 0) {
+						if (wRatio < 1)
+							Ratio = wRatio;
+					} else if (wRatio < 1 || hRatio < 1) {
+						Ratio = (wRatio <= hRatio ? wRatio : hRatio);
+					}
+					if (Ratio < 1) {
+						w = w * Ratio;
+						h = h * Ratio;
+					}
+					objImg.height(h);
+					objImg.width(w);
+					var hWide = ($(objImg).width()) / 2;
+					var hTall = ($(objImg).height()) / 2;
+					hWide = '-' + hWide + 'px';
+					hTall = '-' + hTall + 'px';
+
+					$(objImg).addClass("img-fix").css({
+						"margin-left" : hWide,
+						"margin-top" : hTall
+					});
+				};
+				img.src = objImg.data('url');
+			}
+		</script>
+</body>
+</html>

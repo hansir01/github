@@ -1,0 +1,16 @@
+<div class="menu_wrap">
+			<ul class="floatmenu">
+				<li>
+	<a href="tel:{if $tel400_enable && $tel400_smallnum}{$_config['setting']['tel_number']},{$tel400_smallnum}{/if}"><label>一键拨号</label><span class="dial"></span></a>
+				</li>
+				<li>
+					<a href="{url 'mobile/wx/tuan',"hid=$hid"}"><label>预约看房</label><span class="service"></span></a>
+				</li>
+				<li>
+					<a href="http://api.map.baidu.com/marker?location={$laticoor},{$longcoor}&title={$name}&content={$address}&output=html"><label>一键导航</label><span class="navigation"></span></a>
+				</li>
+			</ul>
+			<img src="{$_config['img3_url']}wechat/index/btn_menu_98x98.png" class="btn_menu" ul-status="hide"/>
+		</div>
+
+		

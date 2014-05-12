@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="cache-control" content="no-cache" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>{$name}-预约看房</title>		
+		{css filename="wechat/form.css" version='3' /}
+		{css filename="wechat/reset.css" version='3' /}
+		{css filename="wechat/dialog.css" version='3' /}
+		{css filename="wechat/dialog.default.css" version='3' /}
+		{css filename="wechat/mobiscroll.core.css" version='3' /}
+		{css filename="wechat/mobiscroll.ios.css" version='3' /}
+		{css filename="wechat/mobiscroll.animation.css" version='3' /}
+		
+		
+		<script type="text/json" id="formVO">
+			{"_id":"5322c227721b8303448b4627","TID":"5322c227721b8303448b4616","FormID":1,"LabelName":"\u9884\u7ea6\u770b\u623f","Description":"","EnableSMS":true,"SMSMobile":"","IsNeedLogin":false,"Fields":[{"ID":"51f8e9a0a8b3ac55d3000010","name":"Name","type":"string","default":"","readonly":false,"LabelName":"\u59d3\u540d","ToolTip":"\u59d3\u540d","Description":"","ViewType":"text","Attribute":{"IsTrim":false,"IsRequire":false,"DefaultValue":"","MaxLength":0},"OrderBy":99},{"ID":"51f8e9b5a8b3ac58d2000020","name":"Mobile","type":"string","default":"","readonly":false,"LabelName":"\u624b\u673a\u53f7\u7801","ToolTip":"\u624b\u673a\u53f7\u7801","Description":"","ViewType":"text","Attribute":{"IsTrim":false,"IsRequire":false,"DefaultValue":"","MaxLength":0},"OrderBy":98},{"ID":"51f8e9d5a8b3ac39d9000003","name":"ViewTime","type":"int","default":"","readonly":false,"LabelName":"\u770b\u623f\u65f6\u95f4","ToolTip":"\u770b\u623f\u65f6\u95f4","Description":"","ViewType":"date","Attribute":{"IsRequire":false,"IsUseCurrentTime":false},"OrderBy":97}],"OrderBy":0,"AddTime":1375267200,"Status":1,"IsDeleted":0}
+		</script>
+		<style type="text/css">
+			body{background:#EAEAEA;}
+			header{background-image:-webkit-gradient(linear,left top,left bottom, color-stop(0%, rgba(1,1,1,.02)), color-stop(100%, rgba(255,255,255,.07)))}
+			header h1 {text-shadow:none;color:#Fff;}
+			.form_box{padding:10px;}
+			.text{border:1px solid #e5e5e5;-webkit-border-radius:6px;-o-border-radius:6px;-moz-border-radius:6px;border-radius:6px;margin:15px 0;padding:.6em .5em;-webkit-border-radius:6px;-moz-border-radius:6px;border-radius:6px;background-color:#fff;-webkit-box-shadow:inset 0 0 2px rgba(6,0,1,.1);-moz-box-shadow:inset 0 0 2px rgba(6,0,1,.1);box-shadow:inset 0 0 2px rgba(6,0,1,.1);border:solid 1px #d8d8d8;}
+			.form_box input{border:0;outline:none;width:100%;color:#2d2d2d;font-size:13px;}
+			.form_box a{color:#fff;}
+			.form_box input:-moz-placeholder{color:#929292;}
+			.form_box input::-webkit-input-placeholder{color:#929292;}
+			.input{font-size:8.8888889px;}
+			.submitForm{font-size:8.8888889px;}
+			.button{display:block;padding:0;text-align:center;-webkit-border-radius:0.35em;-moz-border-radius:0.35em;-o-border-radius:0.35em;border-radius:0.35em;font-weight:bold;font-size:16px;}
+			.submit_btn{background-color:#1f9cf4;background-color:#fff;-webkit-box-shadow:0 2px 3px rgba(6,0,1,.1),inset 1px 2px rgba(255,255,255,.23),inset 0 0 5px rgba(240,239,239,.1);-moz-box-shadow:0 2px 3px rgba(6,0,1,.1),inset 1px 2px rgba(255,255,255,.23),inset 0 0 5px rgba(240,239,239,.1);box-shadow:0 2px 3px rgba(6,0,1,.1),inset 1px 2px rgba(255,255,255,.23),inset 0 0 5px rgba(240,239,239,.1);background-image:-webkit-gradient(linear,left top,left bottom,from(#268ff1),to(#0978df));background-image:-webkit-linear-gradient(bottom,#0978df,#268ff1 98%);background-image:-moz-linear-gradient(bottom,#0978df,#268ff1 98%);background-image:-o-linear-gradient(bottom,#0978df,#268ff1 98%);background-image:linear-gradient(to top,#0978df,#268ff1 98%);font-weight:normal;}
+			#Copyright{	margin:0;width: 100%;border-top:none;}
+			#Copyright p{padding: 0;border-top:none;text-shadow: none;}
+			.active_button{
+			background-image: -webkit-gradient(linear,50% 0%,50% 100%,color-stop(0%,#3cb453),color-stop(100%,#3cb453));
+			background-image: -webkit-linear-gradient(#3cb453,#3cb453);
+			background-image: linear-gradient(#3cb453,#3cb453);
+			border:0 none;}
+			.header{background-color: #fff;width:100%;height:110px;overflow:hidden;}
+			.imgBox{height:110px;overflow:hidden;}
+			.imgBox div{width:100%;height:100%;background-size:contain;background-repeat:no-repeat;background-position:center center;}
+			.outer{width:100%;height:35px;position:relative; left:0;bottom:35px;background:rgba(0,0,0,.5)}
+			.back_btn{height: 35px;width: 44px; border-right:1px solid rgba(255,255,255,.6);}
+			header h1{line-height:35px;font-size:16px; color:#fff;text-align:left;font-weight:normal;}
+			.description{font-size: 14px;padding: 0;background-color: #fff;border: 1px dashed #ddd; margin:25px 10px;}
+			.description h2{width:100%;height:35px;font-size:16px; font-weight:normal;line-height:35px;background-color:rgba(176,176,175,1);text-align:center;color:#fff;margin:0;padding:0;}
+			.description img{max-width:100% !important;height:auto !important;}
+			.content{padding:10px;}
+			.formbox_wrap{border-top:0 none; background:#fff;}
+			.descBox{overflow:hidden;background:url({$_config['img3_url']}wechat/index/bg_wave_top.png) left top repeat-x,url({$_config['img3_url']}wechat/index/bg_wave_bottom.png) left bottom repeat-x; background-color:#f0f0f0;}
+			.input{padding:8px;}
+
+			body,html{height:100%}
+			.disabled_button{background-image: -webkit-gradient(linear,50% 0%,50% 100%,color-stop(0%,#BEC5BF),color-stop(100%,#6F7470));background-image: -webkit-linear-gradient(#BEC5BF,#6F7470);background-image:linear-gradient(#BEC5BF,#6F7470);border: 0 none;}
+			.cover_bg{width:100%;height:100%;background-color: rgba(0,0,0,.7);position: absolute;top:0;left:0;z-index:9999;display:none;}
+			.submiting_status{width:100%;height:70px;position:absolute;top:50%;margin-top: -35px;display: none;}
+			.submiting_status_content{width:150px;height:70px;margin:0 auto;}
+			.ajax_loading{opacity: 0;display: block;font-size: 29px;width: .25em;height: .25em;margin:0 auto;border-radius:.25em;-webkit-border-radius:.25em;-webkit-box-shadow:0 -.4em 1px 0 rgba(0,0,0,1),-.28em -.28em 1px 0 rgba(0,0,0,.75),-.4em 0 1px 0 rgba(0,0,0,.50),-.28em .28em  1px 0 rgba(0,0,0,.25);box-shadow:0 -.4em 1px 0 rgba(0,0,0,1),-.28em -.28em 1px 0 rgba(0,0,0,.75),
+				-.4em 0 1px 0 rgba(0,0,0,.50),-.28em .28em  1px 0 rgba(0,0,0,.25); animation:ajax-loader-rotate 1s linear infinite;
+			-webkit-animation: ajax-loader-rotate 1s linear infinite; position: absolute;left:50%;
+			}
+			
+			@-webkit-keyframes ajax-loader-rotate {
+			  0% { -webkit-transform: rotate(0deg); }
+			  50% { -webkit-transform: rotate(180deg); }
+			  100% { -webkit-transform: rotate(360deg); }
+			}
+			@keyframes ajax-loader-rotate {
+			  0% { transform: rotate(0deg); }
+			  50% {transform: rotate(180deg); }
+			  100% { transform: rotate(360deg); }
+			}
+			.submiting_status p{color:#fff; position:fixed;left:50%;top:50%;margin-left:-60px;z-index: 99999;font-size:14px;margin-top:20px;display:none;}
+            /*switch title bar*/
+                        .title_bg {
+                background-color: #F87644;
+            }
+                
+            .home_body{ background-color: #FFF0F5;/*页面背景颜色*/ } 
+.wrap_box h2{ color: #ffff;/*头部字体颜色*/ } 
+/*****菜单栏*****/ 
+.menu_list{ border:#ff6eb4;/*边框颜色*/ } 
+.menu_list a{ background-color: #008880(191, 143, 143, 0.2);/*背景色*/ color: #ffff;/*字体颜色*/ }
+		</style>
+	</head>
+	<body>
+		<div class="cover_bg">
+		</div>
+		<div class="submiting_status">
+			<div class="submiting_status_content">
+				<div class="ajax_loading"></div>
+				<p>正在提交中，请稍候 .....</p>
+			</div>
+		</div>
+		<header class="header">
+			<div class="imgBox">
+				<div style="background-image:url({$_config['img3_url']}wechat/index/img_top.png);"></div>
+			</div>
+			<div class="outer">
+				<a href="{url 'mobile/wx',"hid=$hid"}" class="back_btn"></a>
+				<h1>预约看房</h1>
+			</div>
+		</header>
+				<div class="viewport">
+			<div class="formbox_wrap">
+				<form id="submitForm">
+					<div class="formbox" id="form_content"></div>
+					<a id="btnSubmit" href="javascript:void(0);" class="button active_button" style="color:#fff;">立即提交</a>
+					<input type="hidden" name="FormID" value='1'/>
+				</form>
+			</div>
+		</div>
+		<div></div>
+		<!--bottom float menu-->
+				{js filename="wechat/zepto.js" version='3' /}
+				{js filename="wechat/zepto.extend.js" version='3' /}
+				{js filename="wechat/zepto.ui.js" version='3' /}
+				{js filename="wechat/zepto.highlight.js" version='3' /}
+				{js filename="wechat/dialog.js" version='3' /}
+				{js filename="wechat/zepto.iscroll.js" version='3' /}
+				{js filename="wechat/mobiscroll.zepto.js" version='3' /}
+				{js filename="wechat/mobiscroll.core.js" version='3' /}
+				{js filename="wechat/mobiscroll.datetime.js" version='3' /}
+				{js filename="wechat/mobiscroll.select.js" version='3' /}
+				{js filename="wechat/mobiscroll.i18n.zh.js" version='3' /}
+				{js filename="wechat/wx.js" version='3' /}
+				<div class="bottom_phone">
+					<a href="tel:{if $tel400_enable && $tel400_smallnum}{$_config['setting']['tel_number']}转{$tel400_smallnum}{/if}">{if $tel400_enable && $tel400_smallnum}{$_config['setting']['tel_number']}转{$tel400_smallnum}{/if}</a>
+				</div>
+				{template 'footer', 'wx'}
+		<script type="text/javascript">
+			var wxSetting = {
+				//是否显示右上分享按钮
+				//hideOptionMenu : true,
+				//是否显示底部工具栏
+				hideToolbar : true,
+				//分享的结构
+				share : {
+					"send2Friend" : {
+						"content" : "【{$name}】- 售楼电话: {if $tel400_enable && $tel400_smallnum}{$_config['setting']['tel_number']}转{$tel400_smallnum}{else}暂无售楼电话{/if}",
+						"img" : "{$pic_url}",
+						"link" : "{$url}",
+						"title" : " 【{$name}】-预约看房"
+					},
+					"share2Friend" : {
+						"img" : "{$pic_url}",
+						"link" : "{$url}",
+						"title" : "【{$name}】-预约看房"
+					},
+					"share2QQBlog" : {
+						"content" : "我关注了【{$name}】一起来体验吧！{$pic_url}",
+						"link" : "{$url}"
+					},
+					"share2Email" : {
+						"content" : "我关注了【{$name}】一起来体验吧！{$pic_url}",
+						"link" : "{$url}",
+						"title" : " 【{$name}】-预约看房 ，一起来体验下吧！"
+					}
+				}
+			};
+			$(document).ready(function() {
+				$('.btn_menu').click(function() {
+					if ($(this).attr('ul-status') == 'hide') {
+						$(this).addClass('selected').attr('ul-status', 'show');
+						$('.floatmenu').show();
+					} else {
+						$(this).removeClass('selected').attr('ul-status', 'hide');
+						$('.floatmenu').hide();
+					}
+				});
+
+				var formVO = $.parseJSON($('#formVO').html());
+				if (formVO) {
+
+					var content = $('#form_content');
+					$.each(formVO.Fields, function(idx, field) {
+						var lName = field.LabelName;
+						var fName = field.name;
+						var toolTip = field.ToolTip;
+						switch(field.ViewType) {
+							case 'text':
+							case 'number':
+							case 'double':
+								var tpl = '<div class="input"><input placeholder="' + lName + '" type="text" name="Extend[' + fName + ']" /></div>';
+								content.append(tpl);
+								break;
+							case 'textarea':
+								var tpl = '<div class="input"><textarea placeholder="' + lName + '" name="Extend[' + fName + ']"></textarea></div>';
+								content.append(tpl);
+								break;
+							case 'date':
+								var tpl = '';
+								if ($.os.ios) {
+									tpl = '<div class="input"><input placeholder="' + lName + '" type="text" onfocus="this.type=\'date\';" name="Extend[' + fName + ']" /></div>';
+								} else {
+									tpl = '<div class="input"><input placeholder="' + lName + '" type="text" date-role="date" readonly="readonly" name="Extend[' + fName + ']" /></div>';
+								}
+								content.append(tpl);
+								break;
+							case 'datetime':
+								var tpl = '';
+								tpl = '<div class="input"><input placeholder="' + lName + '" type="text" date-role="datetime" name="Extend[' + field.name + ']" /></div>';
+								content.append(tpl);
+								break;
+							case 'checkbox':
+								var tpl = '<h3 class="title">' + lName + '</h3><ul class="checkbox_group"><li><div data-type="checkbox" pervalue="1" class="checkbox">';
+								tpl += '<label><div class="label check_hbox">';
+								tpl += '<div class="name">&nbsp;&nbsp;' + lName + '</div></div></label></div></li><input data-type="checkbox" type="hidden" name="Extend[' + fName + ']"></ul>';
+								content.append(tpl);
+								break;
+							case 'radioboxlist':
+								var optTpl = '';
+								$.each(field.Attribute.Options, function(idx, item) {
+									optTpl += '<li><div data-type="radio" class="radio" pervalue="' + item + '">';
+									optTpl += '<label><div class="label">' + item + '</div></label></div></li>';
+								});
+								var tpl = '<h3 class="title">' + lName + '</h3><ul class="radio_group">' + optTpl + '<input data-type="radio" type="hidden" name="Extend[' + fName + ']"></ul>';
+								content.append(tpl);
+								break;
+							case 'checkboxlist':
+								var optTpl = '';
+								$.each(field.Attribute.Options, function(idx, item) {
+									optTpl += '<li><div data-type="checkbox" class="checkbox" pervalue="' + item + '">';
+									optTpl += '<label><div class="label check_hbox">';
+									optTpl += '<div class="name">&nbsp;&nbsp;' + item + '</div></div></label></div></li>';
+								});
+								var tpl = '<h3 class="title">' + lName + '</h3><ul class="checkbox_group">' + optTpl + '<input data-type="checkbox" type="hidden" name="Extend[' + fName + ']"></ul>';
+								content.append(tpl);
+								break;
+							case 'selectbox':
+								var optTpl = '<option value=""></option>';
+								$.each(field.Attribute.Options, function(idx, item) {
+									optTpl += '<option value="' + item + '">' + item + '</option>';
+								});
+								var tpl = ' <h3 class="title">' + lName + '</h3><div class="selectWrap"><div data-type="select" class="select"><div class="option">';
+								tpl += '请选择</div>';
+								tpl += '<select name="Extend[' + fName + ']">' + optTpl + '</select></div></div>';
+								content.append(tpl);
+								break;
+						}
+					});
+
+					$('input[date-role="date"]').each(function(idx, obj) {
+						var now = new Date();
+						$(obj).on('click', function() {
+							$(this).trigger('focus');
+							$(this).mobiscroll().date({
+								minDate : new Date(now.getFullYear(), now.getMonth(), now.getDate()),
+								theme : 'ios',
+								lang : 'zh',
+								dateFormat : 'yy-mm-dd',
+								dateOrder : 'yymmdd',
+								display : 'bottom',
+								mode : 'scroller'
+							});
+							$(this).mobiscroll('show');
+							return false;
+						});
+					});
+
+					$('input[date-role="datetime"]').each(function(idx, obj) {
+						var now = new Date();
+						$(obj).on('click', function() {
+							$(this).trigger('focus');
+							$(this).mobiscroll().datetime({
+								minDate : new Date(now.getFullYear(), now.getMonth(), now.getDate()),
+								theme : 'ios',
+								lang : 'zh',
+								dateFormat : 'yy-mm-dd',
+								dateOrder : 'yymmdd',
+								timeFormat : 'hh:ii',
+								display : 'bottom',
+								timeWheels : 'hhii',
+								mode : 'scroller'
+							});
+							$(this).mobiscroll('show');
+							return false;
+						});
+					});
+
+					//checkbox
+					$('div[data-type="checkbox"]').click(function() {
+						$(this).toggleClass('selected');
+						//计算值
+						var input = $(this).parent().parent().find('input')[0];
+						var values = [];
+						$(this).parent().parent().find('div[data-type="checkbox"]').each(function(idx, obj) {
+							if ($(this).hasClass('selected')) {
+								values.push($(this).attr('pervalue'));
+							}
+						});
+						$(input).val(values.join('\n'));
+						return false;
+					});
+
+					//radio
+					$('div[data-type="radio"]').click(function() {
+						$(this).parent().parent().find('div[data-type="radio"]').removeClass('selected');
+						$(this).toggleClass('selected');
+						var input = $(this).parent().parent().find('input')[0];
+						var values = '';
+						$(this).parent().parent().find('div[data-type="radio"]').each(function(idx, obj) {
+							if ($(this).hasClass('selected')) {
+								values = $(this).attr('pervalue');
+							}
+						});
+						$(input).val(values);
+						return false;
+					});
+
+					//select
+					$('div[data-type="select"]').each(function(idx, obj) {
+						$(obj).find('select').on('change', function() {
+							$(obj).find('.option').html($(this).val());
+						});
+					});
+				}
+				function loading(){
+					$('#btnSubmit').removeClass('active_button').addClass('disabled_button');
+					$('.cover_bg,.submiting_status,.submiting_status p').show();
+					$('.ajax_loading').css('opacity',.8);
+					var document_h =$(document).height();
+					var win_h  = $(window).height();
+					if(document_h>win_h){
+						$('.cover_bg').height(document_h);
+						if($('.cover_bg').css('display')=='block'){
+							$('body').on('touchstart',function(e){
+								var e = window.event||e;
+								e.preventDefault();//遮罩层出来时，禁止文档滚动
+							})
+						}						
+						var submiting_status_marginbottom =document_h -$(window).height();
+						$('.submiting_status').css('margin-top',submiting_status_marginbottom-20);
+					}
+				}
+				$('#btnSubmit').click(function() {
+					//正在提交
+					if ($('#btnSubmit').hasClass('submitting')) {
+						return;
+					}
+					
+					var isVerification = true;
+					//clear error
+					$('input').each(function(idx, obj) {
+						if ($(obj).prop('data-type')) {
+							$(obj).parent().removeClass('error');
+						} else {
+							$(obj).parent().removeClass('error');
+						}
+					});
+					$('input').each(function(idx, obj) {
+						if ($(obj).val() == '' && $(obj).data('type') != 'checkbox') {
+							if ($(obj).data('type')) {
+								$(obj).focus().parent().addClass('error');
+								smoothScroll($(window), $(obj).parent().offset().top, 200);
+							} else {
+								$(obj).focus().parent().addClass('error');
+								smoothScroll($(window), $(obj).parent().offset().top, 200);
+							}
+							isVerification = false;
+							return false;
+						}
+					});
+
+					//验证结果
+					if (!isVerification)
+						return;
+
+					$('#btnSubmit').addClass('submitting');
+
+					$.ajax({
+						type : 'POST',
+						url : '{url 'mobile/wx/tuan',"hid=$hid"}',
+						data : $('#submitForm').serialize(),
+						dataType : 'json',
+						cache:'false',
+						beforeSend:function(){
+							loading();
+						},
+						complete:function(){
+							$('.cover_bg,.submiting_status,.submitings_status p').hide();
+							$('#btnSubmit').removeClass('disabled_button').addClass('active_button');
+						},
+						success : function(data) {
+							$('#btnSubmit').removeClass('submitting');
+							if (data.error_code != 0) {
+								MsgAlert('错误', data.error_msg);
+							} else {
+								MsgAlert('提示', '提交成功!');
+								$('body').unbind("touchstart");								
+								setTimeout(function(){
+									window.location.reload()
+								},5000);
+							}
+						},
+						error : function(xhr, type) {
+							$('#btnSubmit').removeClass('submitting');
+						}
+					});
+				});
+			});
+
+			function smoothScroll(el, to, duration) {
+				if (duration < 0) {
+					return;
+				}
+				var difference = to - $(window).scrollTop();
+				var perTick = difference / duration * 10;
+				this.scrollToTimerCache = setTimeout( function() {
+					if (!isNaN(parseInt(perTick, 10))) {
+						window.scrollTo(0, $(window).scrollTop() + perTick);
+						smoothScroll(el, to, duration - 10);
+					}
+				}.bind(this), 10);
+			}
+
+			function MsgAlert(title, content) {
+				var alert_msg = $.ui.dialog({
+					width : 288,
+					mask : true,
+					title : title,
+					autoOpen : false,
+					closeBtn : false,
+					buttons : {
+						'确定' : function() {
+							this.close();
+						}
+					},
+					content : '<h2>' + content + '</h2>'
+				});
+				alert_msg.data('_wrap').addClass('share-dialog');
+				alert_msg.open();
+			}
+
+		</script>
+</body>
+</html>

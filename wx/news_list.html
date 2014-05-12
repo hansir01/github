@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="cache-control" content="no-cache" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>{$name} - 楼盘动态</title>
+		{css filename="wechat/reset.css" version='3' /}
+		{css filename="wechat/animate.min.css" version='3' /}
+		{css filename="wechat/loading.default.css" version='3' /}
+		{css filename="wechat/refresh.default.css" version='3' /}
+		<style type="text/css">
+			body {
+				background: #e4e3e3;
+			}
+			
+ 			/*switch title bar*/
+                        .title_bg {background-color: #F87644;}
+                        
+            .home_body{ background-color: #FFF0F5;/*页面背景颜色*/ } 
+.wrap_box h2{ color: #ffff;/*头部字体颜色*/ } 
+/*****菜单栏*****/ 
+.menu_list{ border:#ff6eb4;/*边框颜色*/ } 
+.menu_list a{ background-color: #008880(191, 143, 143, 0.2);/*背景色*/ color: #ffff;/*字体颜色*/ }
+		</style>
+	</head>
+
+	<body>
+		<header class="title_bg">
+			<a href="{url 'mobile/wx',"hid=$hid"}" class="back_btn"></a>
+			<h1>楼盘动态</h1>
+			<a href="{url 'mobile/wx',"hid=$hid"}" class="home_btn"></a>
+		</header>
+		<div id="liTpl" style="display: none;">			
+			<section class="detail_list">
+				<a href="{{base_url}}">
+				<article>
+					<p class="detail_time">
+						{{AddTime}}
+					</p>
+					<h3>{{Title}}</h3>
+					<!--
+					{if Images}
+					<p class="detail_img" style="background-image:url({Images});"></p>
+					{/if}-->
+					<p class="detail_text">
+						{{Content}}
+					</p>
+				</article>
+				<div class="check_detail">
+					<span>查看详情</span>
+					<em></em>
+				</div> </a>
+			</section>
+			
+		</div>
+		<!--content-->
+		<div class="dynamic_box">
+			<ul class="data-list">
+				{if $news}
+					{foreach $news $key $val}
+								<li>
+					<section class="detail_list">
+						<a href="{url 'mobile/wx/dynamic', "hid=$hid&contentid=$val[contentid]"}">
+						<article>
+							<p class="detail_time">
+								{$val['published']}
+							</p>
+							<h3>{$val['title']}</h3>
+														<p class="detail_text">
+								  {$val['description']}							</p>
+						</article>
+						<div class="check_detail">
+							<span>查看详情</span>
+							<em></em>
+						</div> </a>
+					</section>
+				</li>
+					{/foreach}
+				{/if}
+							
+							</ul>
+			<div class="ui-refresh-down"></div>
+		</div>
+		<!--copyright-->
+		<div></div>
+		<!--bottom float menu-->
+		{js filename="wechat/zepto.js" version='3' /}
+		{js filename="wechat/zepto.extend.js" version='3' /}
+		{js filename="wechat/zepto.ui.js" version='3' /}
+		{js filename="wechat/zepto.imglazyload.js" version='3' /}
+		{js filename="wechat/refresh.js" version='3' /}
+		{js filename="wechat/template.min.js" version='3' /}
+		{js filename="wechat/comm.js" version='3' /}
+		{js filename="wechat/wx.js" version='3' /}
+		{js filename="wechat/index.js" version='3' /}
+		<div class="bottom_phone">
+			<a href="tel:{if $tel400_enable && $tel400_smallnum}{$_config['setting']['tel_number']}转{$tel400_smallnum}{/if}">{if $tel400_enable && $tel400_smallnum}{$_config['setting']['tel_number']}转{$tel400_smallnum}{/if}</a>
+		</div>
+		{template 'footer', 'wx'}	
+		<script type="text/javascript">
+			var wxSetting = {
+				//是否显示右上分享按钮
+				//hideOptionMenu : true,
+				//是否显示底部工具栏
+				hideToolbar : true,
+				//分享的结构
+				share : {
+					"send2Friend" : {
+						"content" : "【{$name}】- 售楼电话: {if $tel400_enable && $tel400_smallnum}{$_config['setting']['tel_number']}转{$tel400_smallnum}{else}暂无售楼电话{/if}",
+						"img" : "{$pic_url}",
+						"link" : "{$url}",
+						"title" : " 【{$name}】-楼盘动态 ，一起来体验下吧！"
+					},
+					"share2Friend" : {
+						"img" : "{$pic_url}",
+						"link" : "{$url}",
+						"title" : "【{$name}】-楼盘动态 ，一起来体验下吧！"
+					},
+					"share2QQBlog" : {
+						"content" : "我关注了【{$name}】一起来体验吧！{$pic_url}",
+						"link" : "{$url}"
+					},
+					"share2Email" : {
+						"content" : "我关注了【{$name}】一起来体验吧！{$pic_url}",
+						"link" : "{$url}",
+						"title" : " 【{$name}】-楼盘动态 ，一起来体验下吧！"
+					}
+				}
+			};
+
+			//加载更多
+			var currentPage = 1;
+			var totalPage = '{$pagenum}';
+
+			$(function() {
+				$('.btn_menu').click(function() {
+					if ($(this).attr('ul-status') == 'hide') {
+						$(this).addClass('selected').attr('ul-status', 'show');
+						$('.floatmenu').show();
+					} else {
+						$(this).removeClass('selected').attr('ul-status', 'hide');
+						$('.floatmenu').hide();
+					}
+				});
+
+				//load more
+				$('img').imglazyload();
+				/*组件初始化js begin*/
+				$('.dynamic_box').refresh({
+					ready : function(dir, type) {
+						var me = this;
+						if (currentPage >= parseInt(totalPage)) {
+							me.disable('down');
+							me.afterDataLoading();
+							$('.ui-refresh-down').hide();
+							return;
+						}
+						currentPage += 1;
+
+						if (currentPage == totalPage) {
+							$('.ui-refresh-down').hide();
+						}
+
+						$.getJSON('{url 'mobile/wx/dynamic',"hid=$hid&isAjax=1&Page="}'+currentPage, function(data) {
+							if (data.error_code == 0) {
+								var $list = $('.data-list');
+								html = (function(data) {
+									var litpl = [];
+									$.each(data.data.rows, function() {
+										//this['base_url'] = "";
+										//this['Images'] = this.Images.length > 0 ? this.Images[0] : '';
+										this['Content'] = strip_tags(this['Content']).substring(0, 50);
+										//this['AddTime'] = (new Date(this['AddTime'] * 1000)).format('yyyy-mm-dd');
+										var tpl = template.render('liTpl', this);
+										litpl.push(tpl);
+									});
+									return litpl.join('');
+								})(data);
+							}
+							$list[dir == 'up' ? 'prepend' : 'append'](html);
+							me.afterDataLoading();
+							 //加载更多后重置图片宽高
+							setTimeout(function(){
+			                	resizeimgh({
+									imgdiv :$('.data-list .detail_img'),
+									imgwidth :$('.data-list .detail_img').width(),
+									biliw :280,
+									bilih:150
+								});
+           					 },1);
+						});
+					}
+				});
+				if(parseInt(totalPage)==1){
+					$('.ui-refresh-down').hide();
+				}
+				//重置图片宽高
+				setTimeout(function(){
+                	resizeimgh({
+						imgdiv :$('.data-list .detail_img'),
+						imgwidth :$('.data-list .detail_img').width(),
+						biliw :280,
+						bilih:150
+					});
+                },1);
+			});
+		</script>
+</body>
+</html>

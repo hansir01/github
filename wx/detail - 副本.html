@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="cache-control" content="no-cache" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>{$name}-楼盘介绍</title>
+		{css filename="wechat/reset.css" version='3' /}
+		{css filename="wechat/animate.min.css" version='3' /}
+		{css filename="wechat/slider.css" version='3' /}
+		{css filename="wechat/slider.default.css" version='3' /}
+		<style type="text/css">
+body{background:#eaebed;}
+.slider{height:160px;overflow:hidden;}
+.slider div{height:160px;background-position:center;background-size:cover;}
+.ui-slider{height:160px;}
+.ui-slider-item > p{padding:3px 0;}
+.ui-slider-dots{width:100%;bottom:0;text-align:center;padding:3px 0;background:rgba(0,0,0,0.4);}
+.ui-slider-dots b{width:8px;height:8px;border-radius:0;background:#30333F;-webkit-transform:rotate(45deg);-o-transform:rotate(45deg);-moz-transform:rotate(45deg);transform:rotate(45deg);}
+.ui-slider-dots b.ui-slider-dot-select{background:#fff;}
+.ui-slider-pre,.ui-slider-next{display:none;}
+
+/*switch title bar*/
+.title_bg {background-color: #F87644;}
+.home_body{ background-color: #FFF0F5;/*页面背景颜色*/ } 
+.wrap_box h2{ color: #ffff;/*头部字体颜色*/ } 
+/*****菜单栏*****/ 
+.menu_list{ border:#ff6eb4;/*边框颜色*/ } 
+.menu_list a{ background-color: #008880(191, 143, 143, 0.2);/*背景色*/ color: #ffff;/*字体颜色*/ }
+		</style>
+	</head>
+
+	<body class="intro_body">
+		<header class="title_bg">
+			<a href="{url 'mobile/wx',"hid=$hid"}" class="back_btn"></a>
+			<h1>楼盘介绍</h1>
+		</header>
+		<div class="slider">
+			{foreach $slide $val}
+				<div style="background:url({$val['pic_url']}) no-repeat;"></div>
+			{/foreach}
+		</div>
+		<div class="content_box">
+			<section class="home_box">
+				<h2>项目总况</h2>
+				<dl>
+					<dd class="visible_content">
+						<ul>
+							<li>
+								首期开盘: {if $opentime_year_month}{$opentime_year_month}{if $opentime_day}-{$opentime_day}{/if}{/if}{if $opentime_caption}&nbsp;({$opentime_caption}){/if}{if (!$opentime_year_month&&!$opentime_caption)}待定{/if}								
+							</li>
+							
+							<li>
+								楼盘特色: {if $buildfeaturename}{$buildfeaturename}{else}待定{/if}
+							</li>
+							
+							<li>
+								装修状况: {if $decorationname}{$decorationname}{else}待定{/if}
+							</li>
+							
+							
+							<li>
+								总占地面积: {if $arealand}{$arealand}平方米{else}待定{/if}
+							</li>
+							
+							<li>
+								绿化率: {if $green_rate}{$green_rate}%{else}待定{/if}
+							</li>
+							
+							<li>
+								总户数: {if $roomnum}{$roomnum}户{else}待定{/if}
+							</li>
+							
+							<li>
+								产权: {if $propertyage}{$propertyage}{else}待定{/if}年
+							</li>
+							
+							<li>
+								物业公司: {if $property_company}{$property_company}{else}待定{/if}
+							</li>
+							
+							<li>
+								开发商: {if $cname}{$cname}{else}待定{/if}
+							</li>
+						</ul>
+					</dd>
+					<dt>
+						更多<span class="more_downbtn"></span>
+					</dt>
+				</dl>
+			</section>
+						<section class="home_box">
+				<h2>区域价值及交通</h2>
+				<dl>
+					<dd>
+						{if $laticoor >0 && $longcoor >0}						
+						<a href="http://api.map.baidu.com/marker?location={$laticoor},{$longcoor}&title={$name}&content={$address}&output=html"><img src="http://api.map.baidu.com/staticimage?center={$longcoor},{$laticoor}&zoom=15&markers={$longcoor},{$laticoor}" alt="" width="100%"></a>
+						{/if}
+						<p>
+							{if $address}{$address}{else}待定{/if}
+						</p>
+					</dd>
+				</dl>
+			</section>
+			<section class="home_box">
+				<h2>项目简介</h2>
+				<dl>
+					<dd class="visible_content">
+						{if $info}<p style="text-indent:28px;line-height:150%">{$info}</p>{/if}<!--{if $tel400_enable && $tel400_smallnum}<p style="line-height: 150%;">&nbsp;VIP专线：<a href="tel:{$_config['setting']['tel_number']},{$tel400_smallnum}" class="tel">{$_config['setting']['tel_number']}转{$tel400_smallnum}</a></p>{/if}-->
+					</dd>
+					<dt>
+						更多<span class="more_downbtn"></span>
+					</dt>
+				</dl>
+			</section>
+
+		</div>
+		<div></div>
+		<!--bottom float menu-->
+		{template 'left', 'wx'}
+		{js filename="wechat/zepto.js" version='3' /}
+		{js filename="wechat/zepto.ui.js" version='3' /}
+		{js filename="wechat/touch.js" version='3' /}
+		{js filename="wechat/slider.js" version='3' /}
+		{js filename="wechat/zepto.extend.js" version='3' /}
+		{js filename="wechat/zepto.highlight.js" version='3' /}
+		{js filename="wechat/wx.js" version='3' /}
+		{js filename="wechat/youku.js" version='3' /}
+		{template 'footer', 'wx'}
+		<script type="text/javascript">
+			var wxSetting = {
+				//是否显示右上分享按钮
+				//hideOptionMenu : true,
+				//是否显示底部工具栏
+				hideToolbar : true,
+				//分享的结构
+				share : {
+					"send2Friend" : {
+						"content" : "【{$name}】- 售楼电话: {if $tel400_enable && $tel400_smallnum}{$_config['setting']['tel_number']}转{$tel400_smallnum}{else}暂无售楼电话{/if}",
+						"img" : "{$pic_url}",
+						"link" : "{$url}",
+						"title" : " 【{$name}】-楼盘介绍"
+					},
+					"share2Friend" : {
+						"img" : "{$pic_url}",
+						"link" : "{$url}",
+						"title" : "【{$name}】-楼盘介绍"
+					},
+					"share2QQBlog" : {
+						"content" : "我关注了【{$name}】一起来体验吧！{$pic_url}",
+						"link" : "{$url}"
+					},
+					"share2Email" : {
+						"content" : "我关注了【{$name}】一起来体验吧！{$pic_url}",
+						"link" : "{$url}",
+						"title" : " 【{$name}】-楼盘介绍，一起来体验下吧！"
+					}
+				}
+			};
+
+			$(function() {
+			
+				if ($(".slider").find('div').length > 1) {
+					$(".slider").slider({
+						loop : true
+					});
+				}
+				$('.btn_menu').click(function() {
+					if ($(this).attr('ul-status') == 'hide') {
+						$(this).addClass('selected').attr('ul-status', 'show');
+						$('.floatmenu').show();
+					} else {
+						$(this).removeClass('selected').attr('ul-status', 'hide');
+						$('.floatmenu').hide();
+					}
+				});
+				//更多简介和收起简介的效
+				$('.home_box').find('dt').click(function() {
+					var contentbox = $(this).parent().find('dd');
+					if (contentbox.hasClass('visible_content')) {
+						contentbox.removeClass('visible_content');
+						$(this).html('收起<span class="more_upbtn"></span>');
+					} else {
+						contentbox.addClass('visible_content');
+						$(this).html('更多<span class="more_downbtn"></span>');
+					}
+				});
+			});
+		</script>
+</body>
+</html>

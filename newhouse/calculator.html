@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{template 'head','newhouse'}
+</head>
+<body class="calc">
+	{template 'header','newhouse'}
+	<div id="main">
+<!--计算器-->
+		<div class="bread">
+			<a href="{$_config['site_url']}">{$_config['name']}{$_config['site_name']}</a>&gt;<a href="{url 'newhouse'}">{$_config['name']}新房</a>&gt;<span>{if $ac==1}购房能力评估{elseif $ac==2}贷款计算器{elseif $ac==3}公积金贷款{elseif $ac==4}提前还贷{elseif $ac==5}税费计算器{/if}</span>
+		</div>
+		<div class="calc_nav" id="calc_nav">
+			<ul class="cf fr">
+				<!-- 选中效果是给当前样式加"_h",例如：当前样式c_gf;选中样式c_gf_h -->
+				<li {if $ac==1}class="c_gf_h"{else}class="c_gf"{/if}><a href="{url 'newhouse/tool/index'}">购房能力评估</a></li>
+				<li {if $ac==2}class="c_dc_h"{else}class="c_dc"{/if}><a href="{url 'newhouse/tool/index','type=2'}">贷款计算器</a></li>
+				<li {if $ac==3}class="c_gj_h"{else}class="c_gj"{/if}><a href="{url 'newhouse/tool/index','type=3'}">公积金贷款</a></li>
+				<li {if $ac==4}class="c_tq_h"{else}class="c_tq"{/if}><a href="{url 'newhouse/tool/index','type=4'}">提前还贷</a></li>
+				<li {if $ac==5}class="c_sf_h"{else}class="c_sf"{/if}><a href="{url 'newhouse/tool/index','type=5'}">税费计算器</a></li>
+			</ul>
+		</div>
+<!--内容区-->		
+		{template "$basescript",'newhouse'}
+	</div>
+	{template 'foot'}
+</body>
+</html>

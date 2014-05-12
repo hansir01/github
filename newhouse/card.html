@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{template 'head','newhouse'}
+</head>
+<body class="xu_ke">
+{template 'header','newhouse'}
+<div id="main">
+	<div class="bread">
+		<a href="{$_config['site_url']}" title="{$_config['name']}{$_config['site_name']}">{$_config['name']}{$_config['site_name']}</a>&gt;<a href="{url 'newhouse'}" title="{$_config['name']}新房">{$_config['name']}新房</a>&gt;<span>预售证查询</span>
+		</div>
+	<div class="cf select">
+		<div class="left fl">
+			<h2>预售许可证</h2>
+		</div>
+		<div class="right fl">
+			<form action="{url 'newhouse/card/list'}" method="post" class="cf">
+				<div id="select" class="cf fl">
+					<div class="qy fl" id="qy">
+						<span>区域不限</span><i></i><b></b>
+						<ul class="cf">
+							<li {if $subinfo['areaid']==null}class="active"{/if}  data-id="0">全部区县</li>
+						{if $area_all}
+              						{foreach $area_all $r}
+										<li  {if $subinfo['areaid']==$r['pid']}class="active"{/if}data-id="{$r['pid']}">{$r['name']}</li>
+									{/foreach}
+						{/if}
+							<input type="hidden" name ="area" {if $subinfo==null}value="0"{else}value="{$subinfo['areaid']}"{/if}/>
+						</ul>         
+					</div>
+					<div class="hm fl" id="hm">
+						<span>预售许可证号</span><i></i>
+						<ul class="cf">
+							<li {if $subinfo['stype']==1}class="active"{/if} data-id="1">预售许可证</li>
+							<li {if $subinfo['stype']==2}class="active"{/if} data-id="2">项目名称</li>
+							<li {if $subinfo['stype']==3}class="active"{/if} data-id="3">开发公司</li>
+							<input type="hidden" name = "stype" {if $subinfo['stype']==null}value="1"{else}value="{$subinfo['stype']}"{/if}/>
+						</ul>
+					</div>
+					<input class="txt fl" placeholder="请输入关键字" type="text" name = "info" value="{$subinfo['info']}"/>
+				</div>
+				<input class="sub fl" type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;搜索"/>
+			</form>
+		</div>
+	</div>
+	
+	<div class="list">
+		<div class="title cf">
+			<h2 class="num">预售许可证号</h2><h2 class="name">项目名称</h2><h2 class="company">开发公司名称</h2><h2 class="address">许可证范围</h2>
+		</div>
+		<div class="list_in">
+
+			<ul class="cf">
+				{if $list}
+					{foreach $list $key $v}
+				<li class="cf"><span class="num">{$v['cardnumber']}</span><p class="name">	
+					<strong><a href="{url 'newhouse/detail/index',"spell=$v[spell]"}" title="" target="_blank">{$v['name']}</a>{if $v['salesstatus']==1}<i class="ys"></i>{elseif $v['salesstatus']==2}<i class="zs"></i>{elseif $v['salesstatus']==3}<i class="zx"></i>{elseif $v['salesstatus']==4}<i class="sj"></i>{elseif $v['salesstatus']==6}<i class="pw"></i>{/if}</strong><b>{if $v['tel400_enable']}{$_config['setting']['tel_number']}{if $v['tel400_smallnum']}转{$v['tel400_smallnum']}{/if}{elseif $v['saletel']}{$v['saletel']}{else}热线尚未开通{/if}</b></p><span class="company"><a href="{url 'newhouse/developer/index',"uid=$v[cid]"}" title="" target="_blank">{$v['companyname']}</a></span>
+					<span class="address">{$v['extent']}</span>
+				</li>
+					{/foreach}
+			{else}
+			没有查询结果!
+			{/if}
+				
+			</ul>
+			
+		</div>
+	</div>
+	<div class="pagination">
+		{$page_html}
+	</div>
+
+</div>
+{template 'foot'}
+<script type="text/javascript">
+seajs.use('jquery',function($) {
+	var select=function(id) {
+		var iNum=-180;
+		var bl=true;
+		var $div=$("#"+id);
+		var $ul=$div.find("ul");
+		var $i=$div.find("i");
+		var $b=$div.find("b");
+		var bg,cl;
+		var san=function() {
+			iNum=bl?-180:0;
+			bl=!bl;
+			$i.css({
+				"MozTransform":"rotate("+iNum+"deg)",
+				"oTransform":"rotate("+iNum+"deg)",
+				"msTransform":"rotate("+iNum+"deg)",
+				"webkitTransform":"rotate("+iNum+"deg)"
+			});
+			$b.css("display","block");
+			bl?$ul.stop().slideUp(500,function() {
+				$b.css("display","none");
+			}):$ul.stop().slideDown(500);
+		};
+		$div.on("click",function(e) {
+			e.stopImmediatePropagation();
+			if (!$(this).siblings("div").find("ul").is(":hidden")) {
+				$(this).siblings("div").click();
+			}
+			san();
+			$(document).on("click",function() {
+				$(document).off("click");
+				san();
+			});
+		});
+		$ul.find("li").on({
+			"click":function(e) {
+				var $this=$(this);
+				e.stopImmediatePropagation();
+				$(document).off("click");
+				$div.find('span').html($this.html());
+				$this.siblings("input").val($this.data("id"));
+				san();
+				$this.addClass("active").siblings().removeClass("active");
+			},
+			"mouseover":function() {
+				$(this).addClass("on");
+			},
+			"mouseout":function() {
+				$(this).removeClass("on");
+			}
+		});
+	}
+	select("hm");
+	select("qy");
+	var num=[{$subinfo['areaid']},{$subinfo['stype']}];
+	var $q=$("#qy"),
+		$h=$("#hm");
+	$q.find("li").eq(num[0]).addClass("active").siblings().removeClass("active");
+	$h.find("li").eq(num[1]-1).addClass("active").siblings().removeClass("active");
+	$h.find("span").html($h.find("li").eq(num[1]-1).html());
+	$q.find("span").html($q.find("li").eq(num[0]).html());
+});
+</script>
+</body>
+</html>

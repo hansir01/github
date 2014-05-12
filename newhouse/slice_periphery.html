@@ -1,0 +1,24 @@
+{if $periphery}	
+	<div class="lista">
+		<h4>周边楼盘</h4>
+		<ul class="lmr">
+			{foreach $periphery $k $r}
+				<li>
+					<span class="fr"><a href="{url 'newhouse/pk/index'}#id={$house['hid']},{$r['hid']}" target="_blank">对比</a></span>
+					<span class="fl"><a href="{url 'newhouse/detail/index',"spell=$r[spell]"}" title="{$r['name']}" target="_blank">{$r['name_cut']}</a></span>
+					<span class="red">
+						{if $r['isunitprice']}
+							一房一价
+						{else}
+							{if $r['averageprice']}
+								{$r['averageprice']}元/㎡
+							{else}
+								待定
+							{/if}
+						{/if}
+					</span>
+				</li>
+			{/foreach}
+		</ul>
+	</div>	
+{/if}

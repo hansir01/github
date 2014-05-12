@@ -1,0 +1,38 @@
+<div class="bodyb">
+	<div class="detail_fr_info">
+		<h4>{$house['name']}楼盘详情</h4>
+		<p class="cf"><a href="{$url['detail']}"><img src="{$house['pic_url']}"></a>
+			<a href="{$url['roomtype']}">户 型 图（<span class="red">{$pic_num}</span> 张）</a><br>
+			<a href="{$url['faq']}">楼盘问答（<span class="red">{$faq_count}</span> 帖）</a><br>
+			<a href="{$url['groupbuy']}">团购报名（<span class="red">{$house['groupnum']}</span> 人）</a>
+		</p>
+		<p>
+			参考售价：
+			{if $house['isunitprice']}
+				<b class="red">一房一价</b>
+			{else}
+				{if $house['averageprice']}
+					<b class="red">{$house['averageprice']}元</b>/平米
+				{else}
+					<b class="red">待定</b>
+				{/if}
+			{/if}
+			<br>
+			物业类型：
+			{if $house['projecttypename_arr']}
+				{foreach $house['projecttypename_arr'] $val}
+					<a href="{url 'newhouse/list/index',"params=-$url_data[projecttype]$val[fid]"}" target="_blank">{$val['name']}</a>
+				{/foreach}
+			{else}
+				待定
+			{/if}
+			<br>
+			所属商圈：{if $house['areaname']}<a href="{url 'newhouse/list/index',"params=-$house[areaspell]"}" target="_blank">{$house['areaname']}</a>{/if}
+			{if $house['circlename']} <a href="{url 'newhouse/list/index',"params=-$house[circlespell]"}" target="_blank">{$house['circlename']}</a>{/if}<br>
+			楼盘地址：{if $house['address']}{$house['address']}{else}待定{/if}<br>
+		</p>
+	</div>
+</div>
+<div class="fr_mobile">
+{if $house['tel400_enable']}{$_config['setting']['tel_number']}{if $house['tel400_smallnum']}转{$house['tel400_smallnum']}{/if}{elseif $house['saletel']}{$house['saletel']}{else}热线尚未开通{/if}
+</div>

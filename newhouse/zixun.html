@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{template 'head','newhouse'}
+</head>
+<body>
+	{template 'header','newhouse'}
+	<div id="main">		
+		{template 'nav','newhouse'}
+		<div class="cf">
+			<div class="detail_fl">
+				<div class="bodyb">
+					<h3>
+						{$house['name']}最新动态
+					</h3>
+					{if $zixun_data}
+						<ul class="detail_zx">
+							{foreach $zixun_data $v}
+								<li>
+									<h4>
+										<span class="fr gray9">{$v['published']}</span>
+										<a href="{$v['url']}" title="{$v['title']}" target="_blank">{$v['title_cut']}</a>
+									</h4>
+									{if $v['description']}<p>{$v['description']}<a class="red" href="{$v['url']}" title="点击查看详情" target="_blank" >[详情]</a></p>{/if}
+								</li>
+							{/foreach}
+						</ul>
+						{if $page_html}
+							<div class="pagination">
+								{$page_html}
+							</div>
+						{/if}
+					{else}
+						<ul class="detail_zx">
+							<li>
+							</li>
+						</ul>
+						<div class="no_rlt">抱歉！ 暂时没有相关资讯~</div>
+					{/if}					
+				</div>
+			</div>
+			<div class="detail_fr">
+				{template 'slice_right_detail','newhouse'}
+				{template 'slice_impress','newhouse'}
+				{template 'slice_compare','newhouse'}
+				{template 'slice_look','newhouse'}				
+			</div>
+		</div>
+	</div>
+	{template 'footer_statement','newhouse'}
+	{template 'foot'}
+	<div id="QQOL"></div>
+	<script>
+	seajs.use(["jquery","alert"],function($,alertM){
+		if (!-[1, ] && !window.XMLHttpRequest) {
+			var $w=$(window).bind('scroll', function() {
+					$qq.stop().animate({top:$w.scrollTop()+$w.height()/2-80});
+				}),
+				$qq=$("#QQOL").css("top",$w.scrollTop()+$w.height()/2-80);
+		}
+		$("div.detail_fl")[0].oncopy=function(){
+			alertM("受保护的内容，暂不可复制",{cName:"cross"})
+			return false;
+		}
+	});
+	</script>
+	<script charset="utf-8" defer async type="text/javascript" src="http://static.b.qq.com/account/bizqq/js/wpa.js?kfuin=4008906655&amp;wid=QQOL"></script>
+</body>
+</html>

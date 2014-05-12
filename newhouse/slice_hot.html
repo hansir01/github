@@ -1,0 +1,23 @@
+{if $hot}
+	<div class="listb">
+	<h4>热点楼盘</h4>
+	<ul class="lr">
+		{foreach $hot $k $r}
+			<li>
+				<span class="fl">[<a href="{url "newhouse/list/index","params=-$url_data[placename]$r[arealetters]"}" target="_blank">{$r['areaname']}</a>]<a href="{url "newhouse/detail/index","spell=$r[spell]"}" class="ml4" target="_blank">{$r['name']}</a></span>
+				<span class="fr">
+					{if $r['isunitprice']}
+						一房一价
+					{else}
+						{if $r['averageprice']}
+							{$r['averageprice']}元/㎡
+						{else}
+							待定
+						{/if}
+					{/if}
+				</span>
+			</li>
+		{/foreach}	
+	</ul>
+	</div>
+{/if}

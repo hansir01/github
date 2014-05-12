@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{template 'head','newhouse'}
+</head>
+<body>
+	{template 'header','newhouse'}
+	<div id="main">
+		{template 'nav','newhouse'}
+		<div class="bodyb">
+			<h3>
+				<span class="mod_tab fr">
+					<a href="{$url['album']}#house_nav" {if $picture['albumkey'] == 1}class="on"{/if}>全部({$pic_num})</a>
+					{if $album_types_nums}
+						{foreach $album_types_nums $k $v}
+							{if $v['num'] != 0}
+								<a {if $picture['albumkey'] == $v['sort']}class="on"{/if} href="{url 'newhouse/detail/album',"spell=$house[spell]&album=$v[tid]"}#house_nav">{$v['name']}({$v['num']})</a>
+							{/if}
+						{/foreach}
+					{/if}
+				</span>
+				楼盘相册
+			</h3>
+			{if $picture['picture']}
+				<ul class="detail_glist cf">
+					{foreach $picture['picture'] $k $v}
+						<li>
+							<a title="{$house['name']}{$v['title']}" href="{url 'newhouse/detail/picture',"spell=$house[spell]&album=$v[tid]"}#id={$v['pid']}" target="_blank" class="b"><img src="{$v['pic_url']}" title="{$house['name']} {$v['title']}" alt="{$house['name']} {$v['title']}"></a>
+							{if $v['title_cut']}<a href="{url 'newhouse/detail/picture',"spell=$house[spell]&album=$v[tid]"}#id={$v['pid']}" target="_blank">{$house['name']}{$v['title_cut']}</a><br>{/if}
+							<span>{$v['posttime']}上传</span>
+						</li>
+					{/foreach}
+				</ul>
+				{if $page}
+					<div class="pagination">
+						{$page}
+					</div>
+				{/if}
+			{else}
+				<div class="no_rlt">抱歉！ 暂时没有相关楼盘相册~</div>
+			{/if}			
+		</div>
+	</div>
+	{template 'footer_statement','newhouse'}
+	{template 'foot'}
+	<div id="QQOL"></div>
+<script>
+seajs.use(["jquery","alert"],function($,alertM){
+	if (!-[1, ] && !window.XMLHttpRequest) {
+		var $w=$(window).bind('scroll', function() {
+				$qq.stop().animate({top:$w.scrollTop()+$w.height()/2-80});
+			}),
+			$qq=$("#QQOL").css("top",$w.scrollTop()+$w.height()/2-80);
+	}
+	$("div.bodyb")[0].oncopy=function(){
+		alertM("受保护的内容，暂不可复制",{cName:"cross"})
+		return false;
+	}
+});
+</script>
+<script charset="utf-8" defer async type="text/javascript" src="http://static.b.qq.com/account/bizqq/js/wpa.js?kfuin=4008906655&amp;wid=QQOL"></script>
+</body>
+</html>

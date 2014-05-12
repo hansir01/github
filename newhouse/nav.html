@@ -1,0 +1,128 @@
+<div class="bread">
+	<span class="dysc fr">
+		<a class="dy" id="wpr" href="javascript:">打印</a>
+		<a class="sc" id="wpc" href="javascript:">收藏</a>
+		更新时间：{$house['updatetime']}
+	</span>
+	您当前的位置：<a href="{$_config['site_url']}" title="{$_config['name']}{$_config['site_name']}">{$_config['name']}{$_config['site_name']}</a>&gt;<a href="{url 'newhouse'}" title="{$_config['name']}新房">{$_config['name']}新房</a>&gt;{if $house['areaname']}<a href="{url 'newhouse/list/index',"params=-$house[areaspell]"}" title="{$house['areaname']}">{$house['areaname']}楼盘</a>&gt;{/if}{if $detail}<span>{$house['name']}</span>{else}<a href="{url 'newhouse/detail/index',"spell=$house[spell]"}">{$house['name']}</a>&gt;<span>{$site_title}</span>{/if}
+</div>
+<div class="detail_header">
+	<div class="house_name cf">
+		<h2 class="fl">
+			<a href="{$url['detail']}" title="{$house['name']}">{$house['name']}</a>
+			{if $house['projectnote']}<span><b>{$house['projectnote']}</b></span>{/if}
+			{if $house['salesstatus']}<i class="selstag{$house['salesstatus']}"></i>{/if}
+		</h2>
+		{if $house['ishot']}<i class="house_tj"></i>{/if}
+		<div class="house_mobile fr">
+			<div>
+				{$qrcode}
+				{$wx_name}
+			</div>
+			<p>
+				售楼处免费咨询电话：<b class="red">{if $inhe400}{$inhenumber['master']}转{$inhenumber['smallnum']}{else}{if $house['tel400_enable']}{$_config['setting']['tel_number']}{if $house['tel400_smallnum']}转{$house['tel400_smallnum']}{/if}{elseif $house['saletel']}{$house['saletel']}{else}热线尚未开通{/if}{/if}</b><br>
+				{if $house['groupnum'] != 0}已参加团购<a href="{$url['groupbuy']}" class="red">{$house['groupnum']}</a>人{/if} 
+				访问<span class="red">{$house['pv']}</span>人　
+				{if $_config['iscomment']== 1 && $house['iscomment']==1 && $comment_count != 0}评论<span class="red">{$comment_count}</span>篇{/if}
+			</p>
+		</div>
+	</div>
+	<div class="house_nav">
+		<ul id="house_nav">
+			<li><a href="{$url['detail']}" {if $thisaction == "index"}class="on"{/if}>楼盘详情</a></li>
+			<li><a href="{$url['info']}" {if $thisaction == "info"}class="on"{/if}>详细信息</a></li>
+			<li><a href="{$url['roomtype']}" {if $thisaction == "roomtype" || $thisaction == "roompicture"}class="on"{/if}>户型图</a></li>
+			<li><a href="{$url['price']}" {if $thisaction == "price"}class="on"{/if}>楼盘价格</a></li>
+			<li><a href="{$url['album']}" {if $thisaction == "album"}class="on"{/if}>相册</a></li>
+			<li><a href="{$url['zixun']}" {if $thisaction == "zixun"}class="on"{/if}>最新动态</a></li>
+			<li><a href="{$url['map']}" {if $thisaction == "map" }class="on"{/if}>交通地图</a></li>
+			<li><a href="{$url['faq']}" {if $thisaction == "faq"}class="on"{/if}>问答</a></li>
+			{if $_config['setting']['iscomment']== 1 && $house['iscomment']==1}
+				<li><a href="{$url['comment']}" {if $thisaction == "comment"}class="on"{/if}>点评</a></li>
+			{/if}
+			{if $house['bbsid']}
+				<li><a href="{$url['bbs']}" target="_blank">业主论坛</a></li>
+			{/if}
+			<li><a href="{$url['groupbuy']}">团购报名</a></li>
+		</ul>
+	</div>
+	{if $extra['recommend']}<div class="recom" id="basicinfo"><span class="red">小编推荐：</span>{$extra['recommend']}</div>{/if}
+</div>
+
+<script>
+seajs.use(["alert","superm"], function(alertM,sm) {
+	var $menu = $("#house_nav"),
+		$w = $(window),
+		hBoolean = 1,
+		mh = $menu.offset().top;
+	if ((!-[1, ] && !window.XMLHttpRequest) || "ontouchend" in document) {
+		$w.on("scroll", function() {
+			if ($w.scrollTop() > mh) {
+				hBoolean = 0;
+				$menu[0].style.top = $w.scrollTop() - mh + "px";
+			} else if ($w.scrollTop() < mh && !hBoolean) {
+				hBoolean = 1;
+				$menu[0].style.top = 0;
+			}
+		})
+	} else {
+		$w.on("scroll", function() {
+			if ($w.scrollTop() > mh && hBoolean) {
+				hBoolean = 0;
+				$menu[0].style.position = "fixed";
+			} else if ($w.scrollTop() < mh && !hBoolean) {
+				hBoolean = 1;
+				$menu[0].style.position = "static";
+			}
+		})
+	}
+	sm.start([
+		{
+			name:"share"
+		},
+		{
+			name:"sub",
+			opt:{
+				name:"{$house['name']}",
+				c1:'楼盘消息和价格变动',
+				c2:'楼盘最新消息',
+				c3:'价格变动通知',
+				hid:"{$house['hid']}",
+				suburl:"{url 'newhouse/detail/subscribesave'}",
+				unSuburl:"{url 'newhouse/detail/unsubscribesave'}",
+				sendurl:"{url 'newhouse/ajax/sendcode'}?type=15",
+				mobile:"{if $member['mobile_status']==1}{$member['mobile']}{/if}",
+				email:"{if $member['email_status']==1}{$member['email']}{/if}"
+			}
+		},
+		{
+			name:"mobile",
+			opt:{
+				name:"{$house['name']}",
+				info:"{$house['name']}{if $house['address']},{$house['address']}{/if}{if $house['tel400_enable']},400电话:{$_config['setting']['tel_number']}{if $house['tel400_smallnum']}转{$house['tel400_smallnum']}{/if}{else}{if $house['saletel']},售楼部电话：{$house['saletel']}{/if}{/if}",
+				hid:"{$house['hid']}",
+				checkurl:"{url 'newhouse/ajax/mobileverify'}",
+				murl:"{url 'newhouse/detail/sendinfo'}"
+			}
+		}
+	])
+	$("#wpr").on("click", function() {
+		window.print();
+	});
+	$("#wpc").on("click", function() {
+		var sURL = window.location.href;
+		var sTitle = document.title;
+		try {
+			window.external.addFavorite(sURL, sTitle);
+		} catch (e) {
+			try {
+				window.sidebar.addPanel(sTitle, sURL, "");
+			} catch (e) {
+				alertM("加入收藏失败，请使用Ctrl+D进行添加", {
+					cName: "alert"
+				});
+			}
+		}
+	});
+})
+</script>

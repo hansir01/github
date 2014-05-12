@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<meta name="keywords" content="{$head['keywords']}"/>
+	<meta name="description" content="{$head['description']}"/>
+	<link href="{$_config['img3_url']}favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+	{css filename="reset.css" version='3' /}
+	{css filename="css.css" version='3' /}
+	{js filename="sea.js" version='3' /}
+	<title>{$head['title']}</title>
+</head>
+<body class="xinfang_index">
+{template 'header','newhouse'}
+<div id="main">
+	<div class="index_banner cf">
+		<!--#include virtual="/section/f_ppt.html"--><!--# f新房首页 焦点图 #-->
+		<div class="right fr">
+			<!--#include virtual="/section/f_xftt.html"--><!--# f新房首页 新房头条 #-->
+			<div class="cf">
+				<!--#include virtual="/section/f_tjxw.html"--><!--# f新房首页 推荐新闻 #-->
+                <!--#include virtual="/section/f_tpxw.html"--><!--# f新房首页 图片新闻 #-->
+			</div>
+		</div>
+	</div>
+    <!--#include virtual="/section/q_tl1.html"--><!--# q新房广告 新房首页-通栏1 #-->
+	<div class="index_wrap index_wrap_a index_jj cf">
+		<div class="left fl">
+			<h2 class="left_h2"><span>按楼盘均价查看</span><b><a href="{url 'newhouse/price/index'}" target="_blank">今日新房房价</a></b><a class="more" href="{url 'newhouse/list/index'}" target="_blank">更多&gt;&gt;</a></h2>
+			<div class="content" id="index_tab1">
+				<h3>
+					<i></i><span>价格</span>
+					<p>
+						{foreach $price $key $val}
+							<a href="{url 'newhouse/list/index',"params=-g$val[fid]"}" target="_blank">{$val['name']}</a>
+						{/foreach}
+					</p>
+				</h3>
+				{if $housesdata}
+					{foreach $housesdata $key $value}
+						<div class="content_in">
+							{if $value['houses']}
+								<ul class="cf">	
+									{foreach $value['houses'] $val}
+										<li>
+											<a href="{url 'newhouse/detail/index',"spell=$val[spell]"}" title="{$val['name']}" target="_blank">
+												<img src="{$val['titlepic']}" alt="{$val['name']}" />
+												<p></p>
+												<span class="txt_overflow">{$val['name']}</span>
+											</a>
+										</li>
+									{/foreach}									
+								</ul>
+							{/if}
+							{if $value['list']}
+								<ol class="cf">
+									{foreach $value['list'] $val}
+										<li><b class="fl"><a href="{url 'newhouse/detail/index',"spell=$val[spell]"}" title="{$val['name']}" target="_blank">{$val['name']}</a></b><span class="fr txt_overflow">{if $val['averageprice']}{$val['averageprice']}元/㎡{else}待定{/if}</span></li>
+									{/foreach}
+								</ol>
+							{/if}
+						</div>
+					{/if}
+				{/if}			
+			</div>
+		</div>
+        <div class="right fl" id="index_jg_right">
+			<!--#include virtual="/section/f_2p_r_lmdh.html"--><!--# f新房首页 二屏右侧-栏目导航 #-->
+			<div class="content">
+				<div class="tab">
+					<!--#include virtual="/section/f_2p_r_pic1.html"--><!--# f新房首页 二屏右侧-图片新闻1 #-->
+					<!--#include virtual="/section/f_2p_r_list1.html"--><!--# f新房首页 二屏右侧-列表新闻1 #-->
+				</div>
+				<div class="tab">
+					<!--#include virtual="/section/f_2p_r_pic2.html"--><!--# f新房首页 二屏右侧-图片新闻2 #-->
+                    <!--#include virtual="/section/f_2p_r_list2.html"--><!--# f新房首页 二屏右侧-列表新闻2 #-->
+				</div>
+			</div>
+		</div>
+	</div>
+    <!--#include virtual="/section/q_tl2.html"--><!--# q新房广告 新房首页-通栏2 #-->
+	<div class="index_wrap index_wrap_a index_qy cf">
+		<div class="left fl">
+			<h2 class="left_h2"><span>按所在区域查看</span><b><a href="{url 'newhouse/map/index'}" target="_blank">试试地图找房子</a></b><a class="more" href="{$_config['house_url']}list.html" target="_blank">更多&gt;&gt;</a></h2>
+			<div class="content" id="index_tab2">
+				<h3>
+					<i></i>
+					<span>区域</span>
+					<p>
+						{if $place}
+							{php $i = 1}
+							{foreach $place $key $val}
+								{if $i <= 6}
+										<a href="{url 'newhouse/list/index',"params=-$val[letters]"}" title="{$val['name']}" target="_blank">{$val['name']}</a>
+								{elseif $i == 7}
+									<a href="{url 'newhouse/list/index'}" target="_blank">其它</a>
+								{/if}
+								{php $i = $i + 1}
+							{/foreach}
+						{/if}
+					</p>
+				</h3>
+				{if $areahouses}
+					{foreach $areahouses $key $value}
+						<div class="content_in">
+							{if $value['area']}
+							<ul class="cf">
+								{foreach $value['area'] $val}
+								<li>
+									<a href="{url 'newhouse/detail/index',"spell=$val[spell]"}"  title="{$val['name']}" target="_blank">
+										<img src="{$val['titlepic']}" alt="{$val['name']}" />
+										<p></p>
+										<span class="txt_overflow">{$val['name']}</span>
+									</a>
+								</li>
+								{/foreach}
+							</ul>
+							{/if}
+							{if $value['arealist']}
+								<ol class="cf">
+									{foreach $value['arealist'] $val}
+									<li>
+										<b class="fl"><a href="{url 'newhouse/detail/index',"spell=$val[spell]"}" title="{$val['name']}" target="_blank">{$val['name']}</a></b>
+										<span class="fr txt_overflow">
+											{if $val['isunitprice']}
+											一房一价
+											{else}
+												{if $val['averageprice']}
+													{$val['averageprice']}元/㎡
+												{else}
+													待定
+												{/if}
+											{/if}
+										</span>
+									</li>
+									{/foreach}
+								</ol>
+							{/if}
+						</div>
+					{/foreach}
+				{/if}
+			</div>
+		</div>
+		<div class="right fl">
+            <!--#include virtual="/section/f_3p_r_lmdh.html"--><!--# f新房首页 三屏右侧-栏目导航 #-->
+            <div class="content">
+                <div class="tab">
+                    <!--#include virtual="/section/f_3p_r_pic.html"--><!--# f新房首页 三屏右侧-图片新闻 #-->
+					<!--#include virtual="/section/f_3p_r_list.html"--><!--# f新房首页 三屏右侧-列表新闻 #-->
+                </div>
+            </div>
+        </div>
+	</div>
+    <!--#include virtual="/section/q_tl3.html"--><!--# q新房广告 新房首页-通栏3 #-->
+	<div class="index_wrap index_wrap_a index_lx cf">
+		<div class="left fl">
+			<h2 class="left_h2"><span>按物业类型查看</span><b><a href="{url 'newhouse/unit/list'}" target="_blank">查看热门户型图</a></b><a class="more" href="{url 'newhouse/list/index'}" target="_blank">更多&gt;&gt;</a></h2>
+			<div class="content" id="index_tab3">
+				<h3>
+					<i></i>
+					<span>类型</span>
+					<p>
+						{if $projecttype}
+							{foreach $projecttype $key $val}
+								<a href="{url 'newhouse/list/index',"params=-h$val[fid]"}" title="{$val['name']}" target="_blank">{$val['name']}</a>
+							{/foreach}
+						{/if}
+					</p>
+				</h3>
+				{if $projecthouses}
+					{foreach $projecthouses $key $value}
+						<div class="content_in">
+							{if $value['project']}
+								<ul class="cf">
+									{foreach $value['project'] $val}
+									<li>
+										<a href="{url 'newhouse/detail/index',"spell=$val[spell]"}" title="{$val['name']}" target="_blank">
+											<img src="{$val['titlepic']}" alt="{$val['name']}" title="{$val['name']}" />
+											<p></p>
+											<span class="txt_overflow">{$val['name']}</span>
+										</a>
+									</li>
+									{/foreach}
+								</ul>
+							{/if}
+							{if $value['projectlist']}
+								<ol class="cf">
+									{foreach $value['projectlist'] $val}
+									<li>
+										<b class="fl"><a href="{url 'newhouse/detail/index',"spell=$val[spell]"}" title="{$val['name']}" target="_blank">{$val['name']}</a></b>
+										<span class="fr txt_overflow">
+										{if $val['isunitprice']}
+											一房一价
+										{else}
+											{if $val['averageprice']}
+												{$val['averageprice']}元/㎡
+											{else}
+												待定
+											{/if}
+										{/if}
+										</span>
+									</li>
+									{/foreach}
+								</ol>
+							{/if}
+						</div>
+					{/foreach}
+				{/if}			
+			</div>
+		</div>
+        <div class="right fl" id="index_lx_right">
+			<!--#include virtual="/section/f_4p_r_lmdh.html"--><!--# f新房首页 四屏右侧-栏目导航 #-->
+            <div class="content">
+                <div class="tab">
+					<!--#include virtual="/section/f_4p_r_pic1.html"--><!--# f新房首页 四屏右侧-图片新闻1 #-->
+                    <!--#include virtual="/section/f_4p_r_list1.html"--><!--# f新房首页 四屏右侧-列表新闻1 #-->
+                </div>
+                <div class="tab">
+                    <!--#include virtual="/section/f_4p_r_pic2.html"--><!--# f新房首页 四屏右侧-图片新闻2 #-->
+                    <!--#include virtual="/section/f_4p_r_list2.html"--><!--# f新房首页 四屏右侧-列表新闻2 #-->
+                </div>
+            </div>
+        </div>
+	</div>
+    <!--#include virtual="/section/q_tl4.html"--><!--# q新房广告 新房首页-通栏4 #-->
+	<div class="index_wrap index_wrap_b index_tj cf">
+		<!--#include virtual="/section/f_5p_l_lm1.html"--><!--# f新房首页 五屏左侧-栏目1 #-->
+		<div class="right fl">
+			<h2 class="right_h2"><i></i><a class="more" href="{url 'newhouse/pk/index'}" target="_blank">更多&gt;&gt;</a></h2>
+			<div class="content">
+				<!--#include virtual="/section/f_5p_r_lm1.html"--><!--# f新房首页 五屏右侧-栏目1 #-->
+				<ol class="cf">
+					<li><a href="{url 'newhouse/tool/index'}" target="_blank"><img src="{$_config['img3_url']}xinfang/index_nl.jpg"/><p>购房能力</p><p>评估</p></a></li>
+					<li><a href="{url 'newhouse/tool/index','type=2'}" target="_blank"><img src="{$_config['img3_url']}xinfang/index_calc.jpg"/><p>贷款</p><p>计算器</p></a></li>
+					<li><a href="{url 'newhouse/tool/index','type=4'}" target="_blank"><img src="{$_config['img3_url']}xinfang/index_tq.jpg"/><p>提前还款</p><p>计算器</p></a></li>
+					<li><a href="{url 'newhouse/tool/index','type=5'}" target="_blank"><img src="{$_config['img3_url']}xinfang/index_sf.jpg"/><p>税费</p><p>计算器</p></a></li>
+				</ol>
+			</div>
+		</div>
+	</div>
+    <!--#include virtual="/section/q_tl5.html"--><!--# q新房广告 新房首页-通栏5 #-->
+	<div class="index_wrap index_wrap_b index_gc cf">
+		<!--#include virtual="/section/f_6p_l_lm1.html"--><!--# f新房首页 六屏左侧-栏目1 #-->
+		<div class="right fl" id="index_gc_right" >
+			<!--#include virtual="/section/f_6p_r_lmdh.html"--><!--# f新房首页 六屏右侧-栏目导航 #-->
+			<div class="tab">
+				<div class="scroll_wd" id="scroll">
+					<ul class="cf">
+						{if $faq_data}
+							{foreach $faq_data $val}
+								<li>
+									<h5>关于&nbsp;[<span>{$val['name']}</span>]&nbsp;的问答:</h5>
+									<div class="index_wen cf">
+										<span class="fl">问</span>
+										<p><a class="fr" href="{url 'wenda/detail/index',"qid=$val[qid]"}" target="_blank">{$val['content']}</a></p>
+									</div>
+									{if $val['replay']}
+										<div class="index_da cf">
+											<span class="fl">答</span>
+											<p class="fr">{$val['replay']['content']}</p>
+										</div>
+									{/if}
+								</li>
+							{/foreach}
+						{/if}
+					</ul>
+				</div>
+			</div>
+			<div class="tab">
+				<div class="content content_in">
+                	<!--#include virtual="/section/f_6p_r_pic.html"--><!--# f新房首页 六屏右侧-图片新闻 #-->
+					<!--#include virtual="/section/f_6p_r_list.html"--><!--# f新房首页 六屏右侧-列表 #-->
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="index_wrap index_wrap_b index_zt cf">
+    	<!--#include virtual="/section/f_7p_l_lm1.html"--><!--# f新房首页 七屏左侧-栏目1 #-->
+		<div class="right fl" id="index_tab_zt">
+			<h2 class="right_h2"><p><span>周关注楼盘</span>&nbsp;|&nbsp;<span>本月团购排行</span></p><a class="more" href="{url 'newhouse/list/index'}" target="_blank">更多&gt;&gt;</a><a class="more" href="{url 'newhouse/list/index'}" target="_blank">更多&gt;&gt;</a></h2>
+			<!--周关注楼盘-->
+			<div class="tab">
+			{if $attention}
+				<ul>
+				{foreach $attention $key $val}
+					<li class="cf"><i class="fl">{$key+1}</i>
+						<a class="cf" href="{url 'newhouse/detail/index',"spell=$val[spell]"}" target="_blank">
+							<span class="fl txt_overflow">{$val['name']}</span>							
+								<b class="fr txt_overflow">
+								{if $val['isunitprice']}
+									一房一价
+								{else}
+									{if $val['averageprice']}
+										{$val['averageprice']}元/㎡
+									{else}
+										待定
+									{/if}
+								{/if}
+								</b>
+						</a>
+					</li>
+				{/foreach}
+				</ul>
+			{/if}
+			</div>
+			<!--本月团购排行-->
+			<div class="tab">
+				{if $rank}
+				<ul>
+					{foreach $rank $key $val}
+						<li class="cf">
+						<i class="fl">{$key+1}</i>
+						<a class="cf" href="{url 'newhouse/detail/index',"spell=$val[spell]"}" target="_blank">
+							<span class="fl txt_overflow">{$val['name']}</span>
+							<b class="fr txt_overflow">
+								{$val['groupnum']}人
+							</b>
+						</a>
+						</li>
+					{/foreach}
+				</ul>
+				{/if}
+			</div>
+		</div>
+	</div>
+	<div class="index_zn">
+		<ul class="cf" id="tree">
+			<li class="li">
+				<i class="i0"></i>
+				<b>前期准备</b>
+				<ul>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=101'}">核算家庭收入</span></li>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=102'}">明确房产所有人</span></li>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=103'}">房屋价格位置</span></li>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=104'}">房屋基础知识房屋基础知识</span></li>
+				</ul>
+			</li>
+			<li class="li">
+				<i class="i1"></i>
+				<b>网上选房</b>
+				<ul>
+					<li><span title="" href="" url="{$_config['house_url']}list'}">楼盘搜索</span></li>
+					<li><span title="" href="" url="{$_config['house_url']}huxingtu/list'}">户型搜索</span></li>
+					<li><span title="" href="" url="{$_config['house_url']}">专家指点</span></li>
+					<li><span title="" href="" url="{$_config['house_url']}">量身选房</span></li>
+				</ul>
+			</li>
+			<li class="li">
+				<i class="i2"></i>
+				<b>实地看房</b>
+				<ul>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=301'}">验看五证</span></li>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=302'}">销售过招</span></li>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=303'}">实地考察</span></li>
+					<li><span title="" href="" url="{$_config['house_url']}huxingtu/list'}">选择户型</span></li>
+				</ul>
+			</li>
+			<li class="li">
+				<i class="i3"></i>
+				<b>楼盘比较</b>
+				<ul>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=401'}">地段交通</span></li>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=402'}">配套</span></li>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=403'}">开发商实力</span></li>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=404'}">户型</span></li>
+				</ul>
+			</li>
+			<li class="li">
+				<i class="i4"></i>
+				<b>房屋认购</b>
+				<ul>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=501'}">排号</span></li>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=502'}">交定金</span></li>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=503'}">签订认购书</span></li>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=504'}">如何退定金</span></li>
+				</ul>
+			</li>
+			<li class="li">
+				<i class="i5"></i>
+				<b>签购房合同</b>
+				<ul>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=601'}">购房合同范本</span></li>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=602'}">补充协议</span></li>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=603'}">合同陷阱</span></li>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=604'}">如何签订合同</span></li>
+				</ul>
+			</li>
+			<li class="li">
+				<i class="i6"></i>
+				<b>房屋贷款</b>
+				<ul>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=701'}">商业贷款</span></li>
+					<li><span title="" href="" url="{$_config['house_url']}tool/">公积金贷款</span></li>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=703'}">一次性贷款</span></li>
+					<li><span title="" href="" url="{$_config['house_url']}tool/">分期贷款</span></li>
+				</ul>
+			</li>
+			<li class="li">
+				<i class="i7"></i>
+				<b>验收房屋</b>
+				<ul>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=804'}">收房流程</span></li>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=805'}">如何验收房屋</span></li>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=803'}">收房注意事项</span></li>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=806'}">缴纳税费</span></li>
+				</ul>
+			</li>
+			<li class="li">
+				<i class="i8"></i>
+				<b>入住装修</b>
+				<ul>
+					<li><span title="" href="" url="{$_config['house_url']}">装修交流</span></li>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=902'}">选装修公司</span></li>
+					<li><span title="" href="" url="{$_config['house_url']}">建材城大全</span></li>
+					<li><span title="" href="" url="{$_config['house_url']}">装饰图片</span></li>
+				</ul>
+			</li>
+			<li class="li">
+				<i class="i9"></i>
+				<b>办理房产证</b>
+				<ul>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=1001'}">业主办理房产证</span></li>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=1002'}">委托他人办理</span></li>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=1003'}">办理步骤</span></li>
+					<li><span title="" href="" url="{url 'index/page/index', 'cate=zhinan&mark=1004'}">不登记的弊端</span></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	<div id="friend_link">
+		<h2>友情链接<span>(申请友情链接&nbsp;2585356003&nbsp;|&nbsp;<a href="{$_config['house_url']}" target="_blank">{$_config['name']}新房网</a>)</span></h2>
+		<ul class="cf">
+			{foreach $friendlink $k $r}
+				<li><span><a href="{$r['url']}" title="{$r['name']}" target="_blank">{$r['name']}</a></span></li>
+			{/foreach}
+		</ul>
+	</div>
+</div>
+{template 'foot'}
+<script type="text/javascript">
+seajs.use(["jquery","autab"],function($){
+	//幻灯片
+	(function() {
+		var $banner=$('#banner'),
+			$ulLi=$banner.find('ul').find('li');
+			$str='<ol>';
+		$ulLi.each(function() {
+			$str+='<li></li>';
+		});
+		$str+='</ol>';
+		$banner.append($str);
+		var $ol=$banner.find('ol');
+		$ol.on('mouseover','li',function() {
+			var $this=$(this);
+			$ulLi.eq($this.index()).show().siblings().hide();
+			$this.addClass('active').siblings().removeClass('active');
+		});
+		$ol.find('li').eq(0).mouseover();
+	})();
+	//tab
+	$('#index_tab1,#index_tab2,#index_tab3').autab('h3 a','.content_in').each(function() {
+		$(this).find('h3 a').eq(0).trigger('mouseenter');	
+	});
+	$('#index_tab_zt,#index_gc_right,#index_lx_right,#index_jg_right').autab('h2 span','h2 .more').autab('h2 span','.tab').each(function() {
+		$(this).find('h2 span').eq(0).trigger('mouseenter');
+	});
+	//指南
+	$("#tree").on("click","span",function(){
+		var $t=$(this);
+		window.open($t.attr("url") ? $t.attr("url") : ("{$_config['site_url']}" + $t.attr("href")));
+	});
+	//图片移入效果
+	$(".content_in,.tab,.index_zt").find("a:has(img)").on({
+		"mouseenter":function() {
+			$(this).find("p").css("background","#FF8400");
+		},
+		"mouseleave":function() {
+			$(this).find("p").css("background","#000");	
+		}
+	});
+	$('.index_banner').find('.right').find('img').on({
+		'mouseenter':function() {
+			$(this).css('opacity',0.8);
+		},
+		'mouseleave':function() {
+			$(this).css('opacity',1);	
+		}
+	});
+	//问答滚动
+	(function() {
+		var $s=$('#scroll'),
+			$u=$s.find('ul'),
+			$liH=$u.find('li').height(),
+			$h=$u.height(),
+			$html=$s.html();
+		$s.html($html+$html);
+		var timer1=null,
+			timer2=null,
+		    liScroll=function (fn) {
+				clearInterval(timer1);
+				var t=$s.scrollTop(),
+					t2=t;
+				timer1=setInterval(function() {
+					var i=$s.scrollTop();
+					if (i>= t+5+$liH) {
+						$s.scrollTop(t+5+$liH);
+						clearInterval(timer1);
+						fn(i);
+					}else{
+						$s.scrollTop(t2+=5);
+					}
+				},30);	
+			},
+			ulScroll=function() {
+				liScroll(function(i) {
+					if (i>=$h) {
+						$s.scrollTop(0);
+					}
+				});	
+			};
+		timer2=setInterval(ulScroll,8000);
+		$s.on({
+			'mouseenter':function() {
+				clearInterval(timer2);
+			},
+			'mouseleave':function() {
+				timer2=setInterval(ulScroll,8000);
+			}
+		});
+	})();
+});
+</script>
+</body>
+</html>

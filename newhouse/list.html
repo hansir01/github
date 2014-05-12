@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{template 'head','newhouse'}
+</head>
+<body>
+	{template 'header','newhouse'}
+	<div id="main">
+		<div class="bread">您当前的位置：<a href="{$_config['site_url']}">{$_config['name']}{$_config['site_name']}</a>&gt;<a href="{url 'newhouse'}">{$_config['name']}新房</a>&gt;<span>楼盘搜索</span></div>
+		<div class="hslist" id="hslist">
+			<h2>
+				<span class="mod_tab fl">
+					<a href="{url 'newhouse/list/index'}" {if $typeid == 0}class="on"{/if}>按区域找</a>
+					{if $issubway == 1}
+					<a href="{url 'newhouse/list/subway'}" {if $typeid == 5}class="on"{/if}>按地铁找</a>
+					{/if}
+					<a href="{url 'newhouse/map/index'}" target="_blank">按地图找</a>
+				</span>
+			</h2>
+			{if $typeid==0}
+				<div class="cf">
+					<span>区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;域</span>
+					<p>
+						<em><a {if $where_data['placename']==''}class="on"{/if} href="{url 'newhouse/list/index',"params=$except_url[placename]"}">全部</a></em>
+						{if $area_all}
+							{foreach $area_all $r}
+								<em><a {if $where_data['placename']==$r['letters'] || $cur_place['parentid']==$r['pid']}class="on"{/if} href="{url 'newhouse/list/index',"params=-$url_data[placename]$r[letters]$except_url[placename]"}">{$r['name']}</a></em>
+							{/foreach}
+						{/if}
+						{if $cricle_all}
+							<span class="i">
+								<em><a  {if $cur_place['parentid']=='0'}class="on"{/if} 
+                                {if $cur_place['parentid']!='0'}
+                                    href="{url 'newhouse/list/index',"params=-$cur_parent_area[letters]$except_url[placename]"}"
+                                {else}
+									href="{url 'newhouse/list/index',"params=-$cur_place[letters]$except_url[placename]"}"
+                                {/if}
+                                >全部</a></em>
+								{foreach $cricle_all $r}
+									<em><a {if $where_data['placename']==$r['letters']}class="on"{/if} href="{url 'newhouse/list/index',"params=-$url_data[placename]$r[letters]$except_url[placename]"}">{strcut string="$r[name]" length='16' /}</a></em>
+								{/foreach}
+							</span>
+						{/if}
+					</p>
+				</div>
+			{elseif $typeid==4}
+				<div class="cf">
+					<span>片&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区</span>
+					<p>
+						<em><a {if $where_data['part']==""}class="on"{/if} href="{url 'newhouse/list/part',"params=$except_url[part]"}">全部</a></em>
+						{if $xf_part}
+							{foreach $xf_part $r}
+								<em><a {if $where_data['part']==$r['fid']}class="on"{/if} href="{url 'newhouse/list/part',"params=$except_url[part]-$url_data[part]$r[fid]"}">{$r['name']}</a></em>
+							{/foreach}
+						{/if}
+					</p>
+				</div>
+			{elseif $typeid==5}
+				<div class="cf">
+					<span>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;铁</span>
+					<p>
+						<em><a {if $where_data['subway']==0}class="on"{/if} href="{url 'newhouse/list/subway',"params=$except_url[subway]"}">全部</a></em>
+						{if $subwayline}
+							{foreach $subwayline $r}
+								<em><a {if $sub==$r['sid']}class="on"{/if} href="{url 'newhouse/list/subway',"params=-e$r[sid]$except_url[subway]"}">{$r['name']}</a></em>
+							{/foreach}
+						{/if}
+						{if $cricle_all}
+							<span class="i">
+								{foreach $subwayline $r}
+								<em><a  {if '' == $where_data['subwaysite']}class="on"{/if} 
+                                    href="{url 'newhouse/list/subway',"params=$except_url[subwaysite]"}"
+								{/foreach}
+                                >全部</a></em>
+								{foreach $subwaysite $r}
+									<em><a {if $where_data['subwaysite']==$r['id']}class="on"{/if} href="{url 'newhouse/list/subway',"params=-f$r[id]$except_url[subwaysite]"}">{strcut string="$r[sitename]" length='16' /}</a></em>
+								{/foreach}
+							</span>
+						{/if}
+					</p>
+				</div>
+			{/if}
+			<div class="cf">
+				<span>价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</span>
+				<p>
+					<em><a {if $where_data['averageprice']==''}class="on"{/if} href="{url "newhouse/list/$url[this_url]","params=$except_url[averageprice]"}">全部</a></em>
+					{if $xf_averageprice}
+						{foreach $xf_averageprice $r}
+							 <em><a {if $where_data['averageprice']==$r['fid']}class="on"{/if} href="{url "newhouse/list/$url[this_url]","params=$except_url[averageprice]-$url_data[averageprice]$r[fid]"}">{$r['name']}</a></em> 
+						{/foreach}
+                     {/if}
+				</p>
+			</div>
+			<div class="cf">
+				<span>物业类型</span>
+				<p>
+					<em><a  {if $where_data['projecttype']==""}class="on"{/if} href="{url "newhouse/list/$url[this_url]","params=$except_url[projecttype]"}" >全部</a></em>
+					{if $comm_project_type}
+						{foreach $comm_project_type $r}
+							 <em><a {if $where_data['projecttype']==$r['fid']}class="on"{/if} href="{url "newhouse/list/$url[this_url]","params=$except_url[projecttype]-$url_data[projecttype]$r[fid]"}">{$r['name']}</a></em>
+						{/foreach}
+				   {/if}
+				</p>
+			</div>
+			
+	
+				<div class="cf">
+					<span>环&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;线</span>
+					<p>
+						<em><a {if $where_data['circleline']==""}class="on"{/if} href="{url "newhouse/list/$url[this_url]","params=$except_url[circleline]"}">全部</a></em>
+						{if $circleline}
+                            {foreach $circleline $r}
+                                 <em><a {if $where_data['circleline']==$r['fid']}class="on"{/if} href="{url "newhouse/list/$url[this_url]","params=$except_url[circleline]-$url_data[circleline]$r[fid]"}">{$r['name']}</a></em>
+                            {/foreach}
+                        {/if}
+					</p>
+				</div>
+				<div class="cf letter">
+					<span>字&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;母</span>
+					<p>
+						<a {if $where_data['letter']==""}class="on"{/if} href="{url "newhouse/list/$url[this_url]","params=$except_url[letter]"}" >全部</a>
+						{if $capital_letters}
+                            {foreach $capital_letters $r}
+                                <a {if $where_data['letter']==$r}class="on"{/if} href="{url "newhouse/list/$url[this_url]","params=$except_url[letter]-$url_data[letter]$r[fid]"}" >{$r}</a>
+                            {/foreach}
+                        {/if}
+					</p>
+				</div>
+
+				<div class="cf">
+				<span>楼盘名称</span>
+					<form action="{url 'newhouse/list/searchmin'}" id="serach_form" method="post">
+						<input type="hidden" name="thisurl" value="{$url['this_url']}">
+						<input type="hidden" name="url" value="{$except_url['key']}-{$url_data['key']}">
+						<input type="text" id="hname" name="key" value="{if $where_data['key']}{$where_data['key']}{/if}" placeholder="请输入楼盘名称（支持拼音或简拼）">
+						<a class="obtn" href="javascript:"><i class="search"></i><button type="submit"></button></a>
+				</form>
+				</div>
+				<div class="hs_more cf" id="hs_more">
+				<span>更&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;多</span>
+				<div class="hs_mlist">建筑特色
+					<ul>
+						<li><a href="{url "newhouse/list/$url[this_url]","params=$except_url[projectfeature]"}">全部</a></li>
+						{if $xf_project_feature}
+							{foreach $xf_project_feature $r}
+								<li><a href="{url "newhouse/list/$url[this_url]","params=$except_url[projectfeature]-$url_data[projectfeature]$r[fid]"}">{$r['name']}</a></li>
+							{/foreach}
+						{/if}
+					</ul>
+				</div>
+
+				<div class="hs_mlist">装修情况
+					<ul>
+						<li><a href="{url "newhouse/list/$url[this_url]","params=$except_url[decoration]"}">全部</a></li>
+						{if $esf_decorate}
+							{foreach $esf_decorate $r}
+								<li><a href="{url "newhouse/list/$url[this_url]","params=$except_url[decoration]-$url_data[decoration]$r[fid]"}">{$r['name']}</a></li>
+							{/foreach}
+
+						{/if}
+					</ul>
+				</div>
+				<div class="hs_mlist">开盘时间
+					<ul>
+						<li><a href="{url "newhouse/list/$url[this_url]","params=$except_url[opentime]"}">全部</a></li>
+						{if $xf_opentime}
+							{foreach $xf_opentime $r}
+								<li><a href="{url "newhouse/list/$url[this_url]","params=$except_url[opentime]-$url_data[opentime]$r[fid]"}">{$r['name']}</a></li>
+							{/foreach}
+					   {/if}
+					</ul>
+				</div>
+				<div class="hs_mlist">交房时间
+					<ul>
+						<li><a href="{url "newhouse/list/$url[this_url]","params=$except_url[livetime]"}">全部</a></li>
+						{if $xf_livetime}
+							{foreach $xf_livetime $r}
+								<li><a href="{url "newhouse/list/$url[this_url]","params=$except_url[livetime]-$url_data[livetime]$r[fid]"}">{$r['name']}</a></li>
+							{/foreach}
+					    {/if}
+					</ul>
+				</div>
+				
+			</div>
+			
+			<div class="cf selected">
+				{if $choose}
+					<span>您已选择</span>
+					<p>
+						{foreach $choose $key $val}
+							<i>{$val}<a href="{url "newhouse/list/$url[this_url]","params=$except_url[$key]"}"></a></i>
+						{/foreach}
+						<a href="{url "newhouse/list/$url[this_url]"}" class="clear">重置筛选条件</a>
+					</p>
+				{/if}
+			</div>
+		</div>
+		<div class="cf">
+			<div class="hlist_fl">
+				<div class="search_con">
+					<h4>
+						<span class="mod_tab fl">
+							<a {if $where_data['salesstatus']=="" && $where_data['business'] == ""}class="on"{/if} href="{url "newhouse/list/$url[this_url]"}">全部楼盘</a>
+							<a {if $where_data['salesstatus']==2 && $where_data['business']==""}class="on"{/if} href="{url "newhouse/list/$url[this_url]","params=$except_url[salesstatus]-$url_data[salesstatus]2"}">在售楼盘</a>
+							<a {if $where_data['salesstatus']==1 && $where_data['business']==""}class="on"{/if} href="{url "newhouse/list/$url[this_url]","params=$except_url[salesstatus]-$url_data[salesstatus]1"}">待售楼盘</a>
+							<a {if $where_data['salesstatus']==4 && $where_data['business']==""}class="on"{/if} href="{url "newhouse/list/$url[this_url]","params=$except_url[salesstatus]-$url_data[salesstatus]4"}">售完楼盘</a>
+                            <a {if $where_data['business']=="1"}class="on"{else}class="hot"{/if} href="{url "newhouse/list/$url[this_url]","params=-$url_data[business]1"}">特惠楼盘</a>
+						</span>
+						共为您找到<i>{if $house_total}{$house_total}{else}0{/if}</i>个楼盘
+					</h4>
+					<div class="cf">
+						<div class="t_molist" id="t_molist">
+							{if $where_data['orderby']==""}默认排序{else}{$xf_orderby[$where_data['orderby']]['name']}{/if}
+							<ul>
+								<li><a href="{url "newhouse/list/$url[this_url]","params=$except_url[orderby]"}">默认排序</a></li>
+								{if $xf_orderby}
+                                    {foreach $xf_orderby $r}
+                                         <li><a  href="{url "newhouse/list/$url[this_url]","params=$except_url[orderby]-$url_data[orderby]$r[fid]"}">{$r['name']}</a></li>
+                                    {/foreach}
+                               {/if}								
+							</ul>
+						</div>
+						<a {if $where_data['orderby'] == 1}
+							 class="hlist_d up"
+							  href="{url "newhouse/list/$url[this_url]","params=$except_url[orderby]-$url_data[orderby]2"}"
+						{elseif $where_data['orderby'] == 2}
+							class="hlist_d down"
+							 href="{url "newhouse/list/$url[this_url]","params=$except_url[orderby]-$url_data[orderby]1"}"
+						{else}
+							class="hlist_d"
+							 href="{url "newhouse/list/$url[this_url]","params=$except_url[orderby]-$url_data[orderby]2"}"
+						{/if}>价格<i></i></a>
+						<a {if $where_data['orderby'] == 3}
+							 class="hlist_d up"
+							  href="{url "newhouse/list/$url[this_url]","params=$except_url[orderby]-$url_data[orderby]4"}"
+						{elseif $where_data['orderby'] == 4}
+							class="hlist_d down"
+							 href="{url "newhouse/list/$url[this_url]","params=$except_url[orderby]-$url_data[orderby]3"}"
+						{else}
+							class="hlist_d"
+							 href="{url "newhouse/list/$url[this_url]","params=$except_url[orderby]-$url_data[orderby]3"}"
+						{/if} >开盘时间<i></i></a>
+						<div class="tle_page fr">
+							{if $cur_page==1}
+                               <span class="pageleft"><i></i></span>
+                            {else}
+								{php $pre_page=$cur_page-1}
+								<a href="{url "newhouse/list/$url[this_url]","params=$url_str_nopage-$url_data[page]$pre_page"}" class="pageleft"><i></i></a>
+                            {/if}							
+							<span>{$cur_page}</span>							
+							{if $cur_page==$total_page}
+								<a href="{url "newhouse/list/$url[this_url]","params=$url_str_nopage-$url_data[page]$total_page"}" class="pageright">下一页<i></i></a>
+							{elseif $total_page==0}
+								<a href="{url "newhouse/list/$url[this_url]","params=$url_str_nopage-$url_data[page]1"}" class="pageright">下一页<i></i></a>
+							{else}
+								{php $next_page=$cur_page+1}
+								<a href="{url "newhouse/list/$url[this_url]","params=$url_str_nopage-$url_data[page]$next_page"}" class="pageright">下一页<i></i></a>
+							{/if}
+						</div>
+					</div>
+				</div>				
+				{if $house_list}
+					<ul class="hlist" id="hlist">					
+						{foreach $house_list $r}
+							<li class="{if $r['istop']}tg{/if}">
+								{if $r['istop']}<i class="tg"></i>{/if}
+								{if $r['ishot']}<i class="hot"></i>{/if}
+                                {if $r['isbusiness']}<i class="zjz"></i>{/if}
+								<a href="{$r['url']['detail']}" class="fl" title="{$r['name']}" target="_blank">
+									<img data-src="{$r['pic_url']}" alt="{$r['name']}">
+								</a>
+								<div>
+									<h3>
+										{foreach $r['buildfeature'] $l $s}
+											{if $l < 5}
+											<span style="background:{if $l == 0}#ea695a{elseif $l == 1}#eea742{elseif $l == 2}#62b362{elseif $l == 3}#6e90d7{elseif $l == 4}#33cbcc{/if};"><a href="{url "newhouse/list/index","params=-$url_data[projectfeature]$s"}" target="_blank">{$xf_project_feature[$s]['name']}</a></span>
+											{/if}
+										{/foreach}
+										<a href="{$r['url']['detail']}" title="{$r['name']}" target="_blank">{$r['name']}</a>{if $r['salesstatus']}<i class="selstag{$r['salesstatus']}"></i>{/if}
+									</h3>									
+									<p>
+										{if $r['priceexplain']}
+										<span class="red">{$r['priceexplain_cut']}</span>
+										{/if}
+										类型：[{if $r['projecttypename']}{$r['projecttypename']}{else}待定{/if}]<br>
+										地址：{if $r['areaname']}{$r['areaname']}{/if}&nbsp;&nbsp;{if $r['address']}{strcut string="$r[address]" length="36" /}<a href="{$r['url']['map']}" class="loc" target="_blank">查看地图</a>{else}待定{/if}<br>
+										{if $r['newsinfo']}
+										动态：<a href="{$r['newsinfo']['url']}" title="{$r['newsinfo']['title']}" target="_blank">{$r['newsinfo']['title']}</a><br>
+										{/if}
+										<span class="blue"><a target="_blank" href="{$r['url']['info']}">详情</a><a target="_blank" href="{$r['url']['price']}">房价</a><a target="_blank" href="{$r['url']['zixun']}">动态</a><a target="_blank" href="{$r['url']['album']}">相册</a><a target="_blank" href="{$r['url']['faq']}">问房</a><a target="_blank" href="{$r['url']['groupbuy']}"> 团购</a>{if $_config['setting']['iscomment']== 1 && $r['iscomment']==1}<a target="_blank" href="{$r['url']['comment']}">点评</a>{/if}{if $r['bbsid']}<a target="_blank" href="{$r['url']['bbs']}">论坛</a>{/if}</span>
+									</p>
+									<span class="price">
+										{if $r['isunitprice']}
+											<b>一房一价</b>
+										{else}
+											{if $r['averageprice']}
+												<b>{$r['averageprice']}</b>元/平米
+											{else}
+												<b>价格待定</b>
+											{/if}
+										{/if}
+									</span>
+									<span class="mobile">{if $r['tel400_enable']}{$_config['setting']['tel_number']}{if $r['tel400_smallnum']}转{$r['tel400_smallnum']}{/if}{elseif $r['saletel']}{$r['saletel']}{else}热线尚未开通{/if}</span>
+									<a href="javascript:" class="hlist_db" data-val="{$r['hid']}" data-url="{$r['url']['detail']}" data-name="{$r['name']}">比比看</a>
+								</div>
+							</li>
+						{/foreach}									
+					</ul>
+					<div class="pagination">
+						{$page}
+					</div>
+				{else}
+					<div class="no_result">
+						<h3>很抱歉，没有找到符合条件的楼盘</h3>
+						<span>建议您：1、适当减少筛选条件</span>
+						<span>2、变更所在地区</span>
+						<span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 3、调整价格区间</span>
+						<span>4、尝试其他关键字</span>
+					</div>
+				{/if}
+			</div>
+			<div class="hlist_fr">
+				{if $history}
+					<div class="listb">
+						<h4>您最近浏览过的楼盘</h4>						
+						<ul class="lr">
+							{foreach $history $k $r}
+								<li>
+									<span class="fl">[<a href="{url "newhouse/list/index","params=-$url_data[placename]$r[letters]"}" target="_blank">{$r['areaname']}</a>]<a target="_blank" href="{url "newhouse/detail/index","spell=$r[spell]"}" class="ml4">{$r['name']}</a></span>
+									<span class="fr">
+									{if $r['isunitprice']}
+										一房一价
+									{else}
+										{if $r['averageprice']}
+											{$r['averageprice']}元/㎡
+										{else}
+											待定
+										{/if}
+									{/if}
+									</span>
+								</li>
+							{/foreach}							
+						</ul>
+					</div>
+				{/if}
+				<!--#include virtual="/section/q_list_hzh1.html"--><!--# q新房广告 列表页-画中画1 #-->
+				<!--热点楼盘-->
+				{template 'slice_hot','newhouse'}
+                <!--#include virtual="/section/q_list_hzh2.html"--><!--# q新房广告 列表页-画中画2 #-->
+				<!--最新楼盘-->
+				{template 'slice_lastest','newhouse'}
+                <!--#include virtual="/section/q_list_hzh3.html"--><!--# q新房广告 列表页-画中画3 #-->
+				<!--近期开盘-->
+				{if $recentopen}
+					<div class="listb">
+						<h4>近期开盘</h4>
+						<ul class="lr">
+							{foreach $recentopen $k $r}
+								<li>
+									<span class="fl">[<a href="{url "newhouse/list/index","params=-$url_data[placename]$r[letters]"}" target="_blank">{$r['areaname']}</a>]<a href="{url "newhouse/detail/index","spell=$r[spell]"}" class="ml4" target="_blank">{$r['name']}</a></span>
+									<span class="fr">
+										{if $r['isunitprice']}
+											一房一价
+										{else}
+											{if $r['averageprice']}
+												{$r['averageprice']}元/㎡
+											{else}
+												待定
+											{/if}
+										{/if}
+									</span>
+								</li>
+							{/foreach}
+						</ul>
+					</div>
+				{/if}
+				<!--本月团购排行-->
+				{if $groupbuy_order}
+					<div class="listb">
+						<h4>本月热门团购</h4>
+						<ul class="lr">
+							{foreach $groupbuy_order $k $r}
+								<li>
+									<span class="fl">[<a href="{url "newhouse/list/index","params=-$url_data[placename]$r[letters]"}" target="_blank">{$r['areaname']}</a>]<a href="{url "newhouse/detail/index","spell=$r[spell]"}" class="ml4" target="_blank">{$r['name']}</a></span>
+									<span class="fr">
+										{if $r['isunitprice']}
+											一房一价
+										{else}
+											{if $r['averageprice']}
+												{$r['averageprice']}元/㎡
+											{else}
+												待定
+											{/if}
+										{/if}
+									</span>
+								</li>
+							{/foreach}
+						</ul>
+					</div>
+				{/if}
+                <!--#include virtual="/section/f_list_zt1.html"--><!--# f新房首页 列表页右侧-专题 #-->
+			</div>
+		</div>
+		<!--大家都在看-->
+		{if $lovelook}
+			<div class="listb">
+				<h4>大家都在看</h4>
+				<ul class="pic_h cf">
+					{foreach $lovelook $k $r}
+						{if $k < 6}
+							<li>
+								<a href="{url "newhouse/detail/index","spell=$r[spell]"}" target="_blank"><img src="{$r['pic_url']}" alt="{$r['name']}"></a><br>
+								<a href="{url "newhouse/detail/index","spell=$r[spell]"}" target="_blank">{$r['name']}</a><br>
+								{if $r['isunitprice']}
+									<span class="red">一房一价</span>
+								{else}
+									{if $r['averageprice']}
+										<span class="red">{$r['averageprice']}</span>元/平米
+									{else}
+										<span class="red">价格待定</span>
+									{/if}
+								{/if}
+							</li>
+						{/if}
+					{/foreach}
+				</ul>
+			</div>
+		{/if}
+		<div class="hlist_footer">
+			<div class="cf">
+				<span>{$_config['name']}房价</span>
+				<p>
+					{foreach $area_all $r}
+						<a href="{url "newhouse/price/index"}#{$r['letters']}">{$r['name']}房价</a>
+					{/foreach}
+				</p>
+			</div>
+			<div class="cf">
+				<span>{$_config['name']}楼盘</span>
+				<p>
+					<a href="{url "newhouse/list/index"}" target="_blank">{$_config['name']}楼盘</a>
+					<a href="{url "newhouse/map/index"}" target="_blank">{$_config['name']}楼市地图</a>
+					<a href="{url "newhouse/price/index"}" target="_blank">{$_config['name']}房价</a>
+					<a href="{url "newhouse/unit/list"}" target="_blank">{$_config['name']}楼盘户型图</a>
+					<a href="{url "newhouse/tool/index"}" target="_blank">贷款计算器</a>
+					<a href="{$_config['special_url']}" target="_blank">购房专题</a>
+				</p>
+			</div>
+			{if $friendlink}
+				<div class="cf last">
+					<span>友情链接</span>
+					<p>
+						{foreach $friendlink $val}
+							<a target="_blank" href="{$val['url']}">{$val['name']}</a>
+						{/foreach}
+					</p>
+				</div>
+			{/if}
+		</div>		
+	</div>
+	{template 'foot'}
+ <script>
+seajs.use(["alert","loginafter","pk","autoc","cookie"],function(alertM,loginafter,pk){
+	pk({
+		elm:"#hlist a.hlist_db",
+		hlength:3,
+		url:"{url 'newhouse/pk/index'}",
+		type:"楼盘"
+	})
+	var $hslist=$("#hsl_hide"),
+		$tmolist=$("#t_molist").on({
+			mouseenter:function(){
+				$tmolist.addClass('on')
+			},
+			mouseleave:function(){
+				$tmolist.removeClass('on')
+			}
+		}),
+		$open=$("#open_hslist").on("click","a",function(){
+			if($.cookie("sbox")-0){
+				$hslist.stop().slideDown();
+				$.cookie("sbox","0");
+				$open.addClass('on');
+			}else{
+				$hslist.stop().slideUp();
+				$.cookie("sbox","1");
+				$open.removeClass('on');
+				$('html,body').animate({
+					scrollTop: $open.parent().offset().top-32
+				})
+			}
+		});
+	if($.cookie("sbox")==0){
+		$hslist.stop().slideDown();
+		$open.addClass('on');
+	}else
+		$.cookie("sbox","1");
+	
+	$("#hlist").on("mouseenter","li",function(){
+		$(this).addClass('on')
+	}).on("mouseleave","li",function(){
+		$(this).removeClass('on')
+	}).find("span.mobile").each(function(){
+		var $t=$(this),
+			w=$t.width();
+		if(w>150){
+			$t.addClass("h_mw");
+			$t.on({
+				mouseenter:function(){
+					$t.stop().animate({width:w})
+				},
+				mouseleave:function(){
+					$t.stop().animate({width:150})
+				}
+			})
+		}
+	});	
+	var $hn=$("#hname").autoC("{url 'newhouse/ajax/house'}")
+	$("#serach_form").on("click","a.obtn",function(){
+		if($.trim($hn.val()).length&&$hn.val()!=$hn.attr("placeholder"))
+			$("#serach_form").trigger("submit");
+		else
+			$hn.trigger("focus")
+		return false;
+	});
+	/*********start*************/
+	$("#hs_more div").on({
+		mouseenter:function(){
+			$(this).find("ul").show()
+		},
+		mouseleave:function(){
+			$(this).find("ul").hide()
+		}
+	})
+
+	$("#hlist").on("mouseenter","li",function(){
+		$(this).addClass('on')
+	}).on("mouseleave","li",function(){
+		$(this).removeClass('on')
+	}).find("span.mobile").each(function(){
+		var $t=$(this),
+			w=$t.width();
+		if(w>150){
+			$t.addClass("h_mw");
+			$t.on({
+				mouseenter:function(){
+					$t.stop().animate({width:w})
+				},
+				mouseleave:function(){
+					$t.stop().animate({width:150})
+				}
+			})
+		}
+	});
+	var $hn=$("#hname").autoC("http://house.zhijia.com/ajax/house.html")
+	$("#serach_form").on("click","a.obtn",function(){
+		if($.trim($hn.val()).length&&$hn.val()!=$hn.attr("placeholder"))
+			$("#serach_form").trigger("submit");
+		else
+			$hn.trigger("focus")
+		return false;
+	});
+	/*******end*****/
+});
+</script>
+</body>
+</html>

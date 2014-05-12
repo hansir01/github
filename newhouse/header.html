@@ -1,0 +1,80 @@
+{template 'topbar'}
+<div id="nav">
+	<div class="nav_bg">
+		<h1><a href="{$_config['site_url']}"><img src="{$_config['img3_url']}logo/{$_config['citycode']}/logo_n.png" alt="{$_config['name']}{$_config['site_name']}">{$_config['name']}{$_config['site_name']}</a></h1>
+		<div id="city_change">
+			<span>{$_config['name']}</span>
+			<a href="javascript:" id="city_c">更改城市<i></i></a>
+			<!--#include virtual="/section/b_qtcsdh.html"--><!--# b新闻首页 其他城市导航 #-->
+		</div>
+		<div id="i_stab">
+			<a target="_blank" href="{url 'newhouse'}" class="on">新房</a>
+			<a target="_blank" href="{url 'ershoufang'}">二手房</a>
+			<a target="_blank" href="{url 'ershoufang/rent/index'}">出租房</a>
+			<a target="_blank" href="{url 'xiezilou'}">写字楼</a>
+			<a target="_blank" href="{url 'shangpu'}">商铺</a>
+			<a target="_blank" href="{$_config['setting']['news_url']}">资讯</a>
+			<a target="_blank" href="{$_config['setting']['bbs_url']}">论坛</a>
+		</div>
+		<a href="{url 'newhouse/map/index'}" class="i_smap" target="_blank">地图找房</a>	
+		<form id="i_search" action="{url 'newhouse/list/search'}" method="post" autocomplete="off">
+			<ul>
+				<li>
+					<s><i></i><u></u>{if $choose['placename']}{$choose['placename']}{else}区域/地铁{/if}</s>
+					<div>
+						<input type="hidden" name="place" value="{if $where_data['placename']}{$where_data['placename']}{/if}" />
+						<span><a data-val="" href="javascript:">全部区县</a></span>
+						{if $header_area}
+							{foreach $header_area $val}
+								<span><a data-val="{$val['letters']}" href="javascript:">{$val['name']}</a></span>
+							{/foreach}
+						{/if}
+					</div>
+				</li>
+				<li>
+					<s><i></i><u></u>{if $choose['projecttype']}{$choose['projecttype']}{else}物业类型{/if}</s>
+					<div class="m_sp">
+						<input name="projecttype" type="hidden" value="{if $where_data['projecttype']}{$where_data['projecttype']}{/if}"/>
+						<span><a data-val="" href="javascript:">全部</a></span>
+						{if $header_project}
+							{foreach $header_project $val}
+								<span><a data-val="{$val['fid']}" href="javascript:">{$val['name']}</a></span>
+							{/foreach}
+						{/if}
+					</div>
+				</li>
+				<li>
+					<s><i></i><u></u>{if $choose['averageprice']}{$choose['averageprice']}{else}价格范围{/if}</s>
+					<div class="l_sp">
+						<input name="averageprice" type="hidden" value="{if $where_data['averageprice']}{$where_data['averageprice']}{/if}"/>
+						<span><a data-val="" href="javascript:">全部</a></span>
+						{if $header_price}
+							{foreach $header_price $val}
+								<span><a data-val="{$val['fid']}" href="javascript:">{$val['name']}</a></span>
+							{/foreach}
+						{/if}
+					</div>
+				</li>
+			</ul>
+			<input name="keyword" type="search" value="{if $where_data['key']}{$where_data['key']}{/if}" x-webkit-speech placeholder="请输入楼盘名称(中文/拼音/简拼)、地址">
+			<button type="submit" title="房源搜索">搜索</button>
+		</form>
+	</div>
+</div>
+<script>
+seajs.use("hsearch",function(hs){
+	hs("#i_search","{url 'newhouse/ajax/house'}")
+})
+</script>
+{if !$history_page}
+{if !$site_title}
+	<div class="nav_menu c_red">
+	<ul>
+		{foreach $nav $key $val}
+		<li {if $key==$navnum}class="no_br"{/if}><a {if $menumodel==$val['mark']}class="on"{/if} href="{$val['url']}" {if $val['isblank']}target="_blank"{/if}>{$val['name']}</a>{if $val['ishot']}<i class="hot"></i>{/if}{if $val['isnew']}<i></i>{/if}</li>
+		{/foreach}
+	</ul>
+</div>
+{/if}
+{/if}
+<!--#include virtual="/section/q_dhtl1.html"--><!--# q新房广告 新房首页-导航下通栏1 #-->

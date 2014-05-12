@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{template 'head','newhouse'}
+</head>
+<body>
+	{template 'header','newhouse'}
+	<div id="main">
+		{template 'nav','newhouse'}
+		<div class="cf">
+			<div class="detail_fl">
+				<div class="bodyb">
+					<div class="price_t">
+						<table>
+							<tr>
+								<td width="160">2013年7月均价</td>
+								<td width="160">环比上月</td>
+								<td><a href="{url 'newhouse/tool/index','type=2'}" class="bbtn" target="_blank"><i class="jsq"></i>房贷计算器</a></td>
+							</tr>
+							<tr>
+								<td>
+									{if $house['isunitprice']}
+										<b>一房一价</b>
+									{else}
+										{if $house['averageprice']}
+											<b>{$house['averageprice']}</b>元/平米
+										{else}
+											<b>待定</b>
+										{/if}
+									{/if}
+								</td>
+								<td>
+									{if $house['percent'] > 0}
+										<u class="up"><i></i>{$house['percentabs']}%</u>
+									{elseif $house['percent'] < 0}
+										<u class="down"><i></i>{$house['percentabs']}%</u>
+									{else}
+										<u><i></i>0.00%</u>
+									{/if}
+								</td>								
+							</tr>
+						</table>
+						{if $house['priceexplain']}<p>价格说明：<span class="red">{$house['priceexplain']}</span></p>{/if}
+					</div>
+					{if $tent_chart['month']}
+						<div class="detail_info">
+							<h4>价格走势</h4>
+							<div id="price_panl"></div>
+						</div>
+					{/if}
+					{if $historyprice}
+						<div class="detail_info">
+							<h4>历史价格</h4>
+							<table>
+								<tr>
+									<th width="120">记录时间</th>
+									<th width="99">均价</th>
+									<th>价格描述</th>
+								</tr>
+								{foreach $historyprice $v}
+									<tr>
+										<td>{$v['date']}</td>
+										<td>
+											{if $v['price']}
+												{$v['price']}元/平方米
+											{else}
+												待定
+											{/if}
+										</td>
+										<td class="alignl">{if $v['priceexplain']}{$v['priceexplain']}{else}--{/if}</td>
+									</tr>
+								{/foreach}								
+							</table>
+						</div>
+					{/if}
+					{if $periphery_price}
+						<div class="detail_info nobo">
+							<h4>周边楼盘价格走势</h4>
+							<table>
+								<tr>
+									<th>楼盘名称</th>
+									<th width="120">本月均价</th>
+									<th width="120">上月均价</th>
+									<th width="99">价格走势</th>
+								</tr>
+								{foreach $periphery_price $v}
+									<tr>
+										<td><a href="{url 'newhouse/detail/index',"spell=$v[spell]"}" title="{$v['name']}" target="_blank">{$v['name']}</a></td>
+										<td>
+											{if $v['averageprice']}
+												{$v['averageprice']}元/平方米
+											{else}
+												-
+											{/if}
+										</td>
+										<td>
+											{if $v['lastprice']}
+												{$v['lastprice']}元/平方米
+											{else}
+												-
+											{/if}
+										</td>
+										<td>
+											{if $v['percent'] == 0}
+												<i>&rarr;</i>
+											{elseif $v['percent'] > 0}
+												<i class="up">&uarr;{$v['percentabs']}%</i>
+											{elseif $v['percent'] < 0}
+												<i class="down">&darr;{$v['percentabs']}%</i>
+											{/if}
+										</td>
+									</tr>
+								{/foreach}
+							</table>
+						</div>
+					{/if}
+				</div>
+			</div>
+			<div class="detail_fr">
+				{template 'slice_right_detail','newhouse'}
+				{template 'slice_impress','newhouse'}
+				{template 'slice_compare','newhouse'}
+				{template 'slice_look','newhouse'}
+			</div>
+		</div>
+	</div>
+	{template 'footer_statement','newhouse'}
+	{template 'foot'}
+<script>
+seajs.use("highcharts",function(hs){
+	hs('price_panl',"{$house['name']}",[{$tent_chart['month']}],[{$tent_chart['price']}],'元/平米')
+});
+</script>
+<div id="QQOL"></div>
+<script>
+seajs.use(["jquery","alert"],function($,alertM){
+	if (!-[1, ] && !window.XMLHttpRequest) {
+		var $w=$(window).bind('scroll', function() {
+				$qq.stop().animate({top:$w.scrollTop()+$w.height()/2-80});
+			}),
+			$qq=$("#QQOL").css("top",$w.scrollTop()+$w.height()/2-80);
+	}
+	$("div.detail_fl")[0].oncopy=function(){
+		alertM("受保护的内容，暂不可复制",{cName:"cross"})
+		return false;
+	}
+});
+</script>
+<script charset="utf-8" defer async type="text/javascript" src="http://static.b.qq.com/account/bizqq/js/wpa.js?kfuin=4008906655&amp;wid=QQOL"></script>
+</body>
+</html>

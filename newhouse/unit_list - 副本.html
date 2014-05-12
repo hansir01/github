@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="keywords" content="{$head['keywords']}"/>
+		<meta name="description" content="{$head['description']}"/>
+		<link href="{$_config['img3_url']}favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+		{css filename="reset.css" version='3' /}
+		{css filename="css.css" version='3' /}
+		{css filename="xinfang.css" version='3' /}
+		{js filename="imagesloaded.js" version='3' /}
+		{js filename="sea.js" version='3' /}		
+		<title>{$head['title']}</title>
+	</head>
+
+<body class="hu_xing_tu">
+{template 'header','newhouse'}
+<div class="bread">您当前的位置：<a href="{$_config['site_url']}">{$_config['name']}{$_config['site_name']}</a>&gt;<a href="{url 'newhouse'}" title="{$_config['name']}新房">{$_config['name']}新房</a>&gt;<span>户型图</span></div>
+<div id="main" style="position:relative">
+	<div class="cf" id="container">
+		<div class="ks-waterfall a1">
+			<div class="LPtag">
+				<h2>户型搜索</h2>
+				<form action="{url 'newhouse/unit/search'}" method="post" class="cf" id="my_form">
+					<input type="hidden" name="url" value="{$other_url['key']}">
+					<input type="text" id="search" name="key" value="{if $keywords}{$keywords}{else}楼盘名/关键字{/if}"/>
+					<input type="button" id="sub" value=""/>
+				</form>
+				<ul>
+					<li class="hx cf">
+						<a {if !$room}class="on"{/if} href="{url 'newhouse/unit/list',"params=$other_url[room]"}">不限</a>
+						{if $room_arr}
+							{foreach $room_arr $r}
+								<a {if $room==$r['key']}class="on"{/if} href="{url 'newhouse/unit/list',"params=$other_url[room]-room-$r[key]"}">{$r['name']}</a>
+							{/foreach}
+						{/if}
+					</li>
+					<li class="mj cf">
+						<a {if !$area}class="on"{/if} href="{url 'newhouse/unit/list',"params=$other_url[area]"}">不限</a>
+						{if $area_arr}
+							{foreach $area_arr $r}
+								<a {if $area==$r['key']}class="on"{/if} href="{url 'newhouse/unit/list',"params=$other_url[area]-area-$r[key]"}">{$r['name']}</a>
+							{/foreach}
+						{/if}
+					</li>
+					<li class="kt cf">
+						<a {if !$hall}class="on"{/if} href="{url 'newhouse/unit/list',"params=$other_url[hall]"}">不限</a>
+						{if $hall_arr}
+							{foreach $hall_arr $r}
+								<a {if $hall==$r['key']}class="on"{/if} href="{url 'newhouse/unit/list',"params=$other_url[hall]-hall-$r[key]"}">{$r['name']}</a>
+							{/foreach}
+						{/if}						
+					</li>
+					<li class="wsj cf">
+						<a {if !$toilet}class="on"{/if} href="{url 'newhouse/unit/list',"params=$other_url[toilet]"}">不限</a>
+						{if $toilet_arr}
+							{foreach $toilet_arr $r}
+								<a {if $toilet==$r['key']}class="on"{/if} href="{url 'newhouse/unit/list',"params=$other_url[toilet]-toilet-$r[key]"}">{$r['name']}</a>
+							{/foreach}
+						{/if}
+					</li>
+				</ul>
+			</div>
+		</div>		
+		{if $unit_list}
+			{foreach $unit_list $r}
+				<div class="ks-waterfall">
+					<div class="img">
+						<a href="{url 'newhouse/detail/picture',"spell=$r[spell]&album=$r[tid]"}#id={$r['pid']}" title="{$r['name']}" target="_blank">
+							<img src="{$r['pic_url']}" alt="{$r['info']}" title="{$r['info']}" />
+							<p></p>
+							<span>{$r['name']}</span>
+						</a>
+					</div>
+					<div class="content">
+						<h5 class="cf"><span class="fl">户型：{if $r['room']}{$r['room']}室{if $r['hall']}{$r['hall']}厅{/if}{if $r['toilet']}{$r['toilet']}卫{/if}{else}待定{/if}</span><span class="fr">面积：{if $r['area']}{$r['area']}㎡{else}待定{/if}</span></h5>
+						<p>{$r['info']}</p>
+					</div>
+				</div>
+			{/foreach}
+		{/if}	
+	</div>
+</div>
+{template 'foot'}
+<script type="text/javascript">
+seajs.use(["jquery","alert","wookmark","toTop"], function($,alertM) {
+	var container = document.getElementById('container'),
+		ajax_bl=true;
+	imagesLoaded(container, function() {
+		var $s = $("#container div.ks-waterfall");
+		$s.wookmark({
+			container: $('#container'),
+			offset: 10,
+			itemWidth: 230,
+			align: "left",
+			fillEmptySpace: true,
+			onLayoutChanged: function() {
+				$s.each(function(i) {
+					setTimeout(function() {
+						$s.eq(i).addClass("on")
+					}, i * 50)
+				});
+			}
+		});
+		if($s.length==1){
+			ajax_bl=false;
+			$('#main').css({'background':'url({$_config['img3_url']}xinfang/no_more.jpg) no-repeat 500px center'});
+		}else if ($s.length<18) {
+			ajax_bl=false;
+			$('#main').css({'padding-bottom':'160px','background':'url({$_config['img3_url']}xinfang/no_more.jpg) no-repeat center bottom'});
+		}
+	});
+	$('#sub').click(function() {
+		var $val=$('#search').val(),
+			re = /^\s*$/;
+		if (re.test($val) || $val=='楼盘名/关键字') {
+			alertM("请输入搜索内容!",{cName:"error"});
+		}else{
+			$('#my_form').submit();
+		}
+	});
+	//输入框提示
+	var tipInput = function(id) {
+		var $obj = $('#' + id),
+			re = /^\s*$/;
+		$obj.css('color', '#d0d0d0');
+		$obj.on({
+			'focus': function() {
+				$obj.css('color', '#000');
+				if ($obj.val() == '楼盘名/关键字') {
+					$obj.val('');
+				}
+			},
+			'blur': function() {
+				if (re.test($obj.val())) {
+					$obj.val('楼盘名/关键字');
+					$obj.css('color', '#d0d0d0');
+				}
+			}
+		});
+		if($obj.val()!='楼盘名/关键字'){
+			$obj.css('color', '#000');
+		}
+	};
+	tipInput('search');
+	//ajax
+	var $w=$(window),
+		$d=$(document),
+		$page=2;
+	var gatHtml=function(){
+		if (!ajax_bl) { return false; }
+		$.ajax({
+			url:'{url "newhouse/unit/morelist"}',
+			dataType:'json',
+			data:{
+				page:$page,
+				room:{$room},
+				hall:{$hall},
+				toilet:{$toilet},
+				area:{$area},
+				key:'{$keywords}'
+			},
+			cache:false
+		}).done(function(data) {
+			if (data.more) {
+				$page++;
+				var $div='';
+				for (var i = 0,l=data.data.length; i < l ; i++) {
+					$div+='<div class="ks-waterfall"><div class="img"><a href="'+data.data[i].href+'" title="'+data.data[i].imgtxt+'" target="_blank"><img src="'+data.data[i].imgSrc+'" alt="'+data.data[i].imgtxt+'" title="'+data.data[i].imgtxt+'" /><p></p><span>'+data.data[i].imgtxt+'</span></a></div><div class="content">	<h5 class="cf"><span class="fl">户型：'+data.data[i].hx+'</span><span class="fr">面积：'+data.data[i].area+'</span></h5><p>'+data.data[i].content+'</p></div></div>';
+				}
+				$div=$($div);
+				imagesLoaded($div, function() {
+					$div.appendTo('#container');
+					var $s = $("#container div.ks-waterfall")
+					$s.wookmark({
+						container: $('#container'),
+						offset: 10,
+						itemWidth: 230,
+						fillEmptySpace: true,
+						onLayoutChanged: function() {
+							$div.each(function(i) {
+								setTimeout(function() {
+									$div.eq(i).addClass("on")
+								}, i * 50)
+							});
+						}
+					});
+				});
+			}else{
+				$('#main').css({'padding-bottom':'160px','background':'url({$_config['img3_url']}xinfang/no_more.jpg) no-repeat center bottom'});
+			}
+		}).fail(function () {
+			alertM("视频数据加载失败，请检查网络连接是否已断开",{cName:"error"});
+        });
+	}
+	var delay=0;
+	$w.on('scroll',function() {
+		if(delay)
+			clearTimeout(delay);
+		delay=setTimeout(function(){
+			if ($w.scrollTop()>=$d.height()-$w.height()-99) {
+				gatHtml();
+			}
+		},200)
+	});
+	
+	$(container).on("mouseenter","a:has(img)",function(){
+		$(this).find("p").css("background","#FF8400");
+	}).on("mouseleave","a:has(img)",function() {
+		$(this).find("p").css("background","#000");
+	});
+});
+</script>
+</body>
+</html>

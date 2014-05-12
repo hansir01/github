@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{template 'head','newhouse'}
+</head>
+<body>
+	{template 'header','newhouse'}
+	<div id="main">
+		{template 'nav','newhouse'}
+		<div class="bodyb">
+			<h3>
+				<span class="mod_tab fr">
+					<a href="{$url['roomtype']}#house_nav" {if $picture['roomkey'] == 1 && $getroom != 9}class="on"{/if}>全部({$pic_num})</a>
+					{if $picture['roomnum_all']}
+						{foreach $picture['roomnum_all'] $k $v}
+							{php $room = $v['room'] ? $v['room'] : 9}
+							<a {if $picture['roomkey'] == $v['sort'] || ($getroom == 9 && $v['room'] == 0)}class="on"{/if} href="{url 'newhouse/detail/roomtype',"spell=$house[spell]&room=$room"}#house_nav">{if $v['room']}{if $v['room'] == 1}一{elseif $v['room'] == 2}二{elseif $v['room'] == 3}三{elseif $v['room'] == 4}四{elseif $v['room'] == 5}五{elseif $v['room'] == 6}六{elseif $v['room'] == 7}七{elseif $v['room'] == 8}八{/if}居室{else}推荐户型{/if}({$v['picnum']})</a>
+						{/foreach}
+					{/if}
+				</span>
+				户型图
+			</h3>
+			{if $picture['picture']}
+				<ul class="detail_glist cf">
+					{foreach $picture['picture'] $k $v}
+						<li>
+							<a href="{url 'newhouse/detail/picture',"spell=$house[spell]&album=$v[tid]"}#id={$v['pid']}" target="_blank" class="b"><img src="{$v['pic_url']}" title="{$house['name']} {$v['title']} {if $v['unitnum']}{$v['unitnum']}户型 {/if}{if $v['room']}{$v['room']}室{/if}{if $v['hall']}{$v['hall']}厅{/if}{if $v['toilet']}{$v['toilet']}卫{/if}{if $v['area']} 面积{$v['area']}平米{/if}" alt="{$house['name']} {$v['title']}"></a>
+							{if $v['unitnum'] || $v['room'] || $v['hall'] || $v['toilet']}{if $v['unitnum']}{$v['unitnum']}户型：{/if}{if $v['room']}{$v['room']}室{/if}{if $v['hall']}{$v['hall']}厅{/if}{if $v['toilet']}{$v['toilet']}卫{/if}<br>{/if}
+							{if $v['area']}面积大小：{$v['area']}平米{else}{$v['title_cut']}{/if}
+						</li>
+					{/foreach}
+				</ul>
+				{if $page}
+					<div class="pagination">
+						{$page}
+					</div>
+				{/if}
+			{else}
+				<div class="no_rlt">抱歉！ 暂时没有相关楼盘户型~</div>
+			{/if}			
+		</div>
+	</div>
+	{template 'footer_statement','newhouse'}
+	{template 'foot'}
+	<div id="QQOL"></div>
+	<script>
+	seajs.use(["jquery","alert"],function($,alertM){
+		if (!-[1, ] && !window.XMLHttpRequest) {
+			var $w=$(window).bind('scroll', function() {
+					$qq.stop().animate({top:$w.scrollTop()+$w.height()/2-80});
+				}),
+				$qq=$("#QQOL").css("top",$w.scrollTop()+$w.height()/2-80);
+		}
+		$("div.bodyb")[0].oncopy=function(){
+			alertM("受保护的内容，暂不可复制",{cName:"cross"})
+			return false;
+		}
+	});
+	</script>
+	<script charset="utf-8" defer async type="text/javascript" src="http://static.b.qq.com/account/bizqq/js/wpa.js?kfuin=4008906655&amp;wid=QQOL"></script>
+</body>
+</html>

@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{template 'head','newhouse'}
+</head>
+<body>
+	{template 'header','newhouse'}
+	<div id="main">
+		{template 'nav','newhouse'}
+        {if $business['isbusiness']}
+            <div class="zjz_banner">
+                <h3>{$business['privilege']}</h3>
+                <p class="js_date" data-time="{$business['havetime']}" id="js_date">剩余时间：<b class="red"></b>天<b class="red"></b>小时<b class="red"></b>分<b class="red"></b>秒</p>
+                <p class="join_time"><b>{$business['num']}</b>人已参加</p>
+                <p class="join_date">优惠时间：{$business['starttime']} 至 {$business['endtime']}</p>
+                <a href="{$url['buy']}" target="_blank">获取优惠</a>
+            </div>
+			<script>
+            seajs.use("jquery",function(){
+                var $t=$("#js_date"),
+                    time=$t.data("time"),
+                    d=Math.floor(time/86400),
+                    h=Math.floor((time-=d*86400)/3600000),
+                    m=Math.floor((time-=h*3600)/60000),
+                    s=Math.floor((time-=m*60)/1000);
+                $t.html("剩余时间：<b>"+d+"</b>天<b>"+h+"</b>时<b>"+m+"</b>分<b>"+s+"</b>秒");
+                setInterval(function(){
+                    if(--s<0){
+                        s=59;
+                        if(--m<0){
+                            m=59;
+                            if(--h<0){
+                                h=23;
+                                d=--d>0?d:0;
+                            }
+                        }
+                    }
+                    $t.html("剩余时间：<b>"+d+"</b>天<b>"+h+"</b>时<b>"+m+"</b>分<b>"+s+"</b>秒");
+                    if(d==0&&h==0&&m==0&&s==0){
+                        $t.html("已结束");
+                    }
+                },1000)
+            });
+            </script>
+        {/if}
+		<div class="detail_indexc cf">
+			<div class="detail_fl">
+				<div class="detail_is">
+					<ul>
+						<li>
+							<b>平均单价：</b>
+							{if $house['isunitprice']}
+								<i class="red">一房一价</i>
+							{else}
+								{if $house['averageprice']}
+									<i class="red">{$house['averageprice']}</i> 元/平米
+								{else}
+									<i class="red">待定</i>
+								{/if}
+							{/if}
+							<a target="_blank" href="{$url['price']}" class="bbtn"><i class="lsjg"></i>历史价格</a><a href="{url 'newhouse/tool/index','type=2'}" class="bbtn" target="_blank"><i class="jsq"></i>房贷计算器</a>{if $house['vouchername_arr'][0]['fid']}<a href="{$url['info']}#voucher" class="bbtn" target="_blank"><i class="xmwz"></i>项目五证</a>{/if}
+						</li>
+						<li>
+							<b>价格优惠：</b>
+							<span class="red">{if $house['priceexplain']}{$house['priceexplain']}{else}暂无{/if}</span>
+						</li>
+						<li>
+							<b>开盘时间：</b>
+							<span class="isl">{if $house['opentime_year_month']}{$house['opentime_year_month']}{if $house['opentime_day']}-{$house['opentime_day']}{/if}{/if}{if $house['opentime_caption']}{$house['opentime_caption']}{/if}{if (!$house['opentime_year_month']&&!$house['opentime_caption'])}待定{/if}</span><b class="isr">产权年限：</b>{if $house['propertyage']}{$house['propertyage']}年{else}待定{/if}
+						</li>
+						<li>
+							<b>户型面积：</b>
+							<span class="isl">{if $house['roomarea']}{$house['roomarea']}{else}待定{/if}</span><b class="isr">主力户型：</b>{if $house['roomtype']}{$house['roomtype']}{else}待定{/if}<a target="_blank" href="{$url['roomtype']}" class="bbtn"><i class="hxt"></i>户型图</a>
+						</li>						
+						<li>
+							<b>楼盘地址：</b>
+							{if $house['areaname']}<a class="bal" href="{url 'newhouse/list/index',"params=-$house[areaspell]"}" target="_blank">{$house['areaname']}</a>{/if}{if $house['address']}{strcut string="$house[address]" length="40" /}<a href="{$url['map']}" target="_blank" class="bbtn"><i class="jtdt"></i>交通地图</a>{/if}
+						</li>
+						<li>
+							<b>周围交通：</b>{if $house['gongjiao']}{strcut string="$house[gongjiao]" length="68" /}{else}待定{/if}
+						</li>
+						<li>
+							<b>售楼地址：</b>{if $house['saleaddress']}{$house['saleaddress']}{else}待定{/if}
+						</li>
+						<li>
+							<b>开 发 商：</b>								
+							{if $house['cname']}<a class="bal" href="{url 'newhouse/developer/index',"uid=$house[cid]"}" title="{$house['cname']}" target="_blank">{$house['cname']}</a>{else}待定{/if}
+						</li>
+					</ul>
+					<a target="_blank" href="{$url['info']}" class="red more_info">查看{$house['name']}信息详情>></a><a target="_blank" href="{url 'newhouse/pk/index'}#id={$house['hid']}" class="bbtn"><i class="dblp"></i>对比楼盘</a>
+				</div>
+				<div class="detail_mobile">
+				{if $inhe400}
+					<span class="red">{$inhenumber['master']}</span>转<span class="red">{$inhenumber['smallnum']}</span>
+				{else}
+					{if $house['tel400_enable']}
+						<span class="red">{$_config['setting']['tel_number']}</span>{if $house['tel400_smallnum']}转<span class="red">{$house['tel400_smallnum']}</span>{/if}
+					{elseif $house['saletel']}
+						<span class="red">{$house['saletel']}</span>
+					{else}
+						<span class="red">热线尚未开通</span>
+					{/if}
+					{if $house['tel400_backcall'] && $house['tel400_guid']}
+						<a href="javascript:" id="free_mobile"></a>
+					{/if}
+				{/if}
+				</div>
+				<div id="detail_supbtn">
+					<a class="sup1" href="javascript:">{if $attention_id}已关注楼盘{else}关注楼盘{/if}</a>
+					<a class="sup2" href="javascript:">发送到手机</a>
+					<a class="sup3" href="{$url['comment']}" target="_blank">楼盘点评</a>
+					<a class="sup4" href="javascript:">分享至</a>
+				</div>
+				<h4 class="detail_indexh"><a href="{$url['zixun']}" class="fr" target="_blank">更多&gt;&gt;</a><span>{$house['name']}销售动态</span></h4>
+				<ul class="detail_dt">
+				{if $zixun_data}
+					{foreach $zixun_data $key $val}
+						<li class="cf nobo">
+							<h4 class="date">
+								<b>{$val['day']}</b>{$val['year']}
+							</h4>
+							<h5><a href="{$val['url']}" target='_blank'>{$val['title']}</a></h5>
+							<p>{$val['description']}<a href="{$val['url']}" class="red" target='_blank'>[详情]</a></p>
+						</li>
+					{/foreach}
+				{/if}
+				</ul>
+				<h4 class="detail_indexh"><a href="{$url['faq']}" class="fr" target="_blank">更多&gt;&gt;</a><span>{$house['name']}楼盘问答</span></h4>				
+				{if $faq_data}
+					<ul class="detail_wd_list" id="detail_wd_list">
+						{foreach $faq_data $val}
+							<li>
+								<p class="w"><i>问</i><a target="_blank" href="{url 'wenda/detail/index',"qid=$val[qid]"}">{$val['content']}</a></p>
+								{if $val['replay']}
+									<p class="d"><i>答</i>{$val['replay']['content']}</p>
+								{/if}
+							</li>
+						{/foreach}					
+					</ul>
+				{else}
+					<div class="no_rlt">抱歉！ 暂时没有相问答~</div>
+				{/if}
+				<form id="detail_ask" action="{url 'newhouse/detail/question'}" class="bodyb detail_info detail_wdf cf" {if !($_wenda_config['wenda_user'] || $member['uid'])}data-needlogin="1"{/if}>
+					<input type="hidden" name="hid" value="{$house['hid']}"/>
+					<button class="fr" type="submit"></button>
+					<textarea name="info" placeholder="提出您的问题，我们尽快为您解答!"></textarea>
+					<span class="fl">您还可以输入 <b class="red">50</b> 个字</span>
+				</form>
+			</div>
+			<div class="detail_fr">
+				<div id="detail_tab">
+					<ul class="pic_list">
+						{if $house['videoimage'] && $house['videofile']}
+							<li id="v_player" data-file="{$house['videofile']}">
+								<img title="{$house['name']}" alt="{$house['name']}" src="{$house['videoimage']}">
+								<a href="javascript:"></a>
+							</li>
+						{/if}
+						{if $slide}
+							{foreach $slide $k $s}
+								<li {if $k!=0 || ($house['videoimage'] && $house['videofile'])} style="display:none;"{/if}>
+									<a target="_blank" href="{url 'newhouse/detail/picture',"spell=$house[spell]&album=$s[tid]"}#id={$s['pid']}" title="{$house['name']} {$s['title']}"><img  title="{$house['name']} {$s['title']}" alt="{$house['name']} {$s['title']}" src="{$s['pic_url']}" ></a>
+								</li>
+							{/foreach}
+						{/if}
+						{if !$slide && !$house['videoimage']}
+							<li><a href="javascript:void(0)"><img  title="{$house['name']}" alt="{$house['name']}" src="{$_config['img3_url']}common/nopic_400x300.gif"></a></li>
+						{/if}
+					</ul>
+					<table class="menu_list">
+						<tr>							
+							{if $house['videoimage'] && $house['videofile']}
+								<td><a href="javascript:" class="on">楼盘视频</a></td>
+							{/if}
+							{if $slide}
+								{foreach $slide $k $r}
+									<td><a target="_blank" href="{url 'newhouse/detail/picture',"spell=$house[spell]&album=$r[tid]"}#id={$r['pid']}" class="{if $k==0 && !($house['videoimage'] && $house['videofile'])}on{/if}">{$r['tname']}</a></td>
+								{/foreach}
+							{/if}
+						</tr>
+					</table>
+				</div>				
+				<form id="impression">				
+					<p class="cf">
+						{if $impression}
+						<a href="{$url['comment']}" class="fr" target="_blank">更多印象</a>
+						
+							{foreach $impression $k $r}
+								{if $k < 6}
+									<span class="t{$r['bgcolor']}" data-id="{$r['id']}">{$r['name']}<i>已有<b>{$r['support']}</b>人支持</i></span>
+								{/if}
+							{/foreach}
+						{/if}						
+					</p>
+					<a name="iwantgroupbuy" ></a>
+					<input type="text" placeholder="我的印象，最多5个字">					
+					<a href="javascript:" class="obtn"><button type="submit"></button><i class="add"></i>添加印象</a>					
+				</form>						
+				<div class="lista" id="group_buy">				
+					<h4>团购报名</h4>
+					<form action="{url 'newhouse/detail/groupbuy'}" id="group_buyf">
+						<input type="hidden" name="id" value="{$house['hid']}">
+						<ul>
+							<li>
+								<span><b>*</b>姓&nbsp;&nbsp;&nbsp;&nbsp;名：</span>
+								<input type="text" class="s" id="gb_name" name="truename">
+								<input type="radio" name="sex" value="1" class="hid" checked id="sex1"><label for="sex1">男</label>
+								<input type="radio" name="sex" value="2" class="hid" id="sex2"><label for="sex2">女</label>
+							</li>							
+							<li>
+								<span><b>*</b>手&nbsp;&nbsp;&nbsp;&nbsp;机：</span>
+								<input type="text" id="gb_mobile" name="mobile">
+							</li>
+							<li>
+								<span>邮&nbsp;&nbsp;&nbsp;&nbsp;箱：</span>
+								<input type="text" id="gb_email" name="email">
+							</li>
+							<li>
+								<span>备&nbsp;&nbsp;&nbsp;&nbsp;注：</span>
+								<textarea id="gb_info" name="info"></textarea></li>
+							{if $_config['setting']['issecode'] == 1}
+								<li>
+									<span><b>*</b>验证码：</span><input id="gb_code" type="text" class="s" name="seccode">
+									<a href="javascript:" title="点击刷新验证码"><img src="{url 'newhouse/detail/seccode'}"></a>
+								</li>
+							{/if}							
+							<li><a href="javascript:" class="obtn"><button type="submit"></button><i class="add"></i>参加团购 </a><i><b class="red">{$house['groupnum']}</b>人已报名</i></li>
+						</ul>
+					</form>					
+					<div id="group_buy_list">
+						<table>
+							{if $groupbuy_data}
+								{foreach $groupbuy_data $val}
+									<tr>
+										<td width="48">{$val['truename']}</td>
+										<td width="120">{$val['mobile']}</td>
+										<td width="">{strcut string="$val[info]" length="15" /}</td>
+									</tr>
+								{/foreach}
+							{/if}							
+						</table>
+					</div>
+				</div>
+				<div class="lista">
+					<h4><a href="{$url['bbs']}" class="fr" target="_blank">更多&gt;&gt;</a>业主论坛</h4>
+					<ul class="ld">
+						<script type="text/javascript" src="{$_config['setting']['bbs_url']}api.php?mod=houseapi&fid={$house['bbsid']}"></script>
+					</ul>
+				</div>				
+			</div>
+		</div>
+		<h4 class="detail_indexh detail_bo1">
+			<a href="{$url['info']}" class="fr" target="_blank">更多&gt;&gt;</a>
+			<a href="{$url['info']}#intro" class="fr" target="_blank">楼盘简介</a>
+			<a href="{$url['info']}#setting" class="fr" target="_blank">配套信息</a>
+			<a href="{$url['info']}#price" class="fr" target="_blank">价格信息</a>
+			<a href="{$url['info']}#saleinfo" class="fr" target="_blank">销售信息</a>
+			<a href="{$url['info']}#basicinfo" class="fr" target="_blank">基本信息</a>
+			<span>{$house['name']}详细信息</span></h4>
+		<ul class="ptlr cf">
+        	<li class="l"><b>装修情况：</b><span>{if $house['decorationname']}{$house['decorationname']}{else}待定{/if}</span></li>           
+			<li><b>物业费：</b><span>{if $house['property_expense']}{$house['property_expense']}{else}待定{/if}</span></li>
+            <li class="l"><b>产权年限：</b><span>{if $house['propertyage']}{$house['propertyage']}年{else}待定{/if}</span></li>
+            <li><b>绿化率：</b><span>{if $house['green_rate']}{$house['green_rate']}%{else}待定{/if}</span></li>
+            <li class="l"><b>建筑面积：</b><span>{if $house['areabuild']}{$house['areabuild']}㎡{else}待定{/if}</span></li>
+			<li><b>容积率：</b><span>{if $house['capacity_rate']}{$house['capacity_rate']}{else}待定{/if}</span></li>
+            <li class="l"><b>物业公司：</b><span>{if $extra['property_company']}{$extra['property_company']}{else}待定{/if}</span></li>
+			<li><b>停车位：</b><span>{if $extra['parking']}{$extra['parking']}{else}待定{/if}</span></li>  
+            <li class="l"><b>交通状况：</b><span>{if $house['gongjiao']}{$house['gongjiao']}{else}待定{/if}</span></li>
+			<li><b>项目进度：</b><span>{if $extra['project_progress']}{$extra['project_progress']}{else}待定{/if}</span></li>            
+		</ul>
+		{if $unit_picture}
+			<div class="lista">
+				<h4>
+					<span class="fr">
+						{if $rootype_num}
+							{foreach $rootype_num $r}
+								{php $room = $r['room'] ? $r['room'] : 9}
+								<a href="{url 'newhouse/detail/roomtype',"spell=$house[spell]&room=$room"}" target="_blank">{if $r['room']}{if $r['room'] == 1}一{elseif $r['room'] == 2}二{elseif $r['room'] == 3}三{elseif $r['room'] == 4}四{elseif $r['room'] == 5}五{elseif $r['room'] == 6}六{elseif $r['room'] == 7}七{elseif $r['room'] == 8}八{/if}居室{else}推荐户型{/if}({$r['picnum']})</a>
+							{/foreach}
+						{/if}
+						<a href="{$url['roomtype']}" target="_blank">更多&gt;&gt;</a>
+					</span>
+					{$house['name']}户型图
+				</h4>			
+				<ul class="pic_i cf"> 
+					{foreach $unit_picture $v}
+						<li>
+							<a target="_blank" href="{url 'newhouse/detail/picture',"spell=$house[spell]&album=$v[tid]"}#id={$v['pid']}" class="gal_box"><img src="{$v['pic_url']}" alt="{$house['name']} {$v['title']}"></a>
+							{if $v['room'] || $v['hall'] || $v['toilet']}
+								<a href="{url 'newhouse/detail/picture',"spell=$house[spell]&album=$v[tid]"}#id={$v['pid']}" target="_blank">
+								{if $v['unitnum']}{$v['unitnum']}{/if}
+								{if $v['room']}{$v['room']}室{/if}{if $v['hall']}{$v['hall']}厅{/if}{if $v['toilet']}{$v['toilet']}卫{/if}
+								</a><br>								
+							{/if}
+							{if $v['area']}<span>{$v['area']}平米</span>{/if}
+						</li>
+					{/foreach}
+				</ul>
+			</div>
+		{/if}
+		{if $album_picture}
+			<div class="lista">
+				<h4>
+					<span class="fr">
+						{if $album_types_nums}
+							{foreach $album_types_nums $k $v}
+								{if $v['num'] > 0}
+								<a href="{url 'newhouse/detail/album',"spell=$house[spell]&album=$v[tid]"}" target="_blank">{$v['name']}({$v['num']})</a>
+								{/if}
+							{/foreach}
+                        {/if}
+						 <a href="{$url['album']}" target="_blank">更多&gt;&gt;</a>
+					</span>
+					{$house['name']}楼盘相册
+				</h4>
+				<ul class="pic_i cf">
+					{foreach $album_picture $v}
+						<li>
+							<a target="_blank" href="{url 'newhouse/detail/picture',"spell=$house[spell]&album=$v[tid]"}#id={$v['pid']}" class="gal_box"><img src="{$v['pic_url']}" alt="{$house['name']} {$v['title']}"></a>
+							{if $v['title_cut']}
+								<a target="_blank" href="{url 'newhouse/detail/picture',"spell=$house[spell]&album=$v[tid]"}#id={$v['pid']}">{$v['title_cut']}</a><br>
+							{/if}
+							<span>{$v['posttime']}</span>
+						</li>
+					{/foreach}
+				</ul>
+			</div>
+		{/if}
+		<div class="detail_indexb cf">
+			<div class="flb">
+				<div class="fr detail_ijsq">
+					<h4>计算器</h4>
+					<a href="{url 'newhouse/tool/index'}" class="jsqBtn" target="_blank"><i class="jsq1"></i>购房能力评估</a>
+					<a href="{url 'newhouse/tool/index','type=2'}" class="jsqBtn" target="_blank"><i class="jsq2"></i>贷款计算器</a>
+					<a href="{url 'newhouse/tool/index','type=3'}" class="jsqBtn" target="_blank"><i class="jsq3"></i>公积金贷款</a>
+					<a href="{url 'newhouse/tool/index','type=4'}" class="jsqBtn" target="_blank"><i class="jsq4"></i>提前还贷</a>
+					<a href="{url 'newhouse/tool/index','type=5'}" class="jsqBtn" target="_blank"><i class="jsq5"></i>税费计算器</a>
+				</div>
+				<h4>{$house['name']}价格走势</h4>
+				<p class="price_t">当前均价
+				{if $house['isunitprice']}
+					<b>一房一价</b>
+				{else}
+					{if $house['averageprice']}
+						<b>{$house['averageprice']}</b>元/平米
+					{else}
+						<b>待定</b>
+					{/if}
+				{/if}
+				，
+				价格涨幅
+				{if $house['percent'] > 0}
+					<u class="up"><i></i>{$house['percentabs']}%</u>
+				{elseif $house['percent'] < 0}
+					<u class="down"><i></i>{$house['percentabs']}%</u>
+				{else}
+					<u><i></i>0.00%</u>
+				{/if}
+				</p>
+					<div id="price_panl" style="width:420px;height:200px">
+						{if !$tent_chart['month']}
+							<img src="{$_config['img3_url']}common/noprice.jpg">
+						{/if}
+					</div>
+			</div>
+			{if $nearprice}
+				<div class="lista">
+					<h4>同价位楼盘</h4>
+					<ul class="lmr">
+						{foreach $nearprice $k $r}
+							<li>
+								<span class="fr"><a target="_blank" href="{url 'newhouse/pk/index'}#id={$house['hid']},{$r['hid']}">对比</a></span>
+								<span class="fl"><a target="_blank" href="{url 'newhouse/detail/index',"spell=$r[spell]"}">{$r['name_cut']}</a></span>
+								<span class="red">
+									{if $r['isunitprice']}
+										一房一价
+									{else}									
+										{if $r['averageprice']}
+											{$r['averageprice']}元/㎡
+										{else}
+											待定
+										{/if}
+									{/if}
+								</span>
+							</li>
+						{/foreach}
+					</ul>
+				</div>
+			{/if}
+		</div>
+		<div class="detail_indexb cf">
+			<div class="flb">
+				<h4>{$house['name']}地图交通</h4>
+				{if $house['longcoor']}
+					<div class="mapicon cf" id="mapicon">
+						<p class="lp" name="house">楼盘</p>
+						<p class="gj" name="">公交</p>
+						<p class="cy" name="">餐饮</p>
+						<p class="yh" name="">银行</p>
+						<p class="xx" name="">学校</p>
+						<p class="yy" name="">医院</p>
+						<p class="jyz" name="">加油站</p>
+						<a href="{url 'newhouse/map/index'}#l1={$house['laticoor']}&l2={$house['longcoor']}&l3=16&keyword={$house['name']}" class="seeB" target="_blank">在大地图上查看</a>
+					</div>
+				{/if}
+				<div class="mapindex">
+					<div id="map" style="width:620px;height:200px">
+						{if !$house['longcoor']}
+							<img src="{$_config['img3_url']}common/nomap.jpg">
+						{/if}
+					</div>
+					<h5 class="red">交通状况</h5>
+					<p>{if $house['gongjiao']}{$house['gongjiao']}{else}待定{/if}</p>
+				</div>
+			</div>
+			{if $periphery}
+				<div class="lista">
+					<h4>周边楼盘</h4>
+					<ul class="lmr">
+						{foreach $periphery $k $r}
+							<li>
+								<span class="fr"><a href="{url 'newhouse/pk/index'}#id={$house['hid']},{$r['hid']}" target="_blank">对比</a></span>
+								<span class="fl"><a href="{url 'newhouse/detail/index',"spell=$r[spell]"}" title="{$r['name']}" target="_blank">{$r['name_cut']}</a></span>
+								<span class="red">
+								{if $r['isunitprice']}
+										一房一价
+								{else}									
+									{if $r['averageprice']}
+										{$r['averageprice']}元/㎡
+									{else}
+										待定
+									{/if}
+								{/if}
+								</span>
+							</li>
+						{/foreach}
+					</ul>
+				</div>
+			{/if}
+		</div>
+		<div class="cf">
+			<div class="detail_fl">
+				<div class="bodyC">
+					<h4 class="detail_indexh"><a href="{$url['comment']}" class="fr" target="_blank">更多&gt;&gt;</a><span>{$house['name']}点评</span></h4>
+					<form class="detail_form nobo" action="{url 'newhouse/detail/gradecomment'}" id="dp_form" {if !($_config['setting']['islogin'] || $member['uid'])}data-needlogin="1"{/if}>
+						<input type="hidden" name="hid" value="{$house['hid']}">
+						<ul class="detail_form_blue">
+							<li>
+								<span><b>*</b>评分：</span>
+								<u id="scroli">
+									<a class="s0" href="javascript:"></a>
+									<input type="hidden" name="grade" value="0">
+								</u>
+								点击星星为楼盘打分
+							</li>
+							<li>
+								<span><b>*</b>标题：</span>
+								<input type="text" class="t" name="title">
+							</li>
+							<li>
+								<span><b>*</b>评价：</span>
+								<textarea name="info" placeholder="您的点评会给其他网友提供帮助"></textarea>
+							</li>
+							{if $_config['setting']['issecode'] == 1}
+								<li>
+									<i class="fr">您还可以输入<b class="red">200</b>个字符</i>
+									<span><b>*</b>验证码：</span><input type="text" class="s" name="seccode">
+									<a href="javascript:" title="点击刷新验证码"><img src="{url 'newhouse/detail/seccode'}"></a>
+								</li>
+							{/if}
+							<li><a href="javascript:" class="obtn"><button type="submit"></button><i class="add"></i>发布点评</a></li>
+						</ul>					
+					</form>
+					{if $comment_data}
+						<div class="detail_dpl nobo">
+							<ul id="re_dpl">
+								{foreach $comment_data $key $v}
+									<li data-id="{$v['cid']}" {if $key==9}class="nobo"{/if}>
+										<img src="{if $v['avatar']}{$v['avatar']}{else}{$_config['img3_url']}common/avatar.png{/if}">
+										{if $v['username'] && $v['isnick']==0}{$v['username']}{else}{$_config['setting']['defaultname']}{/if}<span class="gray9">{$v['posttime']}的点评</span><i class="r{$v['grade']}"></i>
+										<h5>{$v['title']}</h5>
+										<p>{$v['info']}</p>
+										<div>
+											<a target="_blank" href="{url 'newhouse/detail/reply',"spell=$house[spell]&id=$v[cid]"}" class="r">回复（<b>{$v['replynum']}</b>）</a>|
+											<a href="javascript:void(0)" class="d">顶（<b>{$v['digg']}</b>）</a>|
+											<a href="javascript:void(0)" class="c">踩（<b>{$v['down']}</b>）</a>
+										</div>
+									</li>
+								{/if}								
+							</ul>
+						</div>
+						<div class="pagination">
+							<a href="{$url['comment']}" target="_blank">查看更多点评&gt;&gt;</a>
+						</div>
+					{else}
+						<div class="no_rlt">抱歉！ 暂时没有相关点评~</div>
+					{/if}
+				</div>
+			</div>
+			<div class="detail_fr">
+				{template 'slice_compare','newhouse'}
+				{template 'slice_look','newhouse'}
+			</div>
+		</div>
+	</div>
+	{template 'footer_statement','newhouse'}
+	{template 'foot'}
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.5&ak=A0d7a1091e5b98f5430228d016ee0ac7"></script>
+<script type="text/javascript">
+seajs.use(["pingfen","ipn","dianping","snail-baiduaround","highcharts","answer","alertlist","groupbuy","superm","alert","autab"],function(pf,ipn,dp,snail,hs,aw,al,gb,sm,alertM){
+	var slide = '{$slide["0"]["pid"]}';
+	var file = '{$house['videofile']}';
+	if (file!='' || slide!=''){
+		var $dt=$("#detail_tab").autab("td a","ul.pic_list li",3);
+	}
+	var $vp=$("#v_player");
+	if($vp.length){
+		$vp.on("click",function(){
+			$vp.data("html",$vp.html()).trigger("mouseleave",1).html('<embed src="{$_config['js3_url']}player/cmstopPlayer.swf" allowFullScreen="true" quality="high" width="350" height="265" align="middle" allowScriptAccess="true" type="application/x-shockwave-flash" flashvars="file='+$vp.data("file")+'&amp;autoStart=1"></embed>')
+		});
+		$dt.find("td a").slice(1).on("mouseenter",function(){
+			if($vp.data("html"))
+				$vp.html($vp.data("html")).data("html","").trigger("mouseleave",0)
+		})
+	}
+	snail.setURL('{url "newhouse"}');
+	snail.drawMap(parseFloat("{$house['longcoor']}"),parseFloat("{$house['laticoor']}"),"{$house['name']}","map");
+	snail.getMaps();
+	var $ps=$('#mapicon p').on("click",function(){
+		snail.setKEY($(this).text());
+		if($(this).attr('name') == 'house'){
+			snail.setH(true);
+		}else{
+			snail.setH(false);
+		}
+		$ps.removeClass("on");
+		$(this).addClass("on");
+		snail.getMaps();
+	})
+
+	hs('price_panl',"{$house['name']}",[{$tent_chart['month']}],[{$tent_chart['price']}],'元/平米');
+
+	ipn("#impression","{url 'newhouse/detail/impression'}","{$house['hid']}");
+
+	$("#free_mobile").on("click",function(){
+		al.callMobile("{$house['name']}","{$house[hid]}","{url 'newhouse/tel'}")
+	})
+
+	dp.dcInit("#re_dpl","{url 'newhouse/detail/diggdown'}").formInit("#dp_form");
+
+	gb("#group_buyf");
+
+	aw("#detail_ask");
+
+	var $supbtn=$("#detail_supbtn").on("click","a.sup1",function(){
+			if({$member['uid']} > 0){
+				var $t=$(this);
+				$.ajax({
+					url:"{url 'newhouse/detail/attention'}",
+					dataType:"json",
+					data:{
+						hid:{$house['hid']}
+					}
+				}).done(function(data){
+					if(data.state=="succ"){
+						if($t.html()=="关注楼盘")
+							$t.html("已关注楼盘")
+						else{
+							$t.html("关注楼盘")
+						}
+					}
+					alertM(data.alert,{cName:data.state})
+				}).fail(function(){
+					alertM("关注楼盘失败，请检查网络连接是否已断开",{cName:"error"})
+				})
+			}else{
+				sm.open("sub",{t:this,type:'c2'})
+			}
+		}).on("mouseenter","a.sup1",function(){
+			var $t=$(this);
+			if($t.html()=="已关注楼盘")
+				$t.html("取消关注")
+		}).on("mouseleave","a.sup1",function(){
+			var $t=$(this);
+			if($t.html()=="取消关注")
+				$t.html("已关注楼盘")
+		}).on("click","a.sup2",function(){
+			sm.open("mobile",{t:this})
+		}).on("click","a.sup4",function(){
+			sm.open("share")
+		})
+	var $wdList=$("#detail_wd_list");
+	if($("#detail_wd_list").length&&$wdList[0].scrollHeight>$wdList.height()){
+		var wh=$wdList[0].scrollHeight-9,
+			wiv=0,
+			wi=0;
+		$wdList.html($wdList.html()+$wdList.html()).on({
+			mouseenter:function() {
+				clearInterval(wiv)
+			}, 
+			mouseleave:function() {
+				wiv = setInterval(wdLA, 2000);
+			}
+		});
+		var $wdLi=$wdList.find("li"),
+			wdLA=function(){
+				$wdList.animate({
+					scrollTop:"+="+$wdLi.eq(wi).outerHeight()
+				},function(){
+					wi++;
+					if($wdList.scrollTop()>wh){
+						$wdList.scrollTop(0)
+						wi=0;
+					}
+						
+				})
+			};
+		wiv=setInterval(wdLA,2000);
+	}
+	var $p=$("#group_buy_list"),
+		h = $p.find('table').height();
+	if (!(h < $p.height())) {
+		$p.find('table').clone().appendTo($p)
+
+		var ulA=function() {
+				var t = $p.scrollTop();
+				$p.scrollTop(t >= h ? 0 : t + 1)
+			},
+			iv = setInterval(ulA, 24);
+		$p.on({
+			mouseenter:function() {
+				clearInterval(iv)
+			}, 
+			mouseleave:function() {
+				iv = setInterval(ulA, 24);
+			}
+		})
+	}
+	$("div.detail_fl")[0].oncopy=function(){
+		alertM("受保护的内容，暂不可复制",{cName:"cross"})
+		return false;
+	}
+	$("ul.ptlr")[0].oncopy=function(){
+		alertM("受保护的内容，暂不可复制",{cName:"cross"})
+		return false;
+	}
+	$("div.bodyC")[0].oncopy=function(){
+		alertM("受保护的内容，暂不可复制",{cName:"cross"})
+		return false;
+	}
+})
+</script>
+<div id="QQOL"></div>
+<script>
+seajs.use("jquery",function($){
+	if (!-[1, ] && !window.XMLHttpRequest) {
+		var $w=$(window).bind('scroll', function() {
+				$qq.stop().animate({top:$w.scrollTop()+$w.height()/2-80});
+			}),
+			$qq=$("#QQOL").css("top",$w.scrollTop()+$w.height()/2-80);
+	}	
+});
+</script>
+<script charset="utf-8" defer async type="text/javascript" src="http://static.b.qq.com/account/bizqq/js/wpa.js?kfuin=4008906655&amp;wid=QQOL"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="keywords" content="{$head['keywords']}"/>
+		<meta name="description" content="{$head['description']}"/>
+		<link href="{$_config['img3_url']}favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+		{css filename="reset.css" version='3' /}
+		{css filename="css.css" version='3' /}
+		{css filename="xinfang.css" version='3' /}
+		{js filename="imagesloaded.js" version='3' /}
+		{js filename="sea.js" version='3' /}		
+		<title>{$head['title']}</title>
+	</head>
+
+<body class="hu_xing_tu">
+{template 'header','newhouse'}
+<div class="bread">您当前的位置：<a href="{$_config['site_url']}">{$_config['name']}{$_config['site_name']}</a>&gt;<a href="{url 'newhouse'}" title="{$_config['name']}新房">{$_config['name']}新房</a>&gt;<span>户型图</span>
+</div>
+<div id="main" style="position:relative">
+	<div class="cf" id="container">
+		<h2>户型搜索</h2>
+		<ul class="LPtag">
+			<li class="cf">
+				<span>户&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型：</span>
+				<a {if !$room}class="on"{/if} href="{url 'newhouse/unit/list',"params=$other_url[room]"}">不限</a>
+				{if $room_arr}
+					{foreach $room_arr $r}
+						<a {if $room==$r['key']}class="on"{/if} href="{url 'newhouse/unit/list',"params=$other_url[room]-room-$r[key]"}">{$r['name']}</a>
+					{/foreach}
+				{/if}
+			</li>
+			<li class="cf">
+				<span>面&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;积：</span>
+				<a {if !$area}class="on"{/if} href="{url 'newhouse/unit/list',"params=$other_url[area]"}">不限</a>
+				{if $area_arr}
+					{foreach $area_arr $r}
+						<a {if $area==$r['key']}class="on"{/if} href="{url 'newhouse/unit/list',"params=$other_url[area]-area-$r[key]"}">{$r['name']}</a>
+					{/foreach}
+				{/if}
+			</li>
+			<li class="kt cf">
+				<span>客&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;厅：</span>
+				<a {if !$hall}class="on"{/if} href="{url 'newhouse/unit/list',"params=$other_url[hall]"}">不限</a>
+				{if $hall_arr}
+					{foreach $hall_arr $r}
+						<a {if $hall==$r['key']}class="on"{/if} href="{url 'newhouse/unit/list',"params=$other_url[hall]-hall-$r[key]"}">{$r['name']}</a>
+					{/foreach}
+				{/if}
+			</li>
+			<li class="wsj cf">
+				<span>卫&nbsp;&nbsp;生&nbsp;&nbsp;间：</span>
+				<a {if !$toilet}class="on"{/if} href="{url 'newhouse/unit/list',"params=$other_url[toilet]"}">不限</a>
+				{if $toilet_arr}
+					{foreach $toilet_arr $r}
+						<a {if $toilet==$r['key']}class="on"{/if} href="{url 'newhouse/unit/list',"params=$other_url[toilet]-toilet-$r[key]"}">{$r['name']}</a>
+					{/foreach}
+				{/if}
+			</li>
+			<li class="cf">
+				<span>楼盘名称：</span>
+				<form action="{url 'newhouse/unit/search'}" method="post" class="cf" id="my_form" autocomplete="off">
+					<input type="hidden" name="url" value="{$other_url['key']}">
+					<input type="text" id="search" name="key" value="{if $keywords}{$keywords}{/if}" placeholder="楼盘名/关键字"/>
+					<input type="button" id="sub" value=""/>
+				</form>
+			</li>
+		</ul>
+	</div>
+	
+	<ul class="ks-waterfall cf">	
+		{if $unit_list}	
+			{foreach $unit_list $r}
+				<li>
+					<a href="{url 'newhouse/detail/picture',"spell=$r[spell]&album=$r[tid]"}#id={$r['pid']}" class="b_img" title="{$r['name']}" target="_blank">
+					<img src="{$r['pic_url']}" alt="{$r['info']}" title="{$r['info']}" />
+					</a>
+					<div class="content">
+						<h4><a href="{url 'newhouse/detail/picture',"spell=$r[spell]&album=$r[tid]"}#id={$r['pid']}">{$r['name']}</a></h4>
+						<h5>户型：{if $r['room']}{$r['room']}室{if $r['hall']}{$r['hall']}厅{/if}{if $r['toilet']}{$r['toilet']}卫{/if}{else}待定{/if}&nbsp;&nbsp;&nbsp;面积：{if $r['area']}{$r['area']}㎡{else}待定{/if}</h5>
+						<p>{$r['info']}</p>
+					</div>
+				</li>
+			{/foreach}
+		{else}
+		<div class="no_result" id="huxing_no_result">
+			<h3>很抱歉，没有找到符合条件的结果</h3>
+			<span>建议您：1、适当减少筛选条件</span>
+			<span>2、尝试其他关键字</span>
+		</div>
+		{/if}
+	</ul>
+	<div class="pagination">
+		{if $total_page >1}
+		{$page}
+		{/if}
+	</div>
+</div>
+{template 'foot'}
+<script type="text/javascript">
+seajs.use(["jquery","alert","wookmark","toTop",	"autoc"], function($,alertM) {
+	$("#search").autoC("http://house.hd.zhijia.com/ajax/house.html")
+	//搜索提交
+	$('#sub').click(function() {
+		var $val=$('#search').val(),
+			re = /^\s*$/;
+		if (re.test($val) || $val=='楼盘名/关键字') {
+			alertM("请输入搜索内容!",{cName:"error"});
+		}else{
+			$('#my_form').submit();
+		}
+	});
+});
+</script>
+</body>
+</html>

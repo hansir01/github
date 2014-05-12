@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{template 'head','newhouse'}
+</head>
+<body>
+	{template 'header','newhouse'}
+	<div id="main">
+		<div class="bread"><a href="{$_config['site_url']}">{$_config['name']}{$_config['site_name']}</a>&gt;<a href="{url 'newhouse'}">{$_config['name']}新房</a>&gt;<span>新房导购</span></div>
+		<div class="cf">
+			<div class="detail_fl">
+				<div class="bodyb detail_dg">
+					<h3>
+						<span class="fr">共{$newscat['total']}条</span>
+						{$now_cname}
+					</h3>
+					{if $newscat['data']}
+                    					{if $num == 0}<ul class="ld nobo">{else}<ul class="ld">{/if}
+						{foreach $newscat['data'] $k $r}
+							<li>
+								<span class="fl"><a href="{$r['url']}" target="_blank">{$r['title_cut']}</a></span>
+								<span class="fr">{$r['published']}</span>
+							</li>
+							{if $num != 0 && $k == $num}</ul><ul class="ld nobo">
+							{elseif $k > 0 && ($k+1)%6==0 && $k != $per_num - 1}</ul><ul class="ld">{/if}
+						{/foreach}
+                   				</ul>
+					<div class="pagination">
+						{$page_html}
+					</div>
+					{else}
+					<div class="no_rlt">抱歉！ 暂时没有相关导购内容~</div>
+					 {/if}
+				</div>
+			</div>
+			<div class="detail_fr">
+				<div class="bodyb obl">
+					<h4>楼盘导购</h4>
+					<ul class="cf">
+						{if $catid_arr}
+                    		{foreach $catid_arr $k $r}
+								<?php 
+								$cat = $k+1;
+								?>
+								<li><a href="{url 'newhouse/guide/index',"catid=$cat"}" {if $cat_order == $k + 1} class="on"{/if}>{$r['cname']}</a></li>
+							{/foreach}
+                  	   {/if}
+					</ul>
+				</div>
+				{if $lastest}
+				<div class="lista">
+					<h4>最新楼盘</h4>
+					<ul class="lmr">
+						   {foreach $lastest $k $r}
+						<li>
+							<span class="fr"><a href="{url "newhouse/list/index","params=-$r[arealetters]"}" target="_blank">{if $r['areaname']}{$r['areaname']}{else}待定{/if}</a></span>
+							<span class="fl"><a href="{url "newhouse/detail/index","spell=$r[spell]"}" target="_blank">{strcut string="$r[name]" length="20" /}</a></span>
+							<span class="red">{if $r['averageprice']}{$r['averageprice']}元/㎡{else}待定{/if}</span>
+						</li>
+						{/foreach}
+					</ul>
+				</div>
+				{/if}
+				{if $hot}
+				<div class="lista">
+					<h4>热点楼盘</h4>
+					<ul class="lmr">
+						{foreach $hot $val}
+						<li>
+							<span class="fr"><a href="{url "newhouse/list/index","params=-$val[arealetters]"}" target="_blank">{$val['areaname']}</a></span>
+							<span class="fl"><a href="{url "newhouse/detail/index","spell=$val[spell]"}" target="_blank">{strcut string="$val[name]" length="20" /}</a></span>
+							<span class="red">{if $val['averageprice']}{$val['averageprice']}元/㎡{else}待定{/if}</span>
+						</li>
+						{/foreach}
+					</ul>
+				</div>
+				{/if}
+				 {if $groupbuy_order}
+				<div class="lista">
+					<h4>本月团购排行</h4>
+					<ul class="lph">
+					{foreach $groupbuy_order $k $r}
+						<li>
+							<span class="fl">{$k+1}</span>
+							<span class="red fr">
+								{if $r['isunitprice']}
+									一房一价
+								{else}
+									{if $r['averageprice']}
+										{$r['averageprice']}元/㎡
+									{else}
+										待定
+									{/if}
+								{/if}
+							</span>
+							<a href="{url "newhouse/detail/index","spell=$r[spell]"}" target="_blank">{strcut string="$r[name]" length="20" /}</a>
+						</li>
+					{/foreach}
+					</ul>
+				</div>
+				{/if}
+				<div class="lista jsqli">
+					<h4>购房计算器</h4>
+					<a href="{url 'newhouse/tool/index'}" target="_blank">
+						<img src="{$_config['img3_url']}xinfang/index_nl.jpg">
+						购房能力<br>评估
+					</a>
+					<a href="{url 'newhouse/tool/index',"type=2"}" target="_blank"><img src="{$_config['img3_url']}xinfang/index_calc.jpg">
+						贷款<br>计算器
+					</a>
+					<a href="{url 'newhouse/tool/index',"type=4"}" target="_blank">
+						<img src="{$_config['img3_url']}xinfang/index_tq.jpg">
+						提前还款<br>计算器
+					</a>
+					<a href="{url 'newhouse/tool/index',"type=5"}" target="_blank">
+						<img src="{$_config['img3_url']}xinfang/index_sf.jpg">
+						税费<br>计算器
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	{template 'foot'}
+<script>
+seajs.use("ipn",function(ipn){
+	ipn("#impression","1.json","123")
+});
+</script>
+</body>
+</html>

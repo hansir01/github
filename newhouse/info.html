@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{template 'head','newhouse'}
+</head>
+<body>
+	{template 'header','newhouse'}
+	<div id="main">
+		{template 'nav','newhouse'}
+		<div class="cf">			
+			<div class="detail_fl">				
+				<div class="bodyb">				
+					<div class="detail_info">						
+						<h4>{$house['name']}基本信息</h4>
+						<ul>
+							<li><span>区域/商圈：</span>{if $house['areaname'] || $house['circlename']}{$house['areaname']} {$house['circlename']}{else}待定{/if}</li>
+							<li><span>环线/片区：</span>{if $house['circlelinename']}{$house['circlelinename']}{else}待定{/if}</li>
+							<li><span>建筑类型：</span>{if $house['buildtypename']}{$house['buildtypename']}{else}待定{/if}</li>
+							<li><span>建筑特色：</span>{if $house['buildfeaturename']}{$house['buildfeaturename']}{else}待定{/if}</li>
+							<li><span>建筑面积：</span>{if $house['areabuild']}{$house['areabuild']}㎡{else}待定{/if}</li>
+							<li><span>规划面积：</span>{if $house['arealand']}{$house['arealand']}㎡{else}待定{/if}</li>
+							<li><span>规划户数：</span>{if $house['roomnum']}{$house['roomnum']}户{else}待定{/if}</li>
+							<li><span>规划户型：</span>{if $house['roomtype']}{$house['roomtype']}{else}待定{/if}</li>
+							<li><span>户型面积：</span>{if $house['roomtypename'] || $house['roomarea']}{$house['roomarea']} {$house['roomtypename']}{else}待定{/if}</li>
+							<li><span>产权年限：</span>{if $house['propertyage']}{$house['propertyage']}年{else}待定{/if}</li>
+							<li><span>物业类型：</span>{if $house['projecttypename']}{$house['projecttypename']}{else}待定{/if}</li>
+							<li><span>项目进度：</span>{if $extra['project_progress']}{$extra['project_progress']}{else}待定{/if}</li>
+							<li><span id="saleinfo">装修情况：</span>{if $house['decorationname']}{$house['decorationname']}{else}待定{/if}</li>
+						</ul>
+					</div>
+					<a name="voucher"></a>					
+					<div class="detail_info">
+						<h4>{$house['name']}销售信息</h4>
+						<ul>							
+							<li><span>开盘时间：</span>{if $house['opentime_year_month']}{$house['opentime_year_month']}{if $house['opentime_day']}-{$house['opentime_day']}{/if}{else}待定{/if}</li>
+							<li>
+								<span>交房时间：</span>
+								{if $house['livetime_year_month'] || $house['livetime_caption']}
+									{if $house['livetime_year_month']}
+										{$house['livetime_year_month']}{if $house['livetime_day']}-{$house['livetime_day']}{/if}
+									{/if}
+									{$house['livetime_caption']}
+								{else}
+									待定
+								{/if}
+							</li>
+							<li><span>销售状态：</span>{if $house['salesstatusname']}{$house['salesstatusname']}{else}待定{/if}</li>
+							<li><span>预售证号：</span>{if !$house['cardnumber']}待定{/if}</li>
+							{if $house['cardnumber']}
+								<table>
+									<tr>
+										<th width="120">预售证号</th>
+										<th>许可范围</th>
+									</tr>
+									{foreach $house['cardnumber'] $v}
+										<tr>
+											<td>{$v['cardnumber']}</td>
+											<td>{$v['extent']}</td>
+										</tr>
+									{/foreach}
+								</table>
+							{/if}
+							<li>
+								<span>已取得证件：</span>
+								{if $house['vouchername_arr'][0]['fid']}
+									{foreach $house['vouchername_arr'] $val}
+										<a >{$val['name']}</a>
+									{/foreach}
+								{else}
+									待定
+								{/if}
+							</li>
+							<li>
+								<span>售楼电话：</span>
+								<b>
+								{if $house['tel400_enable']}
+                                	{$_config['setting']['tel_number']}{if $house['tel400_smallnum']}转{$house['tel400_smallnum']}{/if}
+                                {elseif $house['saletel']}
+                                	{$house['saletel']}
+                                {else}咨询热线尚未开通{/if}
+								</b>
+							</li>
+							<li><span>购房QQ群：</span>{if $house['qqgroup']}{$house['qqgroup']}{else}待定{/if}</li>
+							<li><span>售楼地址：</span>{if $house['saleaddress']}{$house['saleaddress']}{else}待定{/if}</li>
+							<li><span>楼盘地址：</span>{if $house['address']}{$house['address']}{else}待定{/if}</li>
+							<li><span id="price">开 发 商：</span>{if $house['cname']}<a href="{url 'newhouse/developer/index',"uid=$house[cid]"}" title="{$house['cname']}" target="_blank">{$house['cname']}</a>{else}待定{/if}</li>
+						</ul>
+					</div>
+					<div class="detail_info">
+						<h4>{$house['name']}价格信息</h4>
+						<ul>
+							<li>
+								<span>参考价格：</span>
+								<b>
+									{if $house['isunitprice']}
+										一房一价
+									{else}
+										{if $house['averageprice']}
+											{$house['averageprice']}元/㎡
+										{else}
+											待定
+										{/if}
+									{/if}
+								</b>
+							</li>
+							<li><span>价格说明：</span></li>
+						</ul>
+						{if $historyprice}
+							<table>
+								<tr>
+									<th width="120">记录时间</th>
+									<th width="99">均价</th>
+									<th>价格描述</th>
+								</tr>
+								{foreach $historyprice $v}
+									<tr>
+										<td>{$v['date']}</td>
+										<td>										
+											{if $v['price']}
+												{$v['price']}元/平方米
+											{else}
+												待定
+											{/if}
+										</td>
+										<td>{if $v['priceexplain']}{$v['priceexplain']}{else}--{/if}</td>
+									</tr>
+								{/foreach}							
+							</table>
+						{/if}					
+					</div>
+					<div class="detail_info" id="setting">
+						<h4>{$house['name']}配套信息</h4>
+						<ul>
+							<li><span>物业公司：</span>{if $extra['property_company']}{$extra['property_company']}{else}待定{/if}</li>
+							<li><span>物 业 费：</span>{if $house['property_expense']}{$house['property_expense']}{else}待定{/if}</li>
+							<li><span>容 积 率：</span>{if $house['capacity_rate']}{$house['capacity_rate']}{else}待定{/if}</li>
+							<li><span>绿 化 率：</span>{if $house['green_rate']}{$house['green_rate']}%{else}待定{/if}</li>
+							<li><span>交通情况：</span>{if $house['gongjiao']}{$house['gongjiao']}{else}待定{/if}</li>
+							<li><span>停 车 位：</span>{if $extra['parking']}{$extra['parking']}{else}待定{/if}</li>
+							<li><span>车位比率：</span>{if $extra['parking_ratio']}{$extra['parking_ratio']}{else}待定{/if}</li>
+							<li>
+								<span>配套信息：</span>
+								{if $extra['support_school']}<b style="font-weight:bold">学校：</b>{$extra['support_school']}<br>{/if}
+								{if $extra['support_shopping']}<b style="font-weight:bold">购物：</b>{$extra['support_shopping']}<br>{/if}
+								{if $extra['support_medical']}<b style="font-weight:bold">医疗：</b>{$extra['support_medical']}<br>{/if}
+								{if $extra['support_repast']}<b style="font-weight:bold">餐饮：</b>{$extra['support_repast']}<br>{/if}
+								{if $extra['support_financial']}<b style="font-weight:bold">金融：</b>{$extra['support_financial']}<br>{/if}
+								{if $extra['support_yule']}<b style="font-weight:bold" id="intro">娱乐：</b>{$extra['support_yule']}{/if}
+								{if !$extra['support_school'] && !$extra['support_shopping'] && !$extra['support_medical'] && !$extra['support_repast'] && !$extra['support_financial'] && !$extra['support_yule']}待定{/if}
+							</li>
+						</ul>
+					</div>
+					<div class="detail_info nobo">
+						<h4>{$house['name']}楼盘简介</h4>
+						<div>{if $extra['info']}{$extra['info']}{else}待定{/if}</div>
+					</div>
+				</div>
+			</div>
+			<div class="detail_fr">
+				{template 'slice_right_detail','newhouse'}
+				{template 'slice_impress','newhouse'}
+				{template 'slice_compare','newhouse'}
+				{template 'slice_look','newhouse'}
+			</div>
+		</div>
+	</div>
+	{template 'footer_statement','newhouse'}
+	{template 'foot'}
+	<div id="QQOL"></div>
+<script>
+seajs.use(["jquery","alert"],function($,alertM){
+	if (!-[1, ] && !window.XMLHttpRequest) {
+		var $w=$(window).bind('scroll', function() {
+				$qq.stop().animate({top:$w.scrollTop()+$w.height()/2-80});
+			}),
+			$qq=$("#QQOL").css("top",$w.scrollTop()+$w.height()/2-80);
+	}
+	$("div.detail_fl")[0].oncopy=function(){
+		alertM("受保护的内容，暂不可复制",{cName:"cross"})
+		return false;
+	}
+});
+</script>
+<script charset="utf-8" defer async type="text/javascript" src="http://static.b.qq.com/account/bizqq/js/wpa.js?kfuin=4008906655&amp;wid=QQOL"></script>
+</body>
+</html>

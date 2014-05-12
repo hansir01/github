@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{template 'head','newhouse'}
+</head>
+<body>
+	{template 'header','newhouse'}
+	<div id="main">
+        <div class="bread">您当前的位置：<a href="{$_config['site_url']}">{$_config['name']}{$_config['site_name']}</a>&gt;<a href="{url 'newhouse'}" title="{$_config['name']}新房">{$_config['name']}新房</a>&gt;<span>商业地产</span></div>
+		<div class="sydc_t">
+			<div class="fr" id="sydc_t_l">
+   				<!--#include virtual="/section/f_sydcy_xwlb.html"--><!--# f新房首页 商业地产页-新闻列表 #-->
+			</div>
+			<div id="sydc_show">
+				<!--#include virtual="/section/f_sydcy_ppt.html"--><!--# f新房首页 商业地产页-焦点图 #-->
+				<a href="javascript:" id="go_l"></a>
+				<a href="javascript:" id="go_r"></a>
+			</div>
+		</div>
+		<div id="sydc_jp">
+			<h3 class="sydc_tab"><a href="{url 'newhouse/list/index',"params=-h2"}" class="fr" target="_blank">更多&gt;&gt;</a>
+            <span data-more="{url 'newhouse/list/index',"params=-h2"}" class="on">精品商铺</span><span data-more="{url 'newhouse/list/index',"params=-h3"}">精品写字楼</span></h3>
+			<ul class="cf" style="display:block">
+                {if $hot_shop}
+                    {foreach $hot_shop $r}
+                    	<li><a href="{url 'newhouse/detail/index',"spell=$r[spell]"}" target="_blank" title="{$r['name']}"><img src="{$r['pic_url']}" alt="{$r['name']}"><span>{$r['name']}</span></a></li>
+                    {/foreach}
+                {/if}
+			</ul>
+			<ul class="cf">
+                {if $hot_office}
+                    {foreach $hot_office $r}
+                    	<li><a href="{url 'newhouse/detail/index',"spell=$r[spell]"}" target="_blank" title="{$r['name']}"><img src="{$r['pic_url']}" alt="{$r['name']}"><span>{$r['name']}</span></a></li>
+                    {/foreach}
+                {/if}
+			</ul>
+		</div>
+		<div class="sydc_list">
+			<h3 class="sydc_tab"><a href="{url 'newhouse/list/index',"params=-h2"}" class="fr" target="_blank">更多&gt;&gt;</a><span class="on">热门商铺</span></h3>
+			<div class="cf">
+				<ul class="fl" id="sydc_list1">
+                    {if $pv_shop}
+                        {foreach $pv_shop $r}
+                            <li>
+                                <h4>{$r['name']}</h4>
+                                <div>
+                                    <a href="{url 'newhouse/detail/index',"spell=$r[spell]"}" class="dp" target="_blank">去看看</a>
+                                    <a href="{url 'newhouse/detail/index',"spell=$r[spell]"}" target="_blank" title="{$r['name']}"><img src="{$r['pic_url']}" alt="{$r['name']}"></a>
+                                    <p><i class="selstag{$r['salesstatus']} fr"></i>项目均价：<b class="red">{if $r['isunitprice']}一房一价{else}{if $r['averageprice']}{$r['averageprice']}元/平米{else}待定{/if}{/if}</b><br>
+                                    价格优惠：<span class="red sydc_yh">{if $r['priceexplain']}{$r['priceexplain']}{else}暂无{/if}</span><br>
+                                    开盘时间：{if $r['opentime_year_month']}{$r['opentime_year_month']}{if $r['opentime_day']}-{$r['opentime_day']}{/if}{else}待定{/if}</p>
+                                    <p class="sydc_m">
+                                        {if $r['tel400_enable']}
+                                            <b>{$_config['setting']['tel_number']}</b>{if $r['tel400_smallnum']}转<b>{$r['tel400_smallnum']}</b>{/if}
+                                        {elseif $r['saletel']}
+                                            <b>{$r['saletel']}</b>
+                                        {else}<b>咨询热线尚未开通</b>{/if}
+                                    </p>
+                                    <p class="gray"><span class="red">{$r['pv']}</span>人已浏览 | <span class="red">{$r['attention']}</span>人已关注</p>
+                                </div>
+                            </li>
+                        {/foreach}
+                    {/if}
+				</ul>
+				<div class="fr" id="sydc_list3">
+					<h4><span class="on">最新商铺</span>|<span>近期开盘商铺</span></h4>
+					<ul class="lph" style="display:block">
+                        {if $new_shop}
+                            {foreach $new_shop $k $r}
+                                <li>
+                                    <span class="fl">{$k+1}</span>
+                                    <span class="red fr">{if $r['isunitprice']}一房一价{else}{if $r['averageprice']}{$r['averageprice']}元/平米{else}待定{/if}{/if}</span>
+                                    <a href="{url 'newhouse/list/index',"params=-$r[arealetters]-h2"}" class="fr" target="_blank">{$r['areaname']}</a>
+                                    <a href="{url 'newhouse/detail/index',"spell=$r[spell]"}" target="_blank" title="{$r['name']}">{$r['name']}</a>
+                                </li>
+                            {/foreach}
+                        {/if}
+					</ul>
+					<ul class="plist" id="sydc_list5">
+                        {if $open_shop}
+                            {foreach $open_shop $k $r}
+                                <li{if $k==0} class="on"{/if}>
+                                    <h5 class="plist_top"><span class="fr plist_no">{if $r['opentime_year_month']}{$r['opentime_year_month']}{if $r['opentime_day']}-{$r['opentime_day']}{/if}{else}待定{/if}</span>
+                                    <a href="{url 'newhouse/detail/index',"spell=$r[spell]"}" target="_blank" title="{$r['name']}">{$r['name']}</a><i class="selstag{$r['salesstatus']}"></i></h5>
+                                    <p>
+                                        <a href="{url 'newhouse/detail/index',"spell=$r[spell]"}" class="fl" target="_blank" title="{$r['name']}"><img src="{$r['pic_url']}" alt="{$r['name']}"></a>
+                                        <a href="{url 'newhouse/list/index',"params=-$r[arealetters]-h2"}" target="_blank">{$r['areaname']}</a>{if $r['circlename']} <a href="{url 'newhouse/list/index',"params=-$r[circleletters]-h2"}" target="_blank" title="">{$r['circlename']}</a>{/if}<br>
+                                        <span class="red">
+                                        {if $r['priceexplain']}
+                                        	{$r['priceexplain']}
+                                        {else}
+                                        	{if $r['isunitprice']}一房一价{else}{if $r['averageprice']}{$r['averageprice']}元/平米{else}待定{/if}{/if}
+                                        {/if}
+                                        </span>
+                                        {if $r['tel400_enable']}
+                                            {$_config['setting']['tel_number']}{if $r['tel400_smallnum']}转{$r['tel400_smallnum']}{/if}
+                                        {elseif $r['saletel']}
+                                            {$r['saletel']}
+                                        {else}咨询热线尚未开通{/if}
+                                    </p>
+                                </li>
+                            {/foreach}
+                        {/if}
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="sydc_list">
+			<h3 class="sydc_tab"><a href="{url 'newhouse/list/index',"params=-h3"}" class="fr" target="_blank">更多&gt;&gt;</a><span class="on">热门写字楼</span></h3>
+			<div class="cf">
+				<ul class="fl" id="sydc_list2">
+                    {if $pv_office}
+                        {foreach $pv_office $r}
+                            <li>
+                                <h4>{$r['name']}</h4>
+                                <div>
+                                    <a href="{url 'newhouse/detail/index',"spell=$r[spell]"}" class="dp" target="_blank">去看看</a>
+                                    <a href="{url 'newhouse/detail/index',"spell=$r[spell]"}" target="_blank" title="{$r['name']}"><img src="{$r['pic_url']}" alt="{$r['name']}"></a>
+                                    <p><i class="selstag{$r['salesstatus']} fr"></i>项目均价：<b class="red">{if $r['isunitprice']}一房一价{else}{if $r['averageprice']}{$r['averageprice']}元/平米{else}待定{/if}{/if}</b><br>
+                                    价格优惠：<span class="red sydc_yh">{if $r['priceexplain']}{$r['priceexplain']}{else}暂无{/if}</span><br>
+                                    开盘时间：{if $r['opentime_year_month']}{$r['opentime_year_month']}{if $r['opentime_day']}-{$r['opentime_day']}{/if}{else}待定{/if}</p>
+                                    <p class="sydc_m">
+                                        {if $r['tel400_enable']}
+                                            <b>{$_config['setting']['tel_number']}</b>{if $r['tel400_smallnum']}转<b>{$r['tel400_smallnum']}</b>{/if}
+                                        {elseif $r['saletel']}
+                                            <b>{$r['saletel']}</b>
+                                        {else}<b>咨询热线尚未开通</b>{/if}
+                                    </p>
+                                    <p class="gray"><span class="red">{$r['pv']}</span>人已浏览 | <span class="red">{$r['attention']}</span>人已关注</p>
+                                </div>
+                            </li>
+                        {/foreach}
+                    {/if}
+				</ul>
+				<div class="fr" id="sydc_list4">
+					<h4><span class="on">最新写字楼</span>|<span>近期开盘写字楼</span></h4>
+					<ul class="lph" style="display:block">
+                        {if $new_office}
+                            {foreach $new_office $k $r}
+                                <li>
+                                    <span class="fl">{$k+1}</span>
+                                    <span class="red fr">{if $r['isunitprice']}一房一价{else}{if $r['averageprice']}{$r['averageprice']}元/平米{else}待定{/if}{/if}</span>
+                                    <a href="{url 'newhouse/list/index',"params=-$r[arealetters]-h3"}" class="fr" target="_blank">{$r['areaname']}</a>
+                                    <a href="{url 'newhouse/detail/index',"spell=$r[spell]"}" target="_blank" title="{$r['name']}">{$r['name']}</a>
+                                </li>
+                            {/foreach}
+                        {/if}
+					</ul>
+					<ul class="plist" id="sydc_list6">
+                        {if $open_office}
+                            {foreach $open_office $k $r}
+                                <li{if $k==0} class="on"{/if}>
+                                    <h5 class="plist_top"><span class="fr plist_no">{if $r['opentime_year_month']}{$r['opentime_year_month']}{if $r['opentime_day']}-{$r['opentime_day']}{/if}{else}待定{/if}</span>
+                                    <a href="{url 'newhouse/detail/index',"spell=$r[spell]"}" target="_blank" title="{$r['name']}">{$r['name']}</a><i class="selstag{$r['salesstatus']}"></i></h5>
+                                    <p>
+                                        <a href="{url 'newhouse/detail/index',"spell=$r[spell]"}" class="fl" target="_blank" title="{$r['name']}"><img src="{$r['pic_url']}" alt="{$r['name']}"></a>
+                                        <a href="{url 'newhouse/list/index',"params=-$r[arealetters]-h3"}" target="_blank">{$r['areaname']}</a>{if $r['circlename']} <a href="{url 'newhouse/list/index',"params=-$r[circleletters]-h3"}" target="_blank" title="">{$r['circlename']}</a>{/if}<br>
+                                        <span class="red">
+                                        {if $r['priceexplain']}
+                                        	{$r['priceexplain']}
+                                        {else}
+                                        	{if $r['isunitprice']}一房一价{else}{if $r['averageprice']}{$r['averageprice']}元/平米{else}待定{/if}{/if}
+                                        {/if}
+                                        </span>
+                                        {if $r['tel400_enable']}
+                                            {$_config['setting']['tel_number']}{if $r['tel400_smallnum']}转{$r['tel400_smallnum']}{/if}
+                                        {elseif $r['saletel']}
+                                            {$r['saletel']}
+                                        {else}咨询热线尚未开通{/if}
+                                    </p>
+                                </li>
+                            {/foreach}
+                        {/if}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	{template 'foot'}
+<script>
+seajs.use("autab",function(){
+	var $go_r=$("#go_r").on("click",function(){
+			if($pic_show.find("i.on").index()==piclength-1){
+				$pic_show.find("i").eq(0).trigger("mouseenter")
+			}else{
+				$pic_show.find("i.on").next().trigger("mouseenter")
+			}
+		}),
+		$go_l=$("#go_l").on("click",function(){
+			if($pic_show.find("i.on").index()==0){
+				$pic_show.find("i").last().trigger("mouseenter")
+			}else{
+				$pic_show.find("i.on").prev().trigger("mouseenter")
+			}
+		}),
+		$pic_show=$("#sydc_show").on({
+			mouseenter:function(){
+				$go_r.show();
+				$go_l.show();
+			},
+			mouseleave:function(){
+				$go_r.hide();
+				$go_l.hide();
+			}
+		}).autab("i","li",4),
+		piclength=$pic_show.find("i").length;
+	$("#sydc_t_l,#sydc_jp").autab("h3 span","ul",0,0,0,function(){
+		$(this).parent().find("a").attr("href",$(this).data("more"))
+	});
+	$("#sydc_list1 li,#sydc_list2 li").on({
+		mouseenter:function(){
+			$(this).addClass("on")
+		},
+		mouseleave:function(){
+			$(this).removeClass("on")
+		}
+	})
+	$("#sydc_list5 li,#sydc_list6 li").on({
+		mouseenter:function(){
+			$(this).addClass("on").siblings().removeClass("on")
+		}
+	})
+	$("#sydc_list3,#sydc_list4").autab("h4 span","ul");
+});
+</script>
+</body>
+</html>

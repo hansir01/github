@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{template 'head','newhouse'}
+</head>
+<body>
+	{template 'header','newhouse'}
+	<div id="main">
+		{template 'nav','newhouse'}
+		<div class="cf">
+			{if ($house['longcoor'] && $house['laticoor'])}
+				<div class="mapicon cf" id="mapicon">
+					<p class="lp" name="house">楼盘</p>
+					<p class="gj" name="">公交</p>
+					<p class="cy" name="">餐饮</p>
+					<p class="yh" name="">银行</p>
+					<p class="xx" name="">学校</p>
+					<p class="yy" name="">医院</p>
+					<p class="jyz" name="">加油站</p>
+					<a href="{url 'newhouse/map/index'}#l1={$house['laticoor']}&l2={$house['longcoor']}&l3=16&keyword={$house['name']}" class="seeB" style="margin-left:199px">在大地图上查看</a>
+					<a href="javascript:" class="reset" id="resetSearch">重置地图</a>
+					<a href="javascript:" class="print" onclick="window.print();">打印本页</a>
+				</div>
+				<div class="cf mapindex">
+					<div class="fr maplist" id="map_traffic_search_box">
+						<dl>
+							<dt><a href="{url 'newhouse/detail/index',"spell=$house[spell]"}" target="_blank">{$house['name']}</a></dt>
+							<dd>{$house['address']}</dd>
+						</dl>
+						<form id="send_map" action="{url 'newhouse/detail/sendinfono'}">
+							<b>发送楼盘地址到手机</b><br>
+							<input name="id" type="hidden" value="{$house['hid']}">
+							<input id="sendf" name="mobile" type="text" placeholder="请输入手机号码">
+							<a href="javascript:" class="obtn"><button type="submit"></button>发送</a>
+						</form>
+						<h4 name="type"></h4>
+						<ul name="result_list">	                	
+						</ul>
+					</div>
+					<div id="map" class="fl" style="height:450px;width:725px">
+					</div>
+				</div>
+			{/if}
+			<div class="detail_fl">
+				<div class="bodyb">
+					<div class="detail_info">
+						<h4>交通状况</h4>
+						<p>
+							{if $house['gongjiao']}{$house['gongjiao']}{else}待定{/if}
+						</p>
+					</div>
+					<div class="detail_info">
+						<h4>周边配套</h4>
+						<p>
+							{if $extra['peripheral_support']}{$extra['peripheral_support']}{else}待定{/if}
+						</p>
+					</div>
+					<div class="detail_info nobo">
+						<h4>项目介绍</h4>
+						<p>
+							{if $extra['info']}{$extra['info']}{else}待定{/if}
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="detail_fr">
+				{template 'slice_right_detail','newhouse'}
+				{template 'slice_periphery','newhouse'}
+			</div>
+		</div>
+	</div>
+	{template 'footer_statement','newhouse'}
+	{template 'foot'}
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.5&ak=A0d7a1091e5b98f5430228d016ee0ac7"></script>
+<script type="text/javascript">
+seajs.use(["snail-baiduaround","alert"],function(snail,alertM){	
+	snail.setURL('{url "newhouse"}/');
+	snail.drawMap(parseFloat("{$house['longcoor']}"),parseFloat("{$house['laticoor']}"),"{$house['name']}","map");
+	snail.getMaps();
+	var $ps=$('#mapicon p').on("click",function(){
+		snail.setKEY($(this).text());
+		if($(this).attr('name') == 'house'){
+			snail.setH(true);
+		}else{
+			snail.setH(false);
+		}
+		$ps.removeClass("on");
+		$(this).addClass("on");
+		snail.getMaps();
+	})
+
+	$("#resetSearch").click(function(){
+		snail.setH(true);
+		snail.getMaps();
+	})
+	var $f=$("#send_map").on("submit",function(){
+		if (/^1[3458]\d{9}$/.test($.trim($f.find("input#sendf").val()))) {
+			$.ajax({
+				url:$f.attr("action"),
+				dataType:"jsonp",
+				data:$f.serialize(),
+				type:"POST"
+			}).done(function(data){
+				alertM(data.alert,{cName:data.state})
+			}).fail(function(){
+				alertM("发送信息失败，请检查网络连接是否已断开",{cName:"error"});
+			})
+		}else{
+			alertM("手机号码格式错误", {
+				cName: "error",
+				rf: function() {
+					$f.find("input").trigger("focus");
+				}
+			});
+		}
+		return false;
+	}).on("click","a.obtn",function(){
+		$f.trigger("submit")
+	});
+	$("div.detail_fl")[0].oncopy=function(){
+		alertM("受保护的内容，暂不可复制",{cName:"cross"})
+		return false;
+	}
+})
+</script>
+<div id="QQOL"></div>
+<script>
+seajs.use("jquery",function($){
+	if (!-[1, ] && !window.XMLHttpRequest) {
+		var $w=$(window).bind('scroll', function() {
+				$qq.stop().animate({top:$w.scrollTop()+$w.height()/2-80});
+			}),
+			$qq=$("#QQOL").css("top",$w.scrollTop()+$w.height()/2-80);
+	}
+});
+</script>
+<script charset="utf-8" defer async type="text/javascript" src="http://static.b.qq.com/account/bizqq/js/wpa.js?kfuin=4008906655&amp;wid=QQOL"></script>
+</body>
+</html>

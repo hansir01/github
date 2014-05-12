@@ -1,0 +1,17 @@
+<div class="bodya">
+	<h4>{$house['name']}楼盘印象</h4>
+	<form id="impression" class="cf">
+		<input type="text" placeholder="我的印象，最多5个字">
+		<a href="javascript:" class="obtn"><button type="submit"></button><i class="add"></i>添加印象</a>
+		{if $impression}
+            {foreach $impression $k $r}
+				<span class="t{$r['bgcolor']}" data-id="{$r['id']}">{$r['name']}<i>已有<b>{$r['support']}</b>人支持</i></span>
+			{/foreach}
+		{/if}
+	</form>
+</div>
+<script>
+seajs.use("ipn",function(ipn){
+	ipn("#impression","{url 'newhouse/detail/impression'}","{$house['hid']}")
+});
+</script>

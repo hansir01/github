@@ -1,0 +1,24 @@
+{if $compare_history}
+	<div class="lista">
+		<h4>{$house['name']}跟谁PK过</h4>
+		<ul class="lmr">
+			{foreach $compare_history $val}
+				<li>
+					<span class="fr"><a href="{url 'newhouse/pk/index'}#id={$house['hid']},{$val['hid']}" target="_blank">对比</a></span>
+					<span class="fl"><a href="{url 'newhouse/detail/index',"spell=$val[spell]"}" target="_blank">{$val['name_cut']}</a></span>
+					<span class="red">
+						{if $val['isunitprice']}
+							一房一价
+						{else}
+							{if $val['averageprice']}
+								{$val['averageprice']}元/㎡
+							{else}
+								待定
+							{/if}
+						{/if}
+					</span>
+				</li>
+			{/foreach}
+		</ul>
+	</div>
+{/if}

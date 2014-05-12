@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{template 'head','newhouse'}
+</head>
+<body class="baojia_bd">
+	{template 'header','newhouse'}
+	<div id="main">
+		<div class="breadcrumb">您当前的位置：<a href="{$_config['site_url']}">{$_config['name']}{$_config['site_name']}</a><span>&gt;</span><a href="{url 'newhouse'}" title="{$_config['name']}新房">{$_config['name']}新房</a><span>&gt;</span><strong>楼盘报价</strong></div>
+		<div class="select_wrap">
+			<div class="select">
+			<h2>{$_config['name']}新盘房价</h2>
+			<div class="dq" id="dq">
+				<ul class="cf">
+					{if $area_all}
+              					{foreach $area_all $r}
+					<li><a href="#" title="" target="_blank" data-id="{$r['letters']}">{$r['name']}</a><span>|</span></li>
+						{/foreach}
+					{/if}
+				</ul>
+			</div>
+			<div class="search cf">
+				<div class="search_txt cf fl">
+					<form action="" method="">
+						<input class="txt fl" id="txt" type="text"  placeholder="请输入楼盘名称" value=""/>
+						<input class="sub fr" type="button"/>
+					</form>
+				</div>
+			</div>
+		</div>
+		</div>
+		<div class="list" id="jg_wrap">
+			<h3>搜索结果：</h3>
+			<ul id="jg" class="cf">
+			</ul>
+		</div>
+		{if $all_area_price}
+			{foreach $all_area_price $r}
+		<div class="list">
+			<h3>{$r['name']}</h3>
+			<ul class="cf">
+				{if $r['house']}
+					{foreach $r['house'] $s}
+				<li><a href="{url 'newhouse/detail/index',"spell=$s[spell]"}" title="{$s['name']}" target="_blank"><span>{$s['name']}</span></a><b>{if $s['averageprice']}{$s['averageprice']}元{else}待定{/if}</b>
+					<a href="{url 'newhouse/detail/price',"spell=$s[spell]"}" {if $s['percent'] == "0"}class="ping" title="{$s['name']}" {elseif $s['percent'] > 0}class="up" title="{$s['name']}售价比上次价格调动上涨{$s['percentabs']}%"  {elseif $s['percent'] <0}class="down" title="{$s['name']}售价比上次价格调动下降{$s['percentabs']}%"  {/if} target="_blank"></a></li>
+					{/foreach}
+				{/if}
+			</ul>
+		</div>
+			{/foreach}
+		{/if}
+	</div>
+	{template 'foot'}
+	<script type="text/javascript">
+	seajs.use(['jquery','toTop'],function($){
+		var time=null,
+			$relist=$('#jg');
+			$li=$('.list').find('li'),
+			$input=$('.txt');
+		$('#txt').on({
+			'focus':function() {
+				$('body,html').animate({'scrollTop':150});
+				$input.css("color","#000");
+			},
+			'blur':function() {
+				$input.css("color","#CCC");	
+			},
+			'keyup':function() {
+				var $jg_wrap=$('#jg_wrap');
+				if(time){
+					clearTimeout(time);
+				}
+				time=setTimeout(function(){
+					if($li.filter(":contains('"+$input.val()+"')").clone().appendTo($relist.empty()).length==0|| $input.val()==''){
+						$relist.html("<li style='width:300px'>没有与您所输入内容有关的楼盘搜索结果</li>");
+					}
+				},400);
+				if ($input.val()==""||$input.val()=="请输入楼盘名称") {
+					$jg_wrap.hide();
+				}else{
+					$jg_wrap.show();
+				}
+			}
+		});
+		var $w=$(window),
+			$s=$('.select'),
+			t=$s.offset().top;
+		if (!-[1,]&&!window.XMLHttpRequest) {
+			$w.scroll(function(){
+				if($w.scrollTop()>t){
+					$s.css({
+						top:$w.scrollTop()-t
+					});
+				}else{
+					$s.removeAttr("style");
+				}
+			});
+		}else{
+			$w.scroll(function(){
+				if($w.scrollTop()>t){
+					$s.css({
+						"position":"fixed",
+						"top":0	
+					});
+				}else{
+					$s.css("position","static");
+				}
+			});
+		}
+		var $a=$('#dq').find('a');
+		$a.click(function() {
+			$('body,html').animate({'scrollTop':$('.list').eq($(this).parent().index()+1).offset().top-200});
+			return false;
+		});
+		var dqId = window.location.href.substr(window.location.href.indexOf("#") + 1);
+		$a.each(function() {
+			var $this=$(this);
+			if ($this.data('id')==dqId) {
+				$this.click();
+			}
+		});
+		$('#txt').parent().submit(function() {
+			return false;
+		});
+	});
+	</script>
+</body>
+</html>
+                                                

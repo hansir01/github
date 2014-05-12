@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{template 'head','newhouse'}
+</head>
+<body>
+	{template 'header','newhouse'}
+	<div id="main">
+		<div class="bread">您当前的位置：<a href="{$_config['site_url']}">{$_config['name']}{$_config['site_name']}</a>&gt;<a href="{url 'newhouse'}">{$_config['name']}新房</a>&gt;<span>楼盘风云榜</span></div>
+		<div class="cf plist" id="phblist">
+			<div class="fl plist1">
+				<h3><i></i><span>热门楼盘TOP10</span></h3>
+				<ul>
+					<li class="plist_t">
+						<span class="fl">排名</span>
+						<span class="fl">楼盘名</span>
+						<span class="fr">在售均价(元/㎡)</span>
+					</li>
+					{if $hot}
+						{foreach $hot $k $v}
+						<li>
+							<h5 {if $k<3}class="plist_top"{/if}>
+								<span class="fr {if $v['trend'] == 'up'}plist_up{elseif $v['trend'] == 'down'}plist_down{/if}">
+									{if $v['isunitprice']}
+										一房一价
+									{else}
+										{if $v['averageprice']}
+											{$v['averageprice']}元
+										{else}
+											待定
+										{/if}
+									{/if}
+								</span>
+								<span class="fl">{$k+1}</span>
+								<a href="{url 'newhouse/detail/index',"spell=$v[spell]"}" target="_blank">{$v['name']}</a>{if $v['salesstatus']}<i class="selstag{$v['salesstatus']}"></i>{/if}
+							</h5>
+							<p>
+								<a href="{url 'newhouse/detail/index',"spell=$v[spell]"}" target="_blank" class="fl"><img data-psrc="{$v['pic_url']}"></a>
+								{if $v['areaname']}
+									<a href="{url 'newhouse/list/index',"params=-$v[areaspell]"}" target="_blank">{$v['areaname']}</a>
+									{if $v['circlename']}
+										<a href="{url 'newhouse/list/index',"params=-$v[circlespell]"}" target="_blank">{$v['circlename']}</a>
+									{/if}
+									<br>
+								{/if}
+								{if $v['priceexplain']}<span class="red">{$v['priceexplain']}</span>{/if}
+								{if $v['tel400_enable']}{$_config['setting']['tel_number']}{if $v['tel400_smallnum']}转{$v['tel400_smallnum']}{/if}{elseif $v['saletel']}{$v['saletel']}{else}热线尚未开通{/if}
+							</p>
+						</li>
+						{/foreach}
+					{/if}					
+				</ul>
+			</div>
+			<div class="fl plist2">
+				<h3><i></i><span>周关注TOP10</span></h3>
+				<ul>
+					<li class="plist_t">
+						<span class="fl">排名</span>
+						<span class="fl">楼盘名</span>
+						<span class="fr">在售均价(元/㎡)</span>
+					</li>
+					{if $attention}
+						{foreach $attention $k $v}
+						<li>
+							<h5 {if $k<3}class="plist_top"{/if}>
+								<span class="fr {if $v['trend'] == 'up'}plist_up{elseif $v['trend'] == 'down'}plist_down{/if}">
+									{if $v['isunitprice']}
+										一房一价
+									{else}
+										{if $v['averageprice']}
+											{$v['averageprice']}元
+										{else}
+											待定
+										{/if}
+									{/if}
+								</span>
+								<span class="fl">{$k+1}</span>
+								<a href="{url 'newhouse/detail/index',"spell=$v[spell]"}" target="_blank">{$v['name']}</a>{if $v['salesstatus']}<i class="selstag{$v['salesstatus']}"></i>{/if}
+							</h5>
+							<p>
+								<a href="{url 'newhouse/detail/index',"spell=$v[spell]"}" target="_blank" class="fl"><img data-psrc="{$v['pic_url']}"></a>
+								{if $v['areaname']}
+									<a href="{url 'newhouse/list/index',"params=-$v[areaspell]"}" target="_blank">{$v['areaname']}</a>
+									{if $v['circlename']}
+										<a href="{url 'newhouse/list/index',"params=-$v[circlespell]"}" target="_blank">{$v['circlename']}</a>
+									{/if}
+									<br>
+								{/if}
+								{if $v['priceexplain']}<span class="red">{$v['priceexplain']}</span>{/if}
+								{if $v['tel400_enable']}{$_config['setting']['tel_number']}{if $v['tel400_smallnum']}转{$v['tel400_smallnum']}{/if}{elseif $v['saletel']}{$v['saletel']}{else}热线尚未开通{/if}
+							</p>
+						</li>
+						{/foreach}
+					{/if}					
+				</ul>
+			</div>
+			<div class="fl plist3">
+				<h3><i></i><span>周400电话TOP10</span></h3>
+				<ul>
+					<li class="plist_t">
+						<span class="fl">排名</span>
+						<span class="fl">楼盘名</span>
+						<span class="fr">在售均价(元/㎡)</span>
+					</li>
+					{if $tel}
+						{foreach $tel $k $v}
+						<li>
+							<h5 {if $k<3}class="plist_top"{/if}>
+								<span class="fr {if $v['trend'] == 'up'}plist_up{elseif $v['trend'] == 'down'}plist_down{/if}">
+									{if $v['isunitprice']}
+										一房一价
+									{else}
+										{if $v['averageprice']}
+											{$v['averageprice']}元
+										{else}
+											待定
+										{/if}
+									{/if}
+								</span>
+								<span class="fl">{$k+1}</span>
+								<a href="{url 'newhouse/detail/index',"spell=$v[spell]"}" target="_blank">{$v['name']}</a>{if $v['salesstatus']}<i class="selstag{$v['salesstatus']}"></i>{/if}
+							</h5>
+							<p>
+								<a href="{url 'newhouse/detail/index',"spell=$v[spell]"}" target="_blank" class="fl"><img data-psrc="{$v['pic_url']}"></a>
+								{if $v['areaname']}
+									<a href="{url 'newhouse/list/index',"params=-$v[areaspell]"}" target="_blank">{$v['areaname']}</a>
+									{if $v['circlename']}
+										<a href="{url 'newhouse/list/index',"params=-$v[circlespell]"}" target="_blank">{$v['circlename']}</a>
+									{/if}
+									<br>
+								{/if}
+								{if $v['priceexplain']}<span class="red">{$v['priceexplain']}</span>{/if}
+								{if $v['tel400_enable']}{$_config['setting']['tel_number']}{if $v['tel400_smallnum']}转{$v['tel400_smallnum']}{/if}{elseif $v['saletel']}{$v['saletel']}{else}热线尚未开通{/if}
+							</p>
+						</li>
+						{/foreach}
+					{/if}
+				</ul>
+			</div>
+			<div class="fl plist4">
+				<h3><i></i><span>本月涨幅TOP10</span></h3>
+				<ul>
+					<li class="plist_t">
+						<span class="fl">排名</span>
+						<span class="fl">楼盘名</span>
+						<span class="fr">幅度</span>
+					</li>
+					{if $price_up}
+						{foreach $price_up $k $v}
+						<li>
+							<h5 {if $k<3}class="plist_top"{/if}>
+								<span class="fr {if $v['trend'] == 'up'}plist_up{elseif $v['trend'] == 'down'}plist_down{/if}">{$v['percent']}%</span>
+								<span class="fl">{$k+1}</span>
+								<a href="{url 'newhouse/detail/index',"spell=$v[spell]"}" target="_blank">{$v['name']}</a>{if $v['salesstatus']}<i class="selstag{$v['salesstatus']}"></i>{/if}
+							</h5>
+							<p>
+								<a href="{url 'newhouse/detail/index',"spell=$v[spell]"}" target="_blank" class="fl"><img data-psrc="{$v['pic_url']}"></a>
+								{if $v['areaname']}
+									<a href="{url 'newhouse/list/index',"params=-$v[areaspell]"}" target="_blank">{$v['areaname']}</a>
+									{if $v['circlename']}
+										<a href="{url 'newhouse/list/index',"params=-$v[circlespell]"}" target="_blank">{$v['circlename']}</a>
+									{/if}
+									<br>
+								{/if}
+								{if $v['priceexplain']}<span class="red">{$v['priceexplain']}</span>{/if}
+								{if $v['tel400_enable']}{$_config['setting']['tel_number']}{if $v['tel400_smallnum']}转{$v['tel400_smallnum']}{/if}{elseif $v['saletel']}{$v['saletel']}{else}热线尚未开通{/if}
+							</p>
+						</li>
+						{/foreach}
+					{/if}
+				</ul>
+			</div>
+			<div class="fl plist5">
+				<h3><i></i><span>本月跌幅TOP10</span></h3>
+				<ul>
+					<li class="plist_t">
+						<span class="fl">排名</span>
+						<span class="fl">楼盘名</span>
+						<span class="fr">幅度</span>
+					</li>
+					{if $price_down}
+						{foreach $price_down $k $v}
+						<li>
+							<h5 {if $k<3}class="plist_top"{/if}>
+								<span class="fr {if $v['trend'] == 'up'}plist_up{elseif $v['trend'] == 'down'}plist_down{/if}">{$v['percentabs']}%</span>
+								<span class="fl">{$k+1}</span>
+								<a href="{url 'newhouse/detail/index',"spell=$v[spell]"}" target="_blank">{$v['name']}</a>{if $v['salesstatus']}<i class="selstag{$v['salesstatus']}"></i>{/if}
+							</h5>
+							<p>
+								<a href="{url 'newhouse/detail/index',"spell=$v[spell]"}" target="_blank" class="fl"><img data-psrc="{$v['pic_url']}"></a>
+								{if $v['areaname']}
+									<a href="{url 'newhouse/list/index',"params=-$v[areaspell]"}" target="_blank">{$v['areaname']}</a>
+									{if $v['circlename']}
+										<a href="{url 'newhouse/list/index',"params=-$v[circlespell]"}" target="_blank">{$v['circlename']}</a>
+									{/if}
+									<br>
+								{/if}
+								{if $v['priceexplain']}<span class="red">{$v['priceexplain']}</span>{/if}
+								{if $v['tel400_enable']}{$_config['setting']['tel_number']}{if $v['tel400_smallnum']}转{$v['tel400_smallnum']}{/if}{elseif $v['saletel']}{$v['saletel']}{else}热线尚未开通{/if}
+							</p>
+						</li>
+						{/foreach}
+					{/if}
+				</ul>
+			</div>
+			<div class="fl plist6">
+				<h3><i></i><span>本月团购TOP10</span></h3>
+				<ul>
+					<li class="plist_t">
+						<span class="fl">排名</span>
+						<span class="fl">楼盘名</span>
+						<span class="fr">在售均价(元/㎡)</span>
+					</li>
+					{if $groupbuy_order}
+						{foreach $groupbuy_order $k $v}
+						<li>
+							<h5 {if $k<3}class="plist_top"{/if}>
+								<span class="fr {if $v['trend'] == 'up'}plist_up{elseif $v['trend'] == 'down'}plist_down{/if}">
+									{if $v['isunitprice']}
+										一房一价
+									{else}
+										{if $v['averageprice']}
+											{$v['averageprice']}元
+										{else}
+											待定
+										{/if}
+									{/if}
+								</span>
+								<span class="fl">{$k+1}</span>
+								<a href="{url 'newhouse/detail/index',"spell=$v[spell]"}" target="_blank">{$v['name']}</a>{if $v['salesstatus']}<i class="selstag{$v['salesstatus']}"></i>{/if}
+							</h5>
+							<p>
+								<a href="{url 'newhouse/detail/index',"spell=$v[spell]"}" target="_blank" class="fl"><img data-psrc="{$v['pic_url']}"></a>
+								{if $v['areaname']}
+									<a href="{url 'newhouse/list/index',"params=-$v[areaspell]"}" target="_blank">{$v['areaname']}</a>
+									{if $v['circlename']}
+										<a href="{url 'newhouse/list/index',"params=-$v[circlespell]"}" target="_blank">{$v['circlename']}</a>
+									{/if}
+									<br>
+								{/if}
+								{if $v['priceexplain']}<span class="red">{$v['priceexplain']}</span>{/if}
+								{if $v['tel400_enable']}{$_config['setting']['tel_number']}{if $v['tel400_smallnum']}转{$v['tel400_smallnum']}{/if}{elseif $v['saletel']}{$v['saletel']}{else}热线尚未开通{/if}
+							</p>
+						</li>
+						{/foreach}
+					{/if}
+				</ul>
+			</div>
+			<div class="fl plist7">
+				<h3><span>本月开盘</span></h3>
+				<ul>
+					<li class="plist_t">
+						<span class="fl">楼盘名</span>
+						<span class="fr">开盘日期</span>
+					</li>
+					{if $montyopen}
+						{foreach $montyopen $k $v}
+						<li>
+							<h5 {if $k<3}class="plist_top"{/if}>
+								<span class="fr plist_no">{$v['opentime_year_month']}</span>
+								<a href="{url 'newhouse/detail/index',"spell=$v[spell]"}" target="_blank">{$v['name']}</a>{if $v['salesstatus']}<i class="selstag{$v['salesstatus']}"></i>{/if}
+							</h5>
+							<p>
+								<a href="{url 'newhouse/detail/index',"spell=$v[spell]"}" target="_blank" class="fl"><img data-psrc="{$v['pic_url']}"></a>
+								{if $v['areaname']}
+									<a href="{url 'newhouse/list/index',"params=-$v[areaspell]"}" target="_blank">{$v['areaname']}</a>
+									{if $v['circlename']}
+										<a href="{url 'newhouse/list/index',"params=-$v[circlespell]"}" target="_blank">{$v['circlename']}</a>
+									{/if}
+									<br>
+								{/if}
+								{if $v['priceexplain']}<span class="red">{$v['priceexplain']}</span>{/if}
+								{if $v['tel400_enable']}{$_config['setting']['tel_number']}{if $v['tel400_smallnum']}转{$v['tel400_smallnum']}{/if}{elseif $v['saletel']}{$v['saletel']}{else}热线尚未开通{/if}
+							</p>
+						</li>
+						{/foreach}
+					{/if}
+				</ul>
+			</div>
+			<div class="fl plist8">
+				<h3><span>下月开盘</span></h3>
+				<ul>
+					<li class="plist_t">
+						<span class="fl">楼盘名</span>
+						<span class="fr">开盘日期</span>
+					</li>
+					{if $montyopen_next}
+						{foreach $montyopen_next $k $v}
+						<li>
+							<h5 {if $k<3}class="plist_top"{/if}>
+								<span class="fr plist_no">{$v['opentime_year_month']}</span>
+								<a href="{url 'newhouse/detail/index',"spell=$v[spell]"}" target="_blank">{$v['name']}</a>{if $v['salesstatus']}<i class="selstag{$v['salesstatus']}"></i>{/if}
+							</h5>
+							<p>
+								<a href="{url 'newhouse/detail/index',"spell=$v[spell]"}" target="_blank" class="fl"><img data-psrc="{$v['pic_url']}"></a>
+								{if $v['areaname']}
+									<a href="{url 'newhouse/list/index',"params=-$v[areaspell]"}" target="_blank">{$v['areaname']}</a>
+									{if $v['circlename']}
+										<a href="{url 'newhouse/list/index',"params=-$v[circlespell]"}" target="_blank">{$v['circlename']}</a>
+									{/if}
+									<br>
+								{/if}
+								{if $v['priceexplain']}<span class="red">{$v['priceexplain']}</span>{/if}
+								{if $v['tel400_enable']}{$_config['setting']['tel_number']}{if $v['tel400_smallnum']}转{$v['tel400_smallnum']}{/if}{elseif $v['saletel']}{$v['saletel']}{else}热线尚未开通{/if}
+							</p>
+						</li>
+						{/foreach}
+					{/if}
+				</ul>
+			</div>
+			<div class="fl plist9">
+				<h3><span>交房计划</span></h3>
+				<ul>
+					<li class="plist_t">
+						<span class="fl">楼盘名</span>
+						<span class="fr">交房日期</span>
+					</li>
+					{if $live}
+						{foreach $live $k $v}
+						<li>
+							<h5 {if $k<3}class="plist_top"{/if}>
+								<span class="fr plist_no">{$v['livetime_year_month']}</span>
+								<a href="{url 'newhouse/detail/index',"spell=$v[spell]"}" target="_blank">{$v['name']}</a>{if $v['salesstatus']}<i class="selstag{$v['salesstatus']}"></i>{/if}
+							</h5>
+							<p>
+								<a href="{url 'newhouse/detail/index',"spell=$v[spell]"}" target="_blank" class="fl"><img data-psrc="{$v['pic_url']}"></a>
+								{if $v['areaname']}
+									<a href="{url 'newhouse/list/index',"params=-$v[areaspell]"}" target="_blank">{$v['areaname']}</a>
+									{if $v['circlename']}
+										<a href="{url 'newhouse/list/index',"params=-$v[circlespell]"}" target="_blank">{$v['circlename']}</a>
+									{/if}
+									<br>
+								{/if}
+								{if $v['priceexplain']}<span class="red">{$v['priceexplain']}</span>{/if}
+								{if $v['tel400_enable']}{$_config['setting']['tel_number']}{if $v['tel400_smallnum']}转{$v['tel400_smallnum']}{/if}{elseif $v['saletel']}{$v['saletel']}{else}热线尚未开通{/if}
+							</p>
+						</li>
+						{/foreach}
+					{/if}					
+				</ul>
+			</div>
+		</div>
+	</div>
+	{template 'foot'}
+<script>
+seajs.use("jquery",function($){
+	var $p=$("#phblist");
+	$p.find("li").not(".plist_t").on({
+		mouseenter:function(){
+			var $t=$(this);
+			$t.parent().find("li").removeClass("on");
+			$t.addClass("on").find("img").attr("src",function(){
+				return $(this).data("psrc")
+			});
+		}
+	})
+	$p.find("ul").each(function(){
+		$(this).find("li").eq(1).trigger("mouseenter")
+	})
+});
+</script>
+</body>
+</html>

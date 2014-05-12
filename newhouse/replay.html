@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{template 'head','newhouse'}
+</head>
+<body>
+	{template 'header','newhouse'}
+	<div id="main">
+		{template 'nav','newhouse'}
+		<div class="cf">
+			<div class="detail_fl">
+				<div class="bodyb">
+					<div class="detail_dpl">
+						<h4><span class="fr">有{$comment['pv']}人浏览过此点评</span>点评回复</h4>
+						<ul id="re_dpl">
+							<li class="nobo" data-id="{$comment['cid']}">
+								<img src="{if $comment['avatar']}{$comment['avatar']}{else}{$_config['img3_url']}common/avatar.png{/if}">
+								{if $comment['username'] && $comment['isnick']==0}{$comment['username']}{else}{$_config['setting']['defaultname']}{/if} <span class="gray9">{$comment['posttime']}的点评</span><i class="r{$comment['grade']}"></i>
+								<h5>{$comment['title']}</h5>
+								<p>{$comment['info']}</p>
+								<div>
+                                    <a href="javascript:void(0)" class="d">顶（<b>{$comment['digg']}</b>）</a>|
+                                    <a href="javascript:void(0)" class="c">踩（<b>{$comment['down']}</b>）</a>
+								</div>
+							</li>
+						</ul>
+					</div>
+					{if $reply_data}
+						<div class="detail_dpl nobo">
+							<h4>现有{$comment['replynum']}个回复</h4>
+							<ul>
+								{foreach $reply_data $val}
+									<li {if $val['last']}class="nobo"{/if}>
+										<span class="fr gray9">{$val['lou']}楼</span>
+										<img src="{if $val['avatar']}{$val['avatar']}{else}{$_config['img3_url']}common/avatar.png{/if}">
+										{if $val['username'] && $val['isnick']==0}{$val['username']}{else}{$_config['setting']['defaultname']}{/if} <span class="gray9">{$val['posttime']}的回复</span>
+										<p>{$val['info']}</p>
+									</li>
+								{/foreach}
+							</ul>
+						</div>
+						{if $page}
+							<div class="pagination">
+								{$page}
+							</div>
+						{/if}
+					{else}
+						<div class="no_rlt">抱歉！ 暂时没有相关点评回复~</div>
+					{/if}
+					<form class="detail_form" id="re_form" action="{url 'newhouse/detail/addreply'}" {if !($_config['setting']['islogin'] || $member['uid'])}data-needlogin="1"{/if}>
+						<input type="hidden" name="cid" value="{$comment['cid']}">
+						<h4>我的回应</h4>
+						<ul>
+							<li>
+								<span><b>*</b>回复：</span>
+								<textarea name="info" placeholder="您的回复会给其他网友提供帮助"></textarea>
+							</li>
+							<li>
+								<i class="fr">您还可以输入<b class="red">200</b>个字符</i>
+								<a href="javascript:" class="obtn"><button type="submit"></button><i class="add"></i>发布回复 </a>
+							</li>
+						</ul>
+					</form>
+				</div>
+			</div>
+			<div class="detail_fr">
+				{template 'slice_right_detail','newhouse'}
+				{template 'slice_compare','newhouse'}
+				{template 'slice_look','newhouse'}
+			</div>
+		</div>
+	</div>
+	{template 'footer_statement','newhouse'}
+	{template 'foot'}
+<script type="text/javascript">
+seajs.use("dianping",function(dp){
+	dp.dcInit("#re_dpl","{url 'newhouse/detail/diggdown'}").reInit("#re_form")
+})
+</script>
+<div id="QQOL"></div>
+<script>
+seajs.use(["jquery","alert"],function($,alertM){
+	if (!-[1, ] && !window.XMLHttpRequest) {
+		var $w=$(window).bind('scroll', function() {
+				$qq.stop().animate({top:$w.scrollTop()+$w.height()/2-80});
+			}),
+			$qq=$("#QQOL").css("top",$w.scrollTop()+$w.height()/2-80);
+	}
+	$("div.detail_fl")[0].oncopy=function(){
+		alertM("受保护的内容，暂不可复制",{cName:"cross"})
+		return false;
+	}
+});
+</script>
+<script charset="utf-8" defer async type="text/javascript" src="http://static.b.qq.com/account/bizqq/js/wpa.js?kfuin=4008906655&amp;wid=QQOL"></script>
+</body>
+</html>

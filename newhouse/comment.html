@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{template 'head','newhouse'}
+</head>
+<body>
+	{template 'header','newhouse'}
+	<div id="main">
+		{template 'nav','newhouse'}
+		<div class="cf">
+			<div class="detail_fl">
+				<div class="bodyb">
+					<div class="detail_score">
+						<h4>{$house['name']}楼盘怎么样</h4>
+						<h5>综合评分 {if $grade['score']}<span class="red">{$grade['score']}/100</span>{/if}</h5>
+						<div class="com_score cf" id="mydp">
+							<div class="fr">
+								<b class="score">0</b>
+								<b>我的评分</b>
+								<a class="obtn" href="javascript:void(0)">提交分数</a>
+							</div>
+							<div class="lppic fl">
+								<ul class="score-item fl">
+									<li class="price">
+										<span class="scoreItme-tit">价格</span>
+										<span class="slip"> 
+											<em id="point_price_pic" style="width:{$grade['price_score']}px"></em>
+										</span> 
+										<font class="i-score" id="point_price_mark">{$grade['price_score']}分</font> 
+										<font>共 <b id="point_price_count">{$grade['price_num']}</b> 人</font> 
+									</li>
+									<li class="envir">
+										<span class="scoreItme-tit">环境</span>
+										<span class="slip"> <em id="point_milieu_pic" style="width:{$grade['milieu_score']}px"></em>
+										</span>
+										<font class="i-score" id="point_milieu_mark">{$grade['milieu_score']}分</font>
+										<font>共 <b id="point_milieu_count">{$grade['milieu_num']}</b>
+											人</font> 
+									</li>
+									<li class="traffic">
+										<span class="scoreItme-tit">物业</span>
+										<span class="slip">
+											<em id="point_property_pic" style="width:{$grade['property_score']}px"></em>
+										</span>
+										<font class="i-score" id="point_property_mark">{$grade['property_score']}分</font>
+										<font>
+											共
+											<b id="point_property_count">{$grade['property_num']}</b>
+											人
+										</font>
+									</li>
+									<li class="Property">
+										<span class="scoreItme-tit">交通</span>
+										<span class="slip">
+											<em id="point_traffic_pic" style="width:{$grade['traffic_score']}px"></em>
+										</span>
+										<font class="i-score" id="point_traffic_mark">{$grade['traffic_score']}分</font>
+										<font>
+											共
+											<b id="point_traffic_count">{$grade['traffic_num']}</b>
+											人
+										</font>
+									</li>
+									<li class="assort">
+										<span class="scoreItme-tit">设施</span>
+										<span class="slip">
+											<em id="point_facility_pic" style="width:{$grade['facility_score']}px"></em>
+										</span>
+										<font class="i-score" id="point_facility_mark">{$grade['facility_score']}分</font>
+										<font>
+											共
+											<b id="point_facility_count">{$grade['facility_num']}</b>
+											人
+										</font>
+									</li>
+								</ul>
+							</div>
+							<div class="lpdf fl">
+								<div class="score">
+									<span class="txt">价 格</span>
+									<ul class="star-rating">
+										<li title="很差"></li>
+										<li title="很差"></li>
+										<li title="较差"></li>
+										<li title="较差"></li>
+										<li title="一般"></li>
+										<li title="一般"></li>
+										<li title="较好"></li>
+										<li title="较好"></li>
+										<li title="很好"></li>
+										<li title="很好"></li>
+									</ul>
+									<span class="red"></span>
+								</div>
+								<div class="score">
+									<span class="txt">环 境</span>
+									<ul class="star-rating">
+										<li title="很差"></li>
+										<li title="很差"></li>
+										<li title="较差"></li>
+										<li title="较差"></li>
+										<li title="一般"></li>
+										<li title="一般"></li>
+										<li title="较好"></li>
+										<li title="较好"></li>
+										<li title="很好"></li>
+										<li title="很好"></li>
+									</ul>
+									<span class="red"></span>
+								</div>
+								<div class="score">
+									<span class="txt">物 业</span>
+									<ul class="star-rating">
+										<li title="很差"></li>
+										<li title="很差"></li>
+										<li title="较差"></li>
+										<li title="较差"></li>
+										<li title="一般"></li>
+										<li title="一般"></li>
+										<li title="较好"></li>
+										<li title="较好"></li>
+										<li title="很好"></li>
+										<li title="很好"></li>
+									</ul>
+									<span class="red"></span>
+								</div>
+								<div class="score">
+									<span class="txt">交 通</span>
+									<ul class="star-rating">
+										<li title="很差"></li>
+										<li title="很差"></li>
+										<li title="较差"></li>
+										<li title="较差"></li>
+										<li title="一般"></li>
+										<li title="一般"></li>
+										<li title="较好"></li>
+										<li title="较好"></li>
+										<li title="很好"></li>
+										<li title="很好"></li>
+									</ul>
+									<span class="red"></span>
+								</div>
+								<div class="score">
+									<span class="txt">配 套</span>
+									<ul class="star-rating">
+										<li title="很差"></li>
+										<li title="很差"></li>
+										<li title="较差"></li>
+										<li title="较差"></li>
+										<li title="一般"></li>
+										<li title="一般"></li>
+										<li title="较好"></li>
+										<li title="较好"></li>
+										<li title="很好"></li>
+										<li title="很好"></li>
+									</ul>
+									<span class="red"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="detail_info">
+						<h4>{$house['name']}印象</h4>
+						<form id="impression" class="cf">
+							<div class="fr">
+								<input type="text" placeholder="我的印象，最多5个字">
+								<a href="javascript:" class="obtn"><button type="submit"></button><i class="add"></i>添加印象</a>
+							</div>
+							<div class="cf">
+							{if $impression}
+								{foreach $impression $k $r}
+									<span class="t{$k+1}" data-id="{$r['id']}">{$r['name']}<i>已有<b>{$r['support']}</b>人支持</i></span>
+								{/foreach}
+							{/if}
+							</div>
+						</form>
+					</div>
+					<form class="detail_form nobo" action="{url 'newhouse/detail/gradecomment'}" id="dp_form" {if !($_config['setting']['islogin'] || $member['uid'])}data-needlogin="1"{/if}>
+						<input type="hidden" name="hid" value="{$house['hid']}">
+						<h4>{$house['name']}点评</h4>
+						<ul class="detail_form_blue">
+							<li>
+								<span><b>*</b>评分：</span>
+								<u id="scroli">
+									<a class="s0" href="javascript:"></a>
+									<input type="hidden" name="grade" value="0">
+								</u>
+								点击星星为楼盘打分
+							</li>
+							<li>
+								<span><b>*</b>标题：</span>
+								<input type="text" class="t" name="title">
+							</li>
+							<li>
+								<span><b>*</b>评价：</span>
+								<textarea name="info" placeholder="您的点评会给其他网友提供帮助"></textarea>
+							</li>
+							{if $_config['setting']['issecode'] == 1}
+								<li>
+									<i class="fr">您还可以输入<b class="red">200</b>个字符</i>
+									<span><b>*</b>验证码：</span><input type="text" class="s" name="seccode">
+									<a href="javascript:" title="点击刷新验证码"><img src="{url 'newhouse/detail/seccode'}"></a>
+								</li>
+							{/if}
+							<li><a href="javascript:" class="obtn"><button type="submit"></button><i class="add"></i>发布点评</a></li>
+						</ul>
+					</form>
+					{if $comment_page}
+						<div class="detail_dpl nobo">
+							<ul id="re_dpl">
+								{foreach $comment_page $key $v}
+									<li data-id="{$v['cid']}" {if $v['last']}class="nobo"{/if}>
+										<img src="{if $v['avatar']}{$v['avatar']}{else}{$_config['img3_url']}common/avatar.png{/if}">
+										{if $v['username'] && $v['isnick']==0}{$v['username']}{else}{$_config['setting']['defaultname']}{/if}<span class="gray9">{$v['posttime']}的点评</span><i class="r{$v['grade']}"></i>
+										<h5>{$v['title']}</h5>
+										<p>{$v['info']}</p>
+										<div>
+											<a href="{url 'newhouse/detail/reply',"spell=$house[spell]&id=$v[cid]"}" class="r">回复（<b>{$v['replynum']}</b>）</a>|
+											<a href="javascript:void(0)" class="d">顶（<b>{$v['digg']}</b>）</a>|
+											<a href="javascript:void(0)" class="c">踩（<b>{$v['down']}</b>）</a>
+										</div>
+									</li>
+								{/foreach}								
+							</ul>
+						</div>
+						{if $page}
+							<div class="pagination">
+								{$page}
+							</div>
+						{/if}
+					{else}
+						<div class="no_rlt">抱歉！ 暂时没有相关点评~</div>
+					{/if}
+				</div>
+			</div>
+			<div class="detail_fr">
+				{template 'slice_right_detail','newhouse'}
+				{template 'slice_compare','newhouse'}
+				{template 'slice_look','newhouse'}
+			</div>
+		</div>
+	</div>
+	{template 'footer_statement','newhouse'}
+	{template 'foot'}
+<script type="text/javascript">
+seajs.use(["pingfen","ipn","dianping"],function(pf,ipn,dp){
+	pf("#mydp","{url 'newhouse/detail/subgrade'}","{$house['hid']}");
+	ipn("#impression","{url 'newhouse/detail/impression'}","{$house['hid']}");
+	dp.dcInit("#re_dpl","{url 'newhouse/detail/diggdown'}").formInit("#dp_form");
+})
+</script>
+<div id="QQOL"></div>
+<script>
+seajs.use(["jquery","alert"],function($,alertM){
+	if (!-[1, ] && !window.XMLHttpRequest) {
+		var $w=$(window).bind('scroll', function() {
+				$qq.stop().animate({top:$w.scrollTop()+$w.height()/2-80});
+			}),
+			$qq=$("#QQOL").css("top",$w.scrollTop()+$w.height()/2-80);
+	}
+	$("div.detail_fl")[0].oncopy=function(){
+		alertM("受保护的内容，暂不可复制",{cName:"cross"})
+		return false;
+	}
+});
+</script>
+<script charset="utf-8" defer async type="text/javascript" src="http://static.b.qq.com/account/bizqq/js/wpa.js?kfuin=4008906655&amp;wid=QQOL"></script>
+</body>
+</html>

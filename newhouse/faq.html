@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{template 'head','newhouse'}
+</head>
+<body>
+	{template 'header','newhouse'}
+	<div id="main">
+		{template 'nav','newhouse'}
+		<div class="cf">
+			<div class="detail_fl">
+				<div class="bodyb">
+					<h3>
+						<span class="mod_tab fr">
+							<a href="{url 'newhouse/detail/faq',"spell=$house[spell]"}" {if $type==0}class="on"{/if}>全部({$faq_info['all']})</a>
+							<a href="{url 'newhouse/detail/faq',"spell=$house[spell]&type=1"}" {if $type==1}class="on"{/if}>已解决({$faq_info['solve']})</a>
+							<a href="{url 'newhouse/detail/faq',"spell=$house[spell]&type=2"}" {if $type==2}class="on"{/if}>未解决({$faq_info['unsolved']})</a>
+						</span>
+						{$house['name']}楼盘问答
+					</h3>
+					{if $faq_list}
+						<ul class="detail_wd_list">
+							{foreach $faq_list $val}
+								<li class="cf">
+									<p class="w"><i>问</i><a target="_blank" href="{url 'wenda/detail/index',"qid=$val[qid]"}">{$val['content']}</a></p>
+									{if $val['replay']}
+									<p class="d"><i>答</i>{$val['replay']['content']}</p>
+									{/if}
+									{if $val['best_answer']}
+										<span class="yes_awer">已解决</span>
+									{elseif $fad_qid == $val['qid'] && $val['status']==0}
+										<span class="no_awer">待审核</span>
+									{else}
+										<span class="no_awer">未解决</span>
+									{/if}
+									|&nbsp;&nbsp;&nbsp;&nbsp;{$val['posttime']}
+								</li>
+							{/foreach}											
+						</ul>
+						{if $page}
+							<div class="pagination">
+								{$page}
+							</div>
+						{/if}
+					{else}
+						<ul class="detail_wd_list">
+							<li class="cf"></li>
+						</ul>
+						<div class="no_rlt">抱歉！ 暂时没有相关问答~</div>
+					{/if}
+				</div>
+				<form id="detail_ask" class="bodyb detail_info detail_wdf cf" action="{url 'newhouse/detail/question'}" {if !($_wenda_config['wenda_user'] || $member['uid'])}data-needlogin="1"{/if}>
+					<input type="hidden" name="hid" value="{$house['hid']}"/>
+					<h4>我要提问</h4>
+					<textarea name="info" placeholder="提出您的问题，我们尽快为您解答!"></textarea>
+					<button type="submit"></button>
+					<span class="fl">您还可以输入 <b class="red">50</b> 个字</span>					
+				</form>
+			</div>
+			<div class="detail_fr">
+				{template 'slice_right_detail','newhouse'}
+				{template 'slice_impress','newhouse'}
+				{template 'slice_compare','newhouse'}
+				{template 'slice_look','newhouse'}
+			</div>
+		</div>
+	</div>
+	{template 'footer_statement','newhouse'}
+	{template 'foot'}
+<script>
+seajs.use(["answer"],function(aw){
+	aw("#detail_ask")
+});
+</script>
+<div id="QQOL"></div>
+<script>
+seajs.use(["jquery","alert"],function($,alertM){
+	if (!-[1, ] && !window.XMLHttpRequest) {
+		var $w=$(window).bind('scroll', function() {
+				$qq.stop().animate({top:$w.scrollTop()+$w.height()/2-80});
+			}),
+			$qq=$("#QQOL").css("top",$w.scrollTop()+$w.height()/2-80);
+	}
+	$("div.detail_fl")[0].oncopy=function(){
+		alertM("受保护的内容，暂不可复制",{cName:"cross"})
+		return false;
+	}
+});
+</script>
+<script charset="utf-8" defer async type="text/javascript" src="http://static.b.qq.com/account/bizqq/js/wpa.js?kfuin=4008906655&amp;wid=QQOL"></script>
+</body>
+</html>

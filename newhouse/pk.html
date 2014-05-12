@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{template 'head','newhouse'}
+</head>
+<body>
+	{template 'header','newhouse'}
+	<div id="main">
+		<div class="bread"><a href="{$_config['site_url']}">{$_config['name']}{$_config['site_name']}</a>&gt;<a href="{url 'newhouse'}">{$_config['name']}新房</a>&gt;<span>新房PK</span></div>
+		<div class="pk_b">
+			<h2><a href="javascript:" class="print fr" id="pk_print">打印此页面</a>
+				您最多可以添加<b class="red">3</b>个楼盘</h2>
+			<div class="pk_t" id="navbox">
+				<form action="" id="serach_form">
+					<input type="text" id="hname" placeholder="请输入楼盘名称"><a href="javascript:" class="obtn"><i class="add"></i>添加到对比楼盘</a>
+				</form>
+				<table id="clear_td">
+					<tr>
+						<th class="pk_l">楼盘信息</th>
+						<th width="280"></th>
+						<th width="280"></th>
+						<th width="280"></th>
+					</tr>
+				</table>
+			</div>
+			<table>
+				<tr>
+					<td class="pk_l"></td>
+					<td width="280"></td>
+					<td width="280"></td>
+					<td width="280"></td>
+				</tr>
+				<tr>
+					<td class="pk_l">楼盘电话</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="pk_l">项目价格</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="pk_l">最新优惠</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<th class="pk_l" colspan="4">参数对比</th>
+				</tr>
+				<tr>
+					<td class="pk_l">户&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="pk_l">容&nbsp;&nbsp;积&nbsp;&nbsp;率</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="pk_l">绿&nbsp;&nbsp;化&nbsp;&nbsp;率</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="pk_l">装修状况</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="pk_l">项目位置</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="pk_l">物业类型</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="pk_l">产权年限</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="pk_l">销售许可证</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="pk_l">开盘时间</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="pk_l">
+						入住时间
+					</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="pk_l">开&nbsp;&nbsp;发&nbsp;&nbsp;商</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="pk_l">物&nbsp;&nbsp;业&nbsp;&nbsp;费</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<th class="pk_l" colspan="4">配套交通</th>
+				</tr>
+				<tr>
+					<td class="pk_l">交通配套</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="pk_l">周边配套</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<th class="pk_l" colspan="4">楼盘点评</th>
+				</tr>
+				<tr>
+					<td class="pk_l">综合评分</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="pk_l">网友评论</td>
+					<td class="pk_p"></td>
+					<td class="pk_p"></td>
+					<td class="pk_p"></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	{template 'foot'}
+<script>
+seajs.use(["alert","autoc"],function(alertM){
+	var $menu = $("#navbox"),
+		$w = $(window),
+		hBoolean = 1,
+		mh = $menu.offset().top,
+		hid = window.location.href.split("=");
+		hid=hid.length>1?hid[1].split(","):0;
+	if ((!-[1, ] && !window.XMLHttpRequest)||"ontouchend" in document) {
+		$w.on("scroll", function() {
+			if ($w.scrollTop() > mh) {
+				hBoolean = 0;
+				$menu[0].style.top = $w.scrollTop() - mh + "px";
+			} else if ($w.scrollTop() < mh && !hBoolean) {
+				hBoolean = 1;
+				$menu[0].style.top = 0;
+			}
+		})
+	} else {
+		$w.on("scroll", function() {
+			if ($w.scrollTop() > mh && hBoolean) {
+				hBoolean = 0;
+				$menu[0].style.position = "fixed";
+			} else if ($w.scrollTop() < mh && !hBoolean) {
+				hBoolean = 1;
+				$menu[0].style.position = "static";
+			}
+		})
+	}
+	var $tr=$("tr").on({
+		mouseenter:function(){
+			$(this).addClass("on")
+		},
+		mouseleave:function(){
+			$(this).removeClass("on")
+		}
+	});
+	var $cltd=$("#clear_td").on("click","a",function(){
+		var i=$(this).parent().index();
+		$(this).parent().data("hid",0);
+		setHref();
+		$tr.each(function(){
+			if($(this).find("td").length>1){
+				$(this).find("td").eq(i).empty()
+			}
+			if($(this).find("th").length>1){
+				$(this).find("th").eq(i).empty()
+			}
+		})
+	})
+	$("#pk_print").on("click",function(){
+		setTimeout(function(){
+			window.print();
+		},99)
+	})
+	$w.triggerHandler("scroll");
+	var setHref=function(hidstr){
+			var hidstr=[];
+			$cltd.find("th").each(function(){
+				if($(this).data("hid"))
+					hidstr.push($(this).data("hid"));
+			})
+			hidstr = hidstr.join(",");
+			window.location.href = window.location.href.substr(0, window.location.href.indexOf("#")) + "#id=" + hidstr;
+			$.get('{url "newhouse/pk/record"}?id='+hidstr);
+		},
+		setHtml=function(hdata){	
+			$.ajax({
+				url:"{url 'newhouse/pk/gethouse'}",
+				type:"post",
+				dataType:"json",
+				data:hdata
+			}).done(function(data){
+				if(data.state!="succ"){
+					alertM(data.alert,{cName:data.state})
+					return false;
+				}
+				var i=0;
+				$cltd.find("th").each(function(){
+					if(!$.trim($(this).html()).length){
+						i=$(this).index();
+						return false;
+					}
+				})
+				if(!i||i>3){
+					alertM("每次最多PK3个楼盘",{cName:"error"})
+					return false;
+				}
+				var d=0;
+				$cltd.find("th").eq(i).data("hid",data.hid);
+				$tr.each(function(){
+					if($(this).find("td").length>1){
+						$(this).find("td").eq(i).html(data.html[d]);
+						d++;
+					}
+					if($(this).find("th").length>1){
+						$(this).find("th").eq(i).html(data.html[d]);
+						d++;
+					}
+				})
+				setHref();
+			}).fail(function(){
+				alertM("查询房源信息失败，请检查网络连接是否已断开",{cName:"error"})
+			})
+		},
+		sendPkID=function(){
+			
+		}
+	if(hid){
+		for(var i=0,l=hid.length;i<l&&i<3;i++){
+			setHtml({
+				hid:hid[i]
+			})
+		}
+	}
+	var $hname=$("#hname").autoC("{url 'newhouse/ajax/house'}"),
+		$form=$("#serach_form").on("submit",function(){
+			var kw = $hname.val();
+			if(kw == ""||kw==$hname.attr('placeholder')){
+				$hname.focus();
+				return false;
+			}
+			setHtml({
+				hname:kw
+			})
+			return false;
+		}).on("click","a.obtn",function(){
+			$form.trigger("submit")
+		});
+});
+</script>
+</body>
+</html>
